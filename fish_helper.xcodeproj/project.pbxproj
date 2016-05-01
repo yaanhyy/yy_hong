@@ -1,0 +1,505 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */; };
+		1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */; };
+		1FFBF9D71CD64B3F000B22C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D51CD64B3F000B22C1 /* Main.storyboard */; };
+		1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */; };
+		1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */; };
+		1FFBF9E71CD64B3F000B22C1 /* fish_helperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9E61CD64B3F000B22C1 /* fish_helperTests.swift */; };
+		1FFBF9F21CD64B3F000B22C1 /* fish_helperUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1FFBF9E31CD64B3F000B22C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FFBF9C61CD64B3F000B22C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1FFBF9CD1CD64B3F000B22C1;
+			remoteInfo = fish_helper;
+		};
+		1FFBF9EE1CD64B3F000B22C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FFBF9C61CD64B3F000B22C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1FFBF9CD1CD64B3F000B22C1;
+			remoteInfo = fish_helper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fish_helper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1FFBF9D61CD64B3F000B22C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1FFBF9DB1CD64B3F000B22C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1FFBF9DD1CD64B3F000B22C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1FFBF9E21CD64B3F000B22C1 /* fish_helperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fish_helperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FFBF9E61CD64B3F000B22C1 /* fish_helperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fish_helperTests.swift; sourceTree = "<group>"; };
+		1FFBF9E81CD64B3F000B22C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1FFBF9ED1CD64B3F000B22C1 /* fish_helperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fish_helperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fish_helperUITests.swift; sourceTree = "<group>"; };
+		1FFBF9F31CD64B3F000B22C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1FFBF9CB1CD64B3F000B22C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FFBF9DF1CD64B3F000B22C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FFBF9EA1CD64B3F000B22C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1FFBF9C51CD64B3F000B22C1 = {
+			isa = PBXGroup;
+			children = (
+				1FFBF9D01CD64B3F000B22C1 /* fish_helper */,
+				1FFBF9E51CD64B3F000B22C1 /* fish_helperTests */,
+				1FFBF9F01CD64B3F000B22C1 /* fish_helperUITests */,
+				1FFBF9CF1CD64B3F000B22C1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1FFBF9CF1CD64B3F000B22C1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */,
+				1FFBF9E21CD64B3F000B22C1 /* fish_helperTests.xctest */,
+				1FFBF9ED1CD64B3F000B22C1 /* fish_helperUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1FFBF9D01CD64B3F000B22C1 /* fish_helper */ = {
+			isa = PBXGroup;
+			children = (
+				1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */,
+				1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */,
+				1FFBF9D51CD64B3F000B22C1 /* Main.storyboard */,
+				1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */,
+				1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */,
+				1FFBF9DD1CD64B3F000B22C1 /* Info.plist */,
+			);
+			path = fish_helper;
+			sourceTree = "<group>";
+		};
+		1FFBF9E51CD64B3F000B22C1 /* fish_helperTests */ = {
+			isa = PBXGroup;
+			children = (
+				1FFBF9E61CD64B3F000B22C1 /* fish_helperTests.swift */,
+				1FFBF9E81CD64B3F000B22C1 /* Info.plist */,
+			);
+			path = fish_helperTests;
+			sourceTree = "<group>";
+		};
+		1FFBF9F01CD64B3F000B22C1 /* fish_helperUITests */ = {
+			isa = PBXGroup;
+			children = (
+				1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */,
+				1FFBF9F31CD64B3F000B22C1 /* Info.plist */,
+			);
+			path = fish_helperUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1FFBF9CD1CD64B3F000B22C1 /* fish_helper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1FFBF9F61CD64B3F000B22C1 /* Build configuration list for PBXNativeTarget "fish_helper" */;
+			buildPhases = (
+				1FFBF9CA1CD64B3F000B22C1 /* Sources */,
+				1FFBF9CB1CD64B3F000B22C1 /* Frameworks */,
+				1FFBF9CC1CD64B3F000B22C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = fish_helper;
+			productName = fish_helper;
+			productReference = 1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1FFBF9E11CD64B3F000B22C1 /* fish_helperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1FFBF9F91CD64B3F000B22C1 /* Build configuration list for PBXNativeTarget "fish_helperTests" */;
+			buildPhases = (
+				1FFBF9DE1CD64B3F000B22C1 /* Sources */,
+				1FFBF9DF1CD64B3F000B22C1 /* Frameworks */,
+				1FFBF9E01CD64B3F000B22C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1FFBF9E41CD64B3F000B22C1 /* PBXTargetDependency */,
+			);
+			name = fish_helperTests;
+			productName = fish_helperTests;
+			productReference = 1FFBF9E21CD64B3F000B22C1 /* fish_helperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1FFBF9EC1CD64B3F000B22C1 /* fish_helperUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1FFBF9FC1CD64B3F000B22C1 /* Build configuration list for PBXNativeTarget "fish_helperUITests" */;
+			buildPhases = (
+				1FFBF9E91CD64B3F000B22C1 /* Sources */,
+				1FFBF9EA1CD64B3F000B22C1 /* Frameworks */,
+				1FFBF9EB1CD64B3F000B22C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1FFBF9EF1CD64B3F000B22C1 /* PBXTargetDependency */,
+			);
+			name = fish_helperUITests;
+			productName = fish_helperUITests;
+			productReference = 1FFBF9ED1CD64B3F000B22C1 /* fish_helperUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1FFBF9C61CD64B3F000B22C1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "洪远洋";
+				TargetAttributes = {
+					1FFBF9CD1CD64B3F000B22C1 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					1FFBF9E11CD64B3F000B22C1 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 1FFBF9CD1CD64B3F000B22C1;
+					};
+					1FFBF9EC1CD64B3F000B22C1 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 1FFBF9CD1CD64B3F000B22C1;
+					};
+				};
+			};
+			buildConfigurationList = 1FFBF9C91CD64B3F000B22C1 /* Build configuration list for PBXProject "fish_helper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1FFBF9C51CD64B3F000B22C1;
+			productRefGroup = 1FFBF9CF1CD64B3F000B22C1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1FFBF9CD1CD64B3F000B22C1 /* fish_helper */,
+				1FFBF9E11CD64B3F000B22C1 /* fish_helperTests */,
+				1FFBF9EC1CD64B3F000B22C1 /* fish_helperUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1FFBF9CC1CD64B3F000B22C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */,
+				1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */,
+				1FFBF9D71CD64B3F000B22C1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FFBF9E01CD64B3F000B22C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FFBF9EB1CD64B3F000B22C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1FFBF9CA1CD64B3F000B22C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */,
+				1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FFBF9DE1CD64B3F000B22C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FFBF9E71CD64B3F000B22C1 /* fish_helperTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FFBF9E91CD64B3F000B22C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FFBF9F21CD64B3F000B22C1 /* fish_helperUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1FFBF9E41CD64B3F000B22C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1FFBF9CD1CD64B3F000B22C1 /* fish_helper */;
+			targetProxy = 1FFBF9E31CD64B3F000B22C1 /* PBXContainerItemProxy */;
+		};
+		1FFBF9EF1CD64B3F000B22C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1FFBF9CD1CD64B3F000B22C1 /* fish_helper */;
+			targetProxy = 1FFBF9EE1CD64B3F000B22C1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1FFBF9D51CD64B3F000B22C1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1FFBF9D61CD64B3F000B22C1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1FFBF9DB1CD64B3F000B22C1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1FFBF9F41CD64B3F000B22C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1FFBF9F51CD64B3F000B22C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1FFBF9F71CD64B3F000B22C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = fish_helper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		1FFBF9F81CD64B3F000B22C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = fish_helper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		1FFBF9FA1CD64B3F000B22C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = fish_helperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helperTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/fish_helper.app/fish_helper";
+			};
+			name = Debug;
+		};
+		1FFBF9FB1CD64B3F000B22C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = fish_helperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helperTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/fish_helper.app/fish_helper";
+			};
+			name = Release;
+		};
+		1FFBF9FD1CD64B3F000B22C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = fish_helperUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helperUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = fish_helper;
+			};
+			name = Debug;
+		};
+		1FFBF9FE1CD64B3F000B22C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = fish_helperUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helperUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = fish_helper;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1FFBF9C91CD64B3F000B22C1 /* Build configuration list for PBXProject "fish_helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FFBF9F41CD64B3F000B22C1 /* Debug */,
+				1FFBF9F51CD64B3F000B22C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1FFBF9F61CD64B3F000B22C1 /* Build configuration list for PBXNativeTarget "fish_helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FFBF9F71CD64B3F000B22C1 /* Debug */,
+				1FFBF9F81CD64B3F000B22C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		1FFBF9F91CD64B3F000B22C1 /* Build configuration list for PBXNativeTarget "fish_helperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FFBF9FA1CD64B3F000B22C1 /* Debug */,
+				1FFBF9FB1CD64B3F000B22C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		1FFBF9FC1CD64B3F000B22C1 /* Build configuration list for PBXNativeTarget "fish_helperUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FFBF9FD1CD64B3F000B22C1 /* Debug */,
+				1FFBF9FE1CD64B3F000B22C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1FFBF9C61CD64B3F000B22C1 /* Project object */;
+}
