@@ -14,6 +14,7 @@
 		1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */; };
 		1FFBF9E71CD64B3F000B22C1 /* fish_helperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9E61CD64B3F000B22C1 /* fish_helperTests.swift */; };
 		1FFBF9F21CD64B3F000B22C1 /* fish_helperUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */; };
+		784306D91CD9AF05007E7349 /* drawable in Resources */ = {isa = PBXBuildFile; fileRef = 784306D81CD9AF05007E7349 /* drawable */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		1FFBF9ED1CD64B3F000B22C1 /* fish_helperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fish_helperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fish_helperUITests.swift; sourceTree = "<group>"; };
 		1FFBF9F31CD64B3F000B22C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		784306D81CD9AF05007E7349 /* drawable */ = {isa = PBXFileReference; lastKnownFileType = folder; name = drawable; path = ../../../Desktop/drawable; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		1FFBF9D01CD64B3F000B22C1 /* fish_helper */ = {
 			isa = PBXGroup;
 			children = (
+				784306D81CD9AF05007E7349 /* drawable */,
 				1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */,
 				1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */,
 				1FFBF9D51CD64B3F000B22C1 /* Main.storyboard */,
@@ -232,6 +235,7 @@
 			files = (
 				1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */,
 				1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */,
+				784306D91CD9AF05007E7349 /* drawable in Resources */,
 				1FFBF9D71CD64B3F000B22C1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
