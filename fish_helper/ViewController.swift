@@ -36,11 +36,14 @@ class ViewController: UIViewController , GCDAsyncUdpSocketDelegate{
         socket.sendData(message, toHost: address, port: port, withTimeout: 1000, tag: 0)
         do {
         //    try socket.enableBroadcast(true)
+            try socket.beginReceiving()
+
         } catch {
             print(error)
         }
-        
-    
+        print(error)    }
+    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,      withFilterContext filterContext: AnyObject!) {
+        print("incoming message: \(data)");
     }
 }
 
