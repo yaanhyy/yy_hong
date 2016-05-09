@@ -45,7 +45,6 @@ class ViewController: UIViewController ,UITextFieldDelegate{
    
     @IBAction func btn_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
         if user_name.text == "admin" && password.text == "123"{
-            /**进行跳转**/
             self.performSegueWithIdentifier("btn_login_onclick", sender: nil)
         }else{
             result_message_lable.text = "username or passward is error!"
