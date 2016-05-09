@@ -8,7 +8,7 @@
 
 import UIKit
 import CocoaAsyncSocket
-class ViewController: UIViewController , GCDAsyncUdpSocketDelegate{
+class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,25 +25,8 @@ class ViewController: UIViewController , GCDAsyncUdpSocketDelegate{
     //    let action = UIAlertAction(title: "Disai OK", style: .Default, handler: nil)
      //   alert.addAction(action)
      //   presentViewController(alert, animated: true, completion: nil)
-        //send login req
-        var address = "192.168.2.100"
-        var port:UInt16 = 23458
-        var socket:GCDAsyncUdpSocket!
-        var socketReceive:GCDAsyncUdpSocket!
-        var error : NSError?
-        let message = "love you!baby".dataUsingEncoding(NSUTF8StringEncoding)
-        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-        socket.sendData(message, toHost: address, port: port, withTimeout: 1000, tag: 0)
-        do {
-        //    try socket.enableBroadcast(true)
-            try socket.beginReceiving()
-
-        } catch {
-            print(error)
-        }
-        print(error)    }
-    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,      withFilterContext filterContext: AnyObject!) {
-        print("incoming message: \(data)");
+        
     }
+    
 }
 
