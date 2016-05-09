@@ -39,12 +39,13 @@ class comm_send: GCDAsyncUdpSocketDelegate{
     
     func sned_frame(frame_len:Int)
     {
-        //send login reqsend_buf.append(0x86)        var address = "192.168.2.102"
+        //send login reqsend_buf.append(0x86)        
+        var address = "192.168.2.102"
         var port:UInt16 = 23458
         var socket:GCDAsyncUdpSocket!
         var socketReceive:GCDAsyncUdpSocket!
         var error : NSError?
-        
+
         //  var send_buf = UInt8[](count: 1024, repeatedValue: 0)
         // var send_buf = Array<UInt8>()
        // send_buf.append(0x86)
