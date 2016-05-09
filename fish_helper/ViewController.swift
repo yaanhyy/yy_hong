@@ -36,13 +36,9 @@ class ViewController: UIViewController ,UITextFieldDelegate{
     
     func textFieldShouldReturn(textField:UITextField) -> Bool
     {
-//        if textField == user_name {
-//            password.becomeFirstResponder()
-//        }
-//        else{
-             textField.resignFirstResponder()
-//        }
-  
+
+        textField.resignFirstResponder()
+
         return true;
     }
  
