@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */; };
 		1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */; };
-		1FFBF9D71CD64B3F000B22C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D51CD64B3F000B22C1 /* Main.storyboard */; };
 		1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */; };
 		1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */; };
 		1FFBF9E71CD64B3F000B22C1 /* fish_helperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9E61CD64B3F000B22C1 /* fish_helperTests.swift */; };
 		1FFBF9F21CD64B3F000B22C1 /* fish_helperUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */; };
+		783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783BE06B1CE04790009DBF38 /* Main.storyboard */; };
+		783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783BE06E1CE05E20009DBF38 /* DevListViewController.swift */; };
 		784306D91CD9AF05007E7349 /* drawable in Resources */ = {isa = PBXBuildFile; fileRef = 784306D81CD9AF05007E7349 /* drawable */; };
 /* End PBXBuildFile section */
 
@@ -38,7 +39,6 @@
 		1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fish_helper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		1FFBF9D61CD64B3F000B22C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1FFBF9DB1CD64B3F000B22C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1FFBF9DD1CD64B3F000B22C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,6 +48,8 @@
 		1FFBF9ED1CD64B3F000B22C1 /* fish_helperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fish_helperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fish_helperUITests.swift; sourceTree = "<group>"; };
 		1FFBF9F31CD64B3F000B22C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		783BE06C1CE04790009DBF38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		783BE06E1CE05E20009DBF38 /* DevListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevListViewController.swift; sourceTree = "<group>"; };
 		784306D81CD9AF05007E7349 /* drawable */ = {isa = PBXFileReference; lastKnownFileType = folder; name = drawable; path = ../../../Desktop/drawable; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,13 +101,14 @@
 		1FFBF9D01CD64B3F000B22C1 /* fish_helper */ = {
 			isa = PBXGroup;
 			children = (
+				783BE06B1CE04790009DBF38 /* Main.storyboard */,
 				784306D81CD9AF05007E7349 /* drawable */,
 				1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */,
 				1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */,
-				1FFBF9D51CD64B3F000B22C1 /* Main.storyboard */,
 				1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */,
 				1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */,
 				1FFBF9DD1CD64B3F000B22C1 /* Info.plist */,
+				783BE06E1CE05E20009DBF38 /* DevListViewController.swift */,
 			);
 			path = fish_helper;
 			sourceTree = "<group>";
@@ -196,7 +199,6 @@
 				TargetAttributes = {
 					1FFBF9CD1CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 868MAGN5BR;
 					};
 					1FFBF9E11CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
@@ -236,7 +238,7 @@
 				1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */,
 				1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */,
 				784306D91CD9AF05007E7349 /* drawable in Resources */,
-				1FFBF9D71CD64B3F000B22C1 /* Main.storyboard in Resources */,
+				783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */,
 				1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */,
 				1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */,
 			);
@@ -298,21 +301,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		1FFBF9D51CD64B3F000B22C1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1FFBF9D61CD64B3F000B22C1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-			usesTabs = 0;
-		};
 		1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				1FFBF9DB1CD64B3F000B22C1 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		783BE06B1CE04790009DBF38 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				783BE06C1CE04790009DBF38 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -404,7 +406,7 @@
 		1FFBF9F71CD64B3F000B22C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
@@ -419,7 +421,7 @@
 		1FFBF9F81CD64B3F000B22C1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
