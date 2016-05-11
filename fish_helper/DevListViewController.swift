@@ -10,6 +10,7 @@ import UIKit
 
 class DevListViewController: UIViewController {
 
+    @IBOutlet weak var img_sideslip: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
 

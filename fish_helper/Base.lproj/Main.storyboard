@@ -206,6 +206,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="img_sideslip" destination="BJg-5O-E25" id="SDN-Bf-Jf9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bYp-vS-WDw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
