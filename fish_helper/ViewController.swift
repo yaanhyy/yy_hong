@@ -19,18 +19,26 @@ class ViewController: UIViewController ,UITextFieldDelegate{
         
         //login_backgd.backgroundColor
         //btnLgoin.layer.cornerRadius=4.0
-        
-        
+//        let screenSize: CGRect = UIScreen.mainScreen().bounds
+//        let height = screenSize.height * 0.75
+//        let width  = user_name.bounds.width;
+//        user_name.frame = CGRectMake(25, height, width, 40)
+//        self.view.addSubview(user_name)
         user_name.placeholder="请输入用户名"
         user_name.becomeFirstResponder()
         user_name.keyboardType = UIKeyboardType.NumberPad
-        user_name.returnKeyType = UIReturnKeyType.Next
+        user_name.delegate = self
         password.returnKeyType = UIReturnKeyType.Done
         password.placeholder="请输入密码"
         password.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
     }
 
+    @IBAction func touchview(sender: AnyObject) {
+        
+        self.view.endEditing(true)
+        
+    }
    
   
     
@@ -43,9 +51,9 @@ class ViewController: UIViewController ,UITextFieldDelegate{
     }
  
    
-    @IBAction func btn_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
+    @IBAction func did_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
         if user_name.text == "admin" && password.text == "123"{
-            self.performSegueWithIdentifier("btn_login_onclick", sender: nil)
+            self.performSegueWithIdentifier("btn_login", sender: nil)
         }else{
             result_message_lable.text = "username or passward is error!"
         }
