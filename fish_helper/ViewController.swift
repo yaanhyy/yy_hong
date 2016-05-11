@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CocoaAsyncSocket
 
-class ViewController: UIViewController ,UITextFieldDelegate{
+class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDelegate{
 
     //@IBOutlet weak var login_backgd: UIImageView!
     @IBOutlet weak var user_name: UITextField!
@@ -50,14 +51,54 @@ class ViewController: UIViewController ,UITextFieldDelegate{
         return true;
     }
  
-   
+    func send_frame(frame_len: Int)
+    {
+        //send login reqsend_buf.append(0x86)
+        var address = "192.168.2.101"
+        // var address = "114.215.180.76"
+        var port:UInt16 = 23458
+        var socket:GCDAsyncUdpSocket! = nil
+        //    var socketReceive:GCDAsyncUdpSocket! = nil
+        var error : NSError?
+        
+        
+        
+        //  var send_buf = UInt8[](count: 1024, repeatedValue: 0)
+        // var send_buf = Array<UInt8>()
+        // send_buf.append(0x86)
+        //send_buf.append(0x99)
+        // send_buf.append(0x24)
+        
+        
+        
+        // var message = NSData(bytes: send_buf as [UInt8], length: send_buf.count)
+        var message = NSData(bytes: send_buf , length: frame_len)
+        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
+        socket.sendData(message, toHost: address, port: port, withTimeout: 10000, tag: 0)
+        do {
+            //    try socket.enableBroadcast(true)
+            try socket.beginReceiving()
+        } catch {
+            print(error)
+        }
+    }
+    
     @IBAction func did_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
+       
+        user_info.user_name = user_name.text
+        user_info.user_pwd = password.text
+        
+        var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:0,  dev_index:0)
+        send_frame(len)
+    
+        
         if user_name.text == "admin" && password.text == "123"{
             self.performSegueWithIdentifier("btn_login", sender: nil)
         }else{
             result_message_lable.text = "username or passward is error!"
         }
     }
+    
     @IBAction func did_register_onclick(sender: UIButton) {
     }
     override func didReceiveMemoryWarning() {
@@ -65,6 +106,16 @@ class ViewController: UIViewController ,UITextFieldDelegate{
         // Dispose of any resources that can be recreated.
     }
     
-  
+    
+    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,  withFilterContext filterContext: AnyObject!)
+    {
+        let count = data.length / sizeof(UInt8)
+        
+        // create an array of Uint8
+        var buf = [UInt8](count: count, repeatedValue: 0)
+        data.getBytes(&buf, length:count * sizeof(UInt8))
+       
+       // print("incoming message: \(data)");
+    }
 }
 

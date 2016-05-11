@@ -13,10 +13,26 @@ class DevListViewController: UIViewController {
     @IBOutlet weak var img_sideslip: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
 
         // Do any additional setup after loading the view.
     }
 
+    func initview(){
+        
+        
+        //给侧滑图片添加点击事件
+        //设置允许交互属性
+        img_sideslip.userInteractionEnabled = true
+        /////添加tapGuestureRecognizer手势
+        let tapGR = UITapGestureRecognizer(target: self, action: "tapHandler:")
+        img_sideslip.addGestureRecognizer(tapGR)        //////手势处理函数
+        func tapHandler(sender:UITapGestureRecognizer) {
+           // self.view.dis
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
