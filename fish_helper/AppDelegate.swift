@@ -9,7 +9,7 @@
 import UIKit
 import CocoaAsyncSocket
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate{
 
     var window: UIWindow?
 

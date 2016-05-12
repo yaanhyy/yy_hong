@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C0F87AF45BC57526876B05B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 242DD9F132768B47E31ADEDB /* Pods.framework */; };
+		1FF572791CE32DB8007760CB /* dev_grp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF572781CE32DB8007760CB /* dev_grp.swift */; };
 		1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */; };
 		1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */; };
 		1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1FF572781CE32DB8007760CB /* dev_grp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dev_grp.swift; sourceTree = "<group>"; };
 		1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fish_helper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */,
 				1FFBF9DD1CD64B3F000B22C1 /* Info.plist */,
 				783BE06E1CE05E20009DBF38 /* DevListViewController.swift */,
+				1FF572781CE32DB8007760CB /* dev_grp.swift */,
 			);
 			path = fish_helper;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				TargetAttributes = {
 					1FFBF9CD1CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 868MAGN5BR;
 					};
 					1FFBF9E11CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
@@ -341,6 +345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FF572791CE32DB8007760CB /* dev_grp.swift in Sources */,
 				783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */,
 				783108651CE19EE7008EE608 /* comm_frame.swift in Sources */,
 				1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */,
@@ -489,11 +494,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -505,11 +512,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
