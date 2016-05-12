@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CocoaAsyncSocket
+
 
 
 let USER_LOG_FRM:UInt8 = 0;
@@ -118,6 +118,66 @@ let USER_LOG_RSP_USER_TYPE_LEN:UInt8	 = 1
 let USER_LOG_RSP_DIAL_ALARM_LEN:UInt8	 = 2
 let USER_LOG_RSP_MSG_ALARM_LEN:UInt8	 = 2
 
+//  REAL_DATA_FRM
+let REAL_DATA_CITY_CODE_ADDR:UInt8 = FRAME_LEN_ADDR+FRAME_LEN_LEN;
+let REAL_DATA_CITY_CODE_LEN:UInt8 = 4;
+let REAL_DATA_LEN:UInt8 =  REAL_DATA_CITY_CODE_ADDR + REAL_DATA_CITY_CODE_LEN;
+//	REAL_DATA_RSP_FRM
+let MOTOR_STAT_MANU_ON:UInt8 = 1;
+let 	MOTOR_STAT_MANU_OFF:UInt8 = 0;
+let MOTOR_STAT_AUTO_OFF:UInt8 =	2;
+let MOTOR_STAT_AUTO_ON:UInt8 = 3;
+let MOTOR_STAT_TIME_ON:UInt8 = 5;
+let MOTOR_STAT_TIME_OFF:UInt8 = 4;
+
+
+let MAX_VAR_NUM:UInt8 =	16;
+let	REAL_DATA_RSP_TIME_ADDR:UInt8 =	(FRAME_LEN_ADDR+FRAME_LEN_LEN);
+let REAL_DATA_RSP_TIME_LEN:UInt8 =	4;
+let REAL_DATA_SYS_VER_RSP_ADDR:UInt8 =	(REAL_DATA_RSP_TIME_ADDR+REAL_DATA_RSP_TIME_LEN);
+let REAL_DATA_SYS_VER_RSP_LEN:UInt8	= 2;
+let REAL_DATA_MODE_VER_RSP_ADDR:UInt8 = REAL_DATA_SYS_VER_RSP_ADDR+REAL_DATA_SYS_VER_RSP_LEN;
+let REAL_DATA_MODE_VER_RSP_LEN:UInt8 = 2;
+/*
+	let REAL_DATA_SYS_CFG_RSP_ADDR = (REAL_DATA_MODE_VER_RSP_ADDR+REAL_DATA_MODE_VER_RSP_LEN);
+	let REAL_DATA_SYS_CFG_RSP_LEN = 1;
+ 
+	let REAL_DATA_MODE_CFG_RSP_ADDR = ( REAL_DATA_SYS_CFG_RSP_ADDR+REAL_DATA_SYS_CFG_RSP_LEN);
+	let REAL_DATA_MODE_CFG_RSP_LEN = 1;
+	*/
+let	REAL_DATA_NUM_RSP_ADDR:UInt8 = REAL_DATA_MODE_VER_RSP_ADDR + REAL_DATA_MODE_VER_RSP_LEN ;
+let	REAL_DATA_NUM_RSP_LEN:UInt8	= 2;
+let	REAL_DATA_VAR_RSP_ADDR:UInt8	= (REAL_DATA_NUM_RSP_ADDR+REAL_DATA_NUM_RSP_LEN);
+let	REAL_DATA_TYPE_WTMP:UInt8 =	1;
+let	REAL_DATA_TYPE_WTMP_LEN:UInt8	= 4;
+let	REAL_DATA_TYPE_DO:UInt8	= 2;
+let	REAL_DATA_TYPE_DO_LEN:UInt8 =	4;
+let	REAL_DATA_TYPE_ATMP:UInt8	= 6;
+let	REAL_DATA_TYPE_ATMP_LEN:UInt8	= 4;
+let	REAL_DATA_TYPE_STAT:UInt8	= 3;
+let	REAL_DATA_TYPE_STAT_LEN:UInt8	= 1;
+let	REAL_DATA_TYPE_TMP:UInt8 =	1;
+let	REAL_DATA_TYPE_AWET:UInt8	= 8;
+let	REAL_DATA_TYPE_AWET_LEN:UInt8	= 4;
+let	REAL_DATA_TYPE_SWET:UInt8	= 9;
+let	REAL_DATA_TYPE_SWET_LEN:UInt8	= 2;
+let	REAL_DATA_TYPE_STMP:UInt8	= 15;
+let	REAL_DATA_TYPE_STMP_LEN:UInt8	= 2;
+let	REAL_DATA_TYPE_CO2:UInt8	= 16;
+let	REAL_DATA_TYPE_CO2_LEN:UInt8	= 2;
+let	REAL_DATA_TYPE_STAT_FLAG:UInt8	= 10;
+let	REAL_DATA_TYPE_STAT_FLAG_LEN:UInt8 = 1;
+let	REAL_DATA_TYPE_PH:UInt8	= 7;
+let	REAL_DATA_TYPE_PH_LEN:UInt8 = 2;
+let	REAL_DATA_TYPE_AM:UInt8	= 17;
+let	REAL_DATA_TYPE_AM_LEN:UInt8 = 2;
+let	REAL_DATA_TYPE_ROLL_STAT:UInt8	= 18;
+let	REAL_DATA_TYPE_ROLL_STAT_LEN:UInt8 = 2;
+//11-13 remain for tmp_wet sh
+let	REAL_DATA_TYPE_OP_FLAG:UInt8	= 14;
+let	REAL_DATA_TYPE_OP_FLAG_LEN:UInt8 = 1;
+let	REAL_DATA_TYPE_FALSE:UInt8	= 0xff;
+
 public class user_info_c
 {
     var user_name:String?
@@ -127,7 +187,7 @@ var user_info = user_info_c()
 
 public class frame_head_info_c
 {
-    var dev_id = [UInt8](count: 8, repeatedValue: 0)
+    var dev_id = [UInt8](count: Int(DEV_ID_LEN), repeatedValue: 0)
     
     var  manu_id:UInt8?
     var dev_type:UInt8 = DEV_TYPE_TERM
@@ -191,6 +251,14 @@ func copy_byte2short(buf_info buf:[UInt8],  buf_addr:Int)->UInt16
    // b = (int)buf[buf_addr+1]&0xff;
     var data:UInt16 = (a|b);
     return data;
+}
+
+func copy_int2byte(inout buf_info buf:[UInt8], start buf_addr:Int, data_i data:UInt)
+{
+    buf[buf_addr] = UInt8((data>>24)&0xff);
+    buf[buf_addr+1] = UInt8((data>>16)&0xff);
+    buf[buf_addr+2] = UInt8((data>>8)&0xff);
+    buf[buf_addr+3] = UInt8(data&0xff);
 }
 
 func  GetCheckCode(buf_info buf:[UInt8], frame_len len:Int)->UInt16
@@ -414,6 +482,183 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
             {
                 
             }
+        case REAL_DATA_RSP_FRM:
+            copy_array(dst_in: &frame_head_info.dev_id, src_in:send_buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
+            // int dev_index = 0;
+           // byte[] dev_id = new byte[DEV_ID_LEN];
+           // System.arraycopy(buf, DEV_ID_ADDR, dev_id, 0, DEV_ID_LEN);
+            
+            
+            for i in 0..<dev_grp.dev_login_num
+            {
+                if(array_equal(dst:frame_head_info.dev_id, src:dev_grp.dev_info[Int(i)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
+
+                {
+                    //real_data_rsp_data.sys_ver = comm_frame.dev.dev_info[i].sys_ver;
+                /*    var dev_index = i;
+                    dev_grp.dev_info[dev_index].real_data_rsp_info.dev_index = i;
+                    dev_grp.dev_info[dev_index].req_flag = 0x1;
+                    dev_grp.dev_info[dev_index].real_data_rsp_info.sys_ver = copy_byte2short(buf, REAL_DATA_SYS_VER_RSP_ADDR);
+                    dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver = copy_byte2short(buf, REAL_DATA_MODE_VER_RSP_ADDR);
+                    
+                    if((dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver != dev_grp.dev_info[i].mode_ver))
+                    {
+                        dev_grp.dev_info[dev_index].real_data_rsp_info.flag |= dev_grp.DEV_MODE_CFG_SYNC_MODE_FLAG;
+                        dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver = dev_grp.dev_info[i].mode_ver;
+                       // FullIntent.mode_sync_dev_index = i;
+                        //sync
+                    }
+                    else
+                    {
+                        dev_grp.dev_info[dev_index].real_data_rsp_info.flag &= ~dev_grp.DEV_MODE_CFG_SYNC_MODE_FLAG;
+                    }
+                    
+                    if((dev_grp.dev_info[dev_index].real_data_rsp_info.sys_ver != dev_grp.dev_info[i].sys_ver))
+                    {
+                        if(dev_grp.dev_info[dev_index].dev_type != DEV_TYPE_FISH_ONLY_CTRL)
+                        {
+                            dev_grp.dev_info[dev_index].real_data_rsp_info.flag |= dev_grp.DEV_MODE_CFG_SYNC_SYS_FLAG;
+                            dev_grp.dev_info[dev_index].real_data_rsp_info.sys_ver = dev_grp.dev_info[i].sys_ver;
+                           // FullIntent.sys_sync_dev_index = i;
+                        }
+                        //sync
+                    }
+                    else
+                    {
+                        dev_grp.dev_info[dev_index].real_data_rsp_info.flag &= ~dev_grp.DEV_MODE_CFG_SYNC_SYS_FLAG;
+                    }
+                    break*/
+                    
+                }
+            }
+            /* dev.dev_info[dev_index ].manu_id= (byte) (buf[MANU_ID_ADDR]&0xf);
+            rec_data =  DevListActivity.DevList_Handler.obtainMessage();
+            rec_data.what = REAL_DATA_RSP_FRM;
+            rec_data.obj = comm_frame.dev.dev_info[dev_index].real_data_rsp_info;
+            
+            //14725836914
+            addr = REAL_DATA_VAR_RSP_ADDR;
+            i_s = copy_byte2short(buf, REAL_DATA_NUM_RSP_ADDR);
+            comm_frame.dev.dev_info[dev_index].var.var_num = i_s;
+            i = copy_byte2int(buf, REAL_DATA_RSP_TIME_ADDR);
+            comm_frame.dev.dev_info[dev_index].smp_time = i;
+            get_32bit_to_rtc(comm_frame.dev.dev_info[dev_index].date, i);
+            //Log.e(""+dev_index, ""+i);
+           
+             
+             Date date= new Date();
+             date.setYear(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.year);
+             date.setMonth(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.mon);
+             date.setDate(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.day);
+             date.setHours(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.hour);
+             date.setMinutes(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.min);
+             date.setSeconds(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.sec);
+             */
+          /*   comm_frame.dev.dev_info[dev_index].cur_time = System.currentTimeMillis();
+            comm_frame.dev.dev_info[dev_index].dev_cur_time = System.currentTimeMillis();
+            //Log.e("comm_frame","comm_frame dev_cur_time"+comm_frame.dev.dev_info[dev_index].dev_cur_time);
+            //Log.e("comm_frame","comm_frame  cur_time_long  !!!!!!! "+(Math.abs(System.currentTimeMillis()-comm_frame.dev.dev_info[dev_index].dev_cur_time)/1000));
+            //Log.e("comm_frame","comm_frame last_time_long  !!!!!!! "+(Math.abs(System.currentTimeMillis()-comm_frame.dev.dev_info[dev_index].last_time)/1000));
+            comm_frame.dev.dev_info[dev_index].last_time = get_last_time(dev_index);
+            //Log.e("comm_frame","comm_frame last_time"+comm_frame.dev.dev_info[dev_index].last_time);
+            comm_frame.dev.dev_info[dev_index].cal_num = 0;
+            comm_frame.dev.dev_info[dev_index].send_num = 0;
+            if(((Math.abs(comm_frame.dev.dev_info[dev_index].cur_time-comm_frame.dev.dev_info[dev_index].last_time)/1000)>(720))
+                &&(comm_frame.dev.dev_info[dev_index].last_time != -1))
+            {
+                comm_frame.dev.dev_info[dev_index].last_time = comm_frame.dev.dev_info[dev_index].last_time;
+                //Log.e("comm_frame","comm_frame last_time  ~~~~~~if~~~~~`` "+comm_frame.dev.dev_info[dev_index].last_time);
+            }
+           
+            for(i=0; i<i_s ; i++)
+            {
+                switch (buf[addr])
+                {
+                case REAL_DATA_TYPE_WTMP:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_WTMP;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.water_tmp = copy_byte2int(buf, addr);
+                    int index = comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index;
+                    comm_frame.dev.dev_info[dev_index].var.water_tmp_array[index] = comm_frame.dev.dev_info[dev_index].var.water_tmp;
+                    comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index++;
+                    if(comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index >= dev.DEV_VAR_ARRAY_LEN)
+                    {
+                        comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index = 0;
+                    }
+                    addr+=REAL_DATA_TYPE_WTMP_LEN;
+                    break;
+                case REAL_DATA_TYPE_DO:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_DO;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.oxygen = copy_byte2int(buf, addr);
+                    addr+=REAL_DATA_TYPE_DO_LEN;
+                    break;
+                case REAL_DATA_TYPE_ATMP:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_ATMP;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.air_tmp = copy_byte2int(buf, addr);
+                    addr+=REAL_DATA_TYPE_ATMP_LEN;
+                    break;
+                case REAL_DATA_TYPE_STAT:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_STAT;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.motor_stat = buf[addr];
+                    addr+=REAL_DATA_TYPE_STAT_LEN;
+                    break;
+                case REAL_DATA_TYPE_AWET:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_AWET;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.air_wet = copy_byte2int(buf, addr);
+                    addr+=REAL_DATA_TYPE_AWET_LEN;
+                    break;
+                case REAL_DATA_TYPE_SWET:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_SWET;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.soil_wet = copy_byte2short(buf, addr);
+                    addr+=REAL_DATA_TYPE_SWET_LEN;
+                    break;
+                case REAL_DATA_TYPE_STMP:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_STMP;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.soil_tmp = copy_byte2short(buf, addr);
+                    addr+=REAL_DATA_TYPE_STMP_LEN;
+                    break;
+                case REAL_DATA_TYPE_CO2:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_CO2;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.co2 = copy_byte2short(buf, addr);
+                    addr+=REAL_DATA_TYPE_STMP_LEN;
+                    break;
+                case REAL_DATA_TYPE_STAT_FLAG:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_STAT_FLAG;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.motor_stat_flag = buf[addr];
+                    addr+=REAL_DATA_TYPE_STAT_FLAG_LEN;
+                    break;
+                case REAL_DATA_TYPE_PH:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_PH;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.water_ph = copy_byte2short(buf, addr);
+                    addr+=REAL_DATA_TYPE_PH_LEN;
+                    break;
+                    /*		case REAL_DATA_TYPE_FALSE:
+                     addr++;
+                     break;*/
+                case REAL_DATA_TYPE_ROLL_STAT:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_ROLL_STAT;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.roll_stat = copy_byte2short(buf, addr);
+                    addr+=REAL_DATA_TYPE_ROLL_STAT_LEN;
+                    break;
+                case REAL_DATA_TYPE_OP_FLAG:
+                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_OP_FLAG;
+                    addr++; //
+                    comm_frame.dev.dev_info[dev_index].var.op_flag = buf[addr];
+                    addr+=REAL_DATA_TYPE_OP_FLAG_LEN;
+                    break;
+                    //接收参数
+                }
+            }*/
         default:
             return -2
         }
@@ -426,7 +671,7 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:U
     var frame_len:UInt16 = 0
     var len:Int = 0
     
-    // System.arraycopy(frame_head_info.dev_id, 0, buf, DEV_ID_ADDR,  DEV_ID_LEN)
+    copy_array(dst_in: &send_buf, src_in:frame_head_info.dev_id, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
     send_buf[Int(MANU_ID_ADDR)] = frame_head_info.manu_id ?? 1
     send_buf[Int(DEV_TYPE_ADDR)] = frame_head_info.dev_type ?? 0
     switch frame_type
@@ -455,7 +700,15 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:U
         send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
             
     case REAL_DATA_FRM:
-        send_buf.append(0x76)
+            var  city_code:UInt  = 1//user_grp.city_code;
+            copy_int2byte(buf_info:&send_buf, start:Int(REAL_DATA_CITY_CODE_ADDR), data_i:city_code);
+            frame_len = UInt16(REAL_DATA_LEN - REAL_DATA_CITY_CODE_ADDR);
+         
+            send_buf[Int(FRM_TYPE_ADDR)] = frame_type;
+            send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
+            send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
+            len = Int(REAL_DATA_LEN)
+        
     case HIS_INFO_FRM:
         send_buf.append(0x76)
     default:

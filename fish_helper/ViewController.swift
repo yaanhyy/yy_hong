@@ -51,11 +51,42 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         return true;
     }
  
+
+    
+    @IBAction func did_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
+       
+        user_info.user_name = user_name.text
+        user_info.user_pwd = password.text
+        
+        var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:0,  dev_index:0)
+        send_frame(len)
+    
+        /*
+        if user_name.text == "admin" && password.text == "123"{
+            self.performSegueWithIdentifier("btn_login", sender: nil)
+        }else{
+            result_message_lable.text = "username or passward is error!"
+        }*/
+    }
+    
+    @IBAction func did_register_onclick(sender: UIButton) {
+        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+        var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:0)
+        send_frame(len)
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        // Dispose of any resources that can be recreated.
+    }
+    
     func send_frame(frame_len: Int)
     {
         //send login reqsend_buf.append(0x86)
         //var address = "192.168.2.101"
-         var address = "114.215.180.76"
+        var address = "114.215.180.76"
         var port:UInt16 = 23458
         var socket:GCDAsyncUdpSocket! = nil
         //    var socketReceive:GCDAsyncUdpSocket! = nil
@@ -82,31 +113,6 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
             print(error)
         }
     }
-    
-    @IBAction func did_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
-       
-        user_info.user_name = user_name.text
-        user_info.user_pwd = password.text
-        
-        var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:0,  dev_index:0)
-        send_frame(len)
-    
-        /*
-        if user_name.text == "admin" && password.text == "123"{
-            self.performSegueWithIdentifier("btn_login", sender: nil)
-        }else{
-            result_message_lable.text = "username or passward is error!"
-        }*/
-    }
-    
-    @IBAction func did_register_onclick(sender: UIButton) {
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,  withFilterContext filterContext: AnyObject!)
     {
         let count = data.length / sizeof(UInt8)
@@ -117,7 +123,8 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         var result =  frame_analysis(buf_info: buf, frame_len: count)
         switch result {
         case 0:  //login in
-            self.performSegueWithIdentifier("btn_login", sender: nil)
+            var i = 1
+            //self.performSegueWithIdentifier("btn_login", sender: nil)
         case 1:
             let alert = UIAlertController(title: "登陆错误",
                                           message: "用户不存在，请注册后使用", preferredStyle: .Alert)
