@@ -146,6 +146,10 @@ class log_rsp
 }
 var log_rsp_data = log_rsp();
 
+var USER_TYPE_NORMAL:UInt8 = 1;
+var USER_TYPE_MNG:UInt8 = 2;
+var USER_TYPE_SUPER:UInt8 = 3;
+
 public class user_grp_c
 {
 	var weather = "未知";
@@ -158,10 +162,8 @@ public class user_grp_c
 	var hour_zone:Int?;
 	var city_code="101010100";//peking
 	var exit_login_flag:Int = 0;
-    var USER_TYPE_NORMAL:UInt8 = 1;
-	var USER_TYPE_MNG:UInt8 = 2;
-	var USER_TYPE_SUPER:UInt8 = 3;
-	var user_type:UInt8 = user_grp.USER_TYPE_NORMAL;
+    
+	var user_type:UInt8 = USER_TYPE_NORMAL;
     var created:Bool = false;
 
 	
@@ -240,21 +242,21 @@ func CheckCode(buf_info buf:[UInt8], frame_len len:Int)->Bool
     return (wCrc==ori_crc);
 }
 
-func copy_array_cc(inout dst_in dst:[UInt8],src_in  src:[Int8], start start_addr:Int,arr_len len:Int)
+func copy_array_cc(inout dst_in dst:[UInt8],src_in  src:[Int8], dst_start dst_start_addr:Int,  src_start src_start_addr:Int, arr_len len:Int)
 {
     
     for i in 0..<len
     {
-        dst[start_addr+i] = UInt8(src[i])
+        dst[dst_start_addr+i] = UInt8(src[src_start_addr+i])
     }
 }
 
-func copy_array(inout dst_in dst:[UInt8],src_in  src:[UInt8], start start_addr:Int,arr_len len:Int)
+func copy_array(inout dst_in dst:[UInt8],src_in  src:[UInt8], dst_start dst_start_addr:Int,  src_start src_start_addr:Int, arr_len len:Int)
 {
     
     for i in 0..<len
     {
-        dst[start_addr+i] = src[i]
+        dst[dst_start_addr+i] = src[src_start_addr+i]
     }
 }
 func array_equal(dst dst:[UInt8], src src:[UInt8], frame_len len:Int)->Bool
@@ -269,11 +271,11 @@ func array_equal(dst dst:[UInt8], src src:[UInt8], frame_len len:Int)->Bool
     return true
 }
 
-func frame_analysis(buf_info buf:[UInt8],var frame_len rsp_len:Int)->Int
+func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
 {
     var addr:Int = 0;
     var len:Int = 0;
-    if(CheckCode(buf_info:buf, frame_len: rsp_len) == true)
+    if(CheckCode(buf_info:buf, frame_len: rsp_len) == false)
     {
         return -1;
     }
@@ -292,7 +294,7 @@ func frame_analysis(buf_info buf:[UInt8],var frame_len rsp_len:Int)->Int
             }
             else
             {
-                          }
+            }
             
             if(log_rsp_data.result != 0)
             {
@@ -308,9 +310,9 @@ func frame_analysis(buf_info buf:[UInt8],var frame_len rsp_len:Int)->Int
                                    
                     dev_info_rsp[Int(i)].dev_type = buf[addr];
                     addr += Int(USER_LOG_RSP_ID_TYPE_LEN)
-                    copy_array(dst_in: &dev_info_rsp[Int(i)].dev_id, src_in:buf, start:addr, arr_len:Int(USER_LOG_RSP_ID_LEN))
+                    copy_array(dst_in: &dev_info_rsp[Int(i)].dev_id, src_in:buf, dst_start:0, src_start:addr, arr_len:Int(USER_LOG_RSP_ID_LEN))
                     addr += Int(USER_LOG_RSP_ID_LEN)
-                    copy_array(dst_in: &dev_info_rsp[Int(i)].dev_name, src_in:buf, start:addr ,arr_len:Int(USER_LOG_RSP_DEV_NAME_LEN))
+                    copy_array(dst_in: &dev_info_rsp[Int(i)].dev_name, src_in:buf, dst_start:0, src_start:addr ,arr_len:Int(USER_LOG_RSP_DEV_NAME_LEN))
                     addr += Int(USER_LOG_RSP_DEV_NAME_LEN)
                     dev_info_rsp[Int(i)].manu_id=buf[addr]
                     addr += Int(USER_LOG_RSP_MANU_ID_LEN)
@@ -323,16 +325,16 @@ func frame_analysis(buf_info buf:[UInt8],var frame_len rsp_len:Int)->Int
                     
                     for j in 0..<dev_grp.dev_login_num
                     {
-                       if(array_equal(dst:dev_info_rsp[Int(i)].dev_id, src:dev_info[Int(j)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
+                       if(array_equal(dst:dev_info_rsp[Int(i)].dev_id, src:dev_grp.dev_info[Int(j)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
                         {
                             //(log_rsp_data.dev_info[i].sys_ver!=(short)0xffff)&&
-                            if(dev_info_rsp[Int(i)].sys_ver != dev_info[j].sys_ver)
+                            if(dev_info_rsp[Int(i)].sys_ver != dev_grp.dev_info[j].sys_ver)
                             {
                                 if(dev_info_rsp[Int(i)].dev_type != DEV_TYPE_FISH_ONLY_CTRL)
                                 {
                                     dev_info_rsp[Int(i)].flag |= dev_grp.DEV_MODE_CFG_SYNC_SYS_FLAG;
                                     //sync
-                                    dev_info_rsp[Int(i)].sys_ver = dev_info[j].sys_ver;
+                                    dev_info_rsp[Int(i)].sys_ver = dev_grp.dev_info[j].sys_ver;
                                 }
                             }
                             else
@@ -340,10 +342,10 @@ func frame_analysis(buf_info buf:[UInt8],var frame_len rsp_len:Int)->Int
                                 dev_info_rsp[Int(i)].flag &= ~dev_grp.DEV_MODE_CFG_SYNC_SYS_FLAG;
                             }
                             //(log_rsp_data.dev_info[i].mode_ver!=(short)0xffff)&&
-                            if((dev_info_rsp[Int(i)].mode_ver != dev_info[j].mode_ver))
+                            if((dev_info_rsp[Int(i)].mode_ver != dev_grp.dev_info[j].mode_ver))
                             {
                                 dev_info_rsp[Int(i)].flag |= dev_grp.DEV_MODE_CFG_SYNC_MODE_FLAG;
-                                dev_info_rsp[Int(i)].mode_ver = dev_info[j].mode_ver;
+                                dev_info_rsp[Int(i)].mode_ver = dev_grp.dev_info[j].mode_ver;
                                 //sync
                             }
                             else
@@ -376,26 +378,34 @@ func frame_analysis(buf_info buf:[UInt8],var frame_len rsp_len:Int)->Int
                     }
                     
                 }
- 
+                dev_grp.dev_login_num = Int(buf[Int(USER_LOG_RSP_NUM_ADDR)])
                 len = Int(Int(USER_LOG_RSP_ID_TYPE_ADDR) + Int(USER_LOG_RSP_ID_TOL_LEN) * Int(dev_grp.dev_login_num))
                 user_grp.user_type =  buf[len]
                 len += Int(USER_LOG_RSP_USER_TYPE_LEN)
+                if(dev_grp.dev_info.count < dev_info_rsp.count)
+                {
+                    for i in dev_grp.dev_info.count..<dev_info_rsp.count
+                    {
+                        dev_grp.dev_info.append(dev_info_struct())
+                    }
+                }
+                
                 for i in 0..<dev_grp.dev_login_num
                 {
-                    dev_info[i].dev_type = dev_info_rsp[i].dev_type;
-                    copy_array(dst_in: &dev_info[i].dev_id, src_in:dev_info_rsp[i].dev_id, start:0, arr_len:Int(USER_LOG_RSP_ID_LEN))
+                    dev_grp.dev_info[i].dev_type = dev_info_rsp[i].dev_type;
+                    copy_array(dst_in: &dev_grp.dev_info[i].dev_id, src_in:dev_info_rsp[i].dev_id, dst_start:0, src_start:0, arr_len:Int(USER_LOG_RSP_ID_LEN))
                   
-                    copy_array(dst_in: &dev_info[i].dev_name, src_in:dev_info_rsp[i].dev_name, start:0, arr_len:Int(USER_LOG_RSP_DEV_NAME_LEN))
-                    dev_info[i].manu_id = dev_info_rsp[i].manu_id;
+                    copy_array(dst_in: &dev_grp.dev_info[i].dev_name, src_in:dev_info_rsp[i].dev_name, dst_start:0, src_start:0, arr_len:Int(USER_LOG_RSP_DEV_NAME_LEN))
+                    dev_grp.dev_info[i].manu_id = dev_info_rsp[i].manu_id;
                     //	comm_frame.dev.dev_info[i].mode_ver = log_rsp_data.dev_info[i].mode_ver;
                     //	comm_frame.dev.dev_info[i].sys_ver = log_rsp_data.dev_info[i].sys_ver;
-                    var flag:Int = dev_info[i].flag & Int(dev_grp.DEV_ONLINE_FLAG)
-                    dev_info[i].flag = dev_info_rsp[i].flag;
+                    var flag:Int = dev_grp.dev_info[i].flag & Int(dev_grp.DEV_ONLINE_FLAG)
+                    dev_grp.dev_info[i].flag = dev_info_rsp[i].flag;
                     
-                    dev_info[i].flag |= flag;
-                    dev_info[i].msg_alarm=copy_byte2short(buf_info:buf, buf_addr:len);
+                    dev_grp.dev_info[i].flag |= flag;
+                    dev_grp.dev_info[i].msg_alarm=copy_byte2short(buf_info:buf, buf_addr:len);
                     len += Int(USER_LOG_RSP_MSG_ALARM_LEN);
-                    dev_info[i].dial_alarm=copy_byte2short(buf_info:buf, buf_addr:len);
+                    dev_grp.dev_info[i].dial_alarm=copy_byte2short(buf_info:buf, buf_addr:len);
                     len += Int(USER_LOG_RSP_DIAL_ALARM_LEN);
                 }
                 
@@ -429,11 +439,11 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:U
             send_buf[Int(USER_LOG_TYPE_ADDR)] = child_type;
             
             var arr_str = user_info.user_name?.cStringUsingEncoding(NSUTF8StringEncoding)
-            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, start:Int(USER_LOG_NAME_ADDR) ,arr_len:arr_str!.count)
+            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(USER_LOG_NAME_ADDR) , src_start:0, arr_len:arr_str!.count)
             
             
             arr_str = user_info.user_pwd?.cStringUsingEncoding(NSUTF8StringEncoding)
-            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, start:Int(USER_LOG_PWD_ADDR) ,arr_len:arr_str!.count)
+            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(USER_LOG_PWD_ADDR) , src_start:0, arr_len:arr_str!.count)
             //System.arraycopy(frame_log_info.passwd, 0, buf, USER_LOG_PWD_ADDR, USER_LOG_PWD_LEN);
             //buf[USER_LOG_DEV_NUM_ADDR] = (byte)dev.dev_login_num;
             len =  Int(USER_LOG_PWD_ADDR +  USER_LOG_PWD_LEN);
@@ -459,10 +469,10 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:U
     len += 1;
     return len
 }
-
+/*
 class comm_send:UIViewController,GCDAsyncUdpSocketDelegate{
     
-        /*
+ 
 
     func send_frame(frame_len: Int)
     {
@@ -504,5 +514,6 @@ class comm_send:UIViewController,GCDAsyncUdpSocketDelegate{
         data.getBytes(&array, length:count * sizeof(UInt8))
         print("incoming message: \(data)");
     }
-     */
+ 
 }
+*/

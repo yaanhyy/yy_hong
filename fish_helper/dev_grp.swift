@@ -107,9 +107,9 @@ struct dev_info_struct
      public List<dev_group.his_info_item_class[]> his_info_y7day_item;*/
     var sys_adj_type:UInt8?
     var sys_adj_tmp:Float?
-    var dev_id:[UInt8] = [UInt8](count: 8, repeatedValue: 0)
+    var dev_id = [UInt8](count: Int(USER_LOG_RSP_ID_LEN), repeatedValue: 0)
     var manu_id:UInt8?
-    var dev_name:[UInt8] = [UInt8]()
+    var dev_name = [UInt8](count: Int(USER_LOG_RSP_DEV_NAME_LEN), repeatedValue: 0)
     var dev_pwd:[UInt8] = [UInt8]()
     var fish_type:[UInt8] = [UInt8]()
     var	dev_type:UInt8?
@@ -139,6 +139,7 @@ struct dev_info_struct
     var his_barn_day_num:UInt8?
     // public history_barn_day_item_st[] his_barn_day_item;
     var real_data_rsp_info:real_data_rsp =  real_data_rsp()
+   
 }
 
 class dev_group
@@ -153,8 +154,7 @@ class dev_group
     var  DEV_MODE_CFG_SYNC_MODE_FLAG = 0x2;
     var  DEV_MODE_CFG_REQ_EVENT_FLAG = 0x4;
     var  DEV_ONLINE_FLAG = 0x8;
-    
-   
+    var dev_info:[dev_info_struct] = [dev_info_struct]()   
 }
-var dev_info:[dev_info_struct] = [dev_info_struct]()
+
 var dev_grp = dev_group()

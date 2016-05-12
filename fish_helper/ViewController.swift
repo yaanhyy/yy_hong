@@ -54,8 +54,8 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
     func send_frame(frame_len: Int)
     {
         //send login reqsend_buf.append(0x86)
-        var address = "192.168.2.101"
-        // var address = "114.215.180.76"
+        //var address = "192.168.2.101"
+         var address = "114.215.180.76"
         var port:UInt16 = 23458
         var socket:GCDAsyncUdpSocket! = nil
         //    var socketReceive:GCDAsyncUdpSocket! = nil
@@ -91,12 +91,12 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:0,  dev_index:0)
         send_frame(len)
     
-        
+        /*
         if user_name.text == "admin" && password.text == "123"{
             self.performSegueWithIdentifier("btn_login", sender: nil)
         }else{
             result_message_lable.text = "username or passward is error!"
-        }
+        }*/
     }
     
     @IBAction func did_register_onclick(sender: UIButton) {
@@ -114,8 +114,29 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         // create an array of Uint8
         var buf = [UInt8](count: count, repeatedValue: 0)
         data.getBytes(&buf, length:count * sizeof(UInt8))
-       
-       // print("incoming message: \(data)");
+        var result =  frame_analysis(buf_info: buf, frame_len: count)
+        switch result {
+        case 0:  //login in
+            self.performSegueWithIdentifier("btn_login", sender: nil)
+        case 1:
+            let alert = UIAlertController(title: "登陆错误",
+                                          message: "用户不存在，请注册后使用", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+            alert.addAction(action)
+            presentViewController(alert, animated: true, completion: nil)
+        case 2:
+            let alert = UIAlertController(title: "登陆错误",
+                                           message: "登陆密码错误，请重新输入", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+            alert.addAction(action)
+            presentViewController(alert, animated: true, completion: nil)
+        default:
+            var i = 1
+        }
+        // print("incoming message: \(data)");
     }
+    
+    
+    
 }
 
