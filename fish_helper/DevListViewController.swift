@@ -29,12 +29,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        init_views()
-        //init_btn_sideslip_view(); //给侧滑图片添加点击事件
-        //init_weather_view();  //天气views
-        //i//nit_dev_view(); //设备数量及添加设备控件初始化
-        //init_tab_dev_list(); //设备列表初始化
+       
     }
 
     func init_views(){
