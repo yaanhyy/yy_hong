@@ -241,6 +241,17 @@ var dev_info_rsp:[dev_info_struct] = [dev_info_struct]()
 
 var send_buf = [UInt8](count: 1024, repeatedValue: 0)
 
+func copy_byte2int(buf_info buf:[UInt8],  buf_addr:Int)->UInt
+{
+    
+    var a:UInt = UInt(buf[buf_addr])<<24
+    var b:UInt = UInt(buf[buf_addr+1])<<16
+    var c:UInt = UInt(buf[buf_addr+2])<<8
+    var d:UInt = UInt(buf[buf_addr+3])
+    // b = (int)buf[buf_addr+1]&0xff;
+    var data:UInt = (a|b|c|d);
+    return data
+}
 
 func copy_byte2short(buf_info buf:[UInt8],  buf_addr:Int)->UInt16
 {
@@ -337,6 +348,17 @@ func array_equal(dst dst:[UInt8], src src:[UInt8], frame_len len:Int)->Bool
         }
     }
     return true
+}
+
+func get_32bit_to_rtc(sys_date date:sys_date_c, smp_time_in smp_time:UInt)
+{
+    date.year = ((smp_time >> 26) & 0x3f) + 2010;
+    date.mon = (smp_time >> 22) & 0xf;
+    date.day = (smp_time >> 17) & 0x1f;
+    date.hour = (smp_time >> 12) & 0x1f;
+    date.min = (smp_time >> 6) & 0x3f;
+    date.sec = smp_time  & 0x3f;
+
 }
 
 func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
@@ -467,7 +489,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                     dev_grp.dev_info[i].manu_id = dev_info_rsp[i].manu_id;
                     //	comm_frame.dev.dev_info[i].mode_ver = log_rsp_data.dev_info[i].mode_ver;
                     //	comm_frame.dev.dev_info[i].sys_ver = log_rsp_data.dev_info[i].sys_ver;
-                    var flag:Int = dev_grp.dev_info[i].flag & Int(dev_grp.DEV_ONLINE_FLAG)
+                    var flag:UInt8 = dev_grp.dev_info[i].flag & dev_grp.DEV_ONLINE_FLAG
                     dev_grp.dev_info[i].flag = dev_info_rsp[i].flag;
                     
                     dev_grp.dev_info[i].flag |= flag;
@@ -488,23 +510,23 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
            // byte[] dev_id = new byte[DEV_ID_LEN];
            // System.arraycopy(buf, DEV_ID_ADDR, dev_id, 0, DEV_ID_LEN);
             
-            
+            var dev_index:Int = 0
             for i in 0..<dev_grp.dev_login_num
             {
                 if(array_equal(dst:frame_head_info.dev_id, src:dev_grp.dev_info[Int(i)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
 
                 {
                     //real_data_rsp_data.sys_ver = comm_frame.dev.dev_info[i].sys_ver;
-                /*    var dev_index = i;
-                    dev_grp.dev_info[dev_index].real_data_rsp_info.dev_index = i;
+                    dev_index = i;
+                    dev_grp.dev_info[dev_index].real_data_rsp_info.dev_index = UInt(i)
                     dev_grp.dev_info[dev_index].req_flag = 0x1;
-                    dev_grp.dev_info[dev_index].real_data_rsp_info.sys_ver = copy_byte2short(buf, REAL_DATA_SYS_VER_RSP_ADDR);
-                    dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver = copy_byte2short(buf, REAL_DATA_MODE_VER_RSP_ADDR);
+                    dev_grp.dev_info[dev_index].real_data_rsp_info.sys_ver = copy_byte2short(buf_info:buf, buf_addr:Int(REAL_DATA_SYS_VER_RSP_ADDR));
+                    dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver = copy_byte2short(buf_info:buf, buf_addr:Int(REAL_DATA_MODE_VER_RSP_ADDR));
                     
-                    if((dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver != dev_grp.dev_info[i].mode_ver))
+                    if((dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver != dev_grp.dev_info[Int(i)].mode_ver))
                     {
-                        dev_grp.dev_info[dev_index].real_data_rsp_info.flag |= dev_grp.DEV_MODE_CFG_SYNC_MODE_FLAG;
-                        dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver = dev_grp.dev_info[i].mode_ver;
+                        dev_grp.dev_info[dev_index].real_data_rsp_info.flag  |= dev_grp.DEV_MODE_CFG_SYNC_MODE_FLAG
+                        dev_grp.dev_info[dev_index].real_data_rsp_info.mode_ver = dev_grp.dev_info[i].mode_ver
                        // FullIntent.mode_sync_dev_index = i;
                         //sync
                     }
@@ -527,34 +549,24 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                     {
                         dev_grp.dev_info[dev_index].real_data_rsp_info.flag &= ~dev_grp.DEV_MODE_CFG_SYNC_SYS_FLAG;
                     }
-                    break*/
+                    break
                     
                 }
             }
-            /* dev.dev_info[dev_index ].manu_id= (byte) (buf[MANU_ID_ADDR]&0xf);
-            rec_data =  DevListActivity.DevList_Handler.obtainMessage();
-            rec_data.what = REAL_DATA_RSP_FRM;
-            rec_data.obj = comm_frame.dev.dev_info[dev_index].real_data_rsp_info;
+            dev_grp.dev_info[dev_index].manu_id = buf[Int(MANU_ID_ADDR)]&0xf
+            
             
             //14725836914
-            addr = REAL_DATA_VAR_RSP_ADDR;
-            i_s = copy_byte2short(buf, REAL_DATA_NUM_RSP_ADDR);
-            comm_frame.dev.dev_info[dev_index].var.var_num = i_s;
-            i = copy_byte2int(buf, REAL_DATA_RSP_TIME_ADDR);
-            comm_frame.dev.dev_info[dev_index].smp_time = i;
-            get_32bit_to_rtc(comm_frame.dev.dev_info[dev_index].date, i);
+            addr = Int(REAL_DATA_VAR_RSP_ADDR)
+            dev_grp.dev_info[dev_index].sys_var.var_num = copy_byte2short(buf_info:buf, buf_addr:Int(REAL_DATA_NUM_RSP_ADDR))
+            
+            dev_grp.dev_info[dev_index].smp_time = copy_byte2int(buf_info:buf, buf_addr:Int(REAL_DATA_RSP_TIME_ADDR))
+            get_32bit_to_rtc(sys_date:dev_grp.dev_info[dev_index].sys_date, smp_time_in: dev_grp.dev_info[dev_index].smp_time!)
             //Log.e(""+dev_index, ""+i);
            
              
-             Date date= new Date();
-             date.setYear(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.year);
-             date.setMonth(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.mon);
-             date.setDate(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.day);
-             date.setHours(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.hour);
-             date.setMinutes(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.min);
-             date.setSeconds(comm_frame.dev.dev_info[real_data_rsp_data.dev_index].date.sec);
-             */
-          /*   comm_frame.dev.dev_info[dev_index].cur_time = System.currentTimeMillis();
+           /*
+             comm_frame.dev.dev_info[dev_index].cur_time = System.currentTimeMillis();
             comm_frame.dev.dev_info[dev_index].dev_cur_time = System.currentTimeMillis();
             //Log.e("comm_frame","comm_frame dev_cur_time"+comm_frame.dev.dev_info[dev_index].dev_cur_time);
             //Log.e("comm_frame","comm_frame  cur_time_long  !!!!!!! "+(Math.abs(System.currentTimeMillis()-comm_frame.dev.dev_info[dev_index].dev_cur_time)/1000));
@@ -569,96 +581,98 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                 comm_frame.dev.dev_info[dev_index].last_time = comm_frame.dev.dev_info[dev_index].last_time;
                 //Log.e("comm_frame","comm_frame last_time  ~~~~~~if~~~~~`` "+comm_frame.dev.dev_info[dev_index].last_time);
             }
-           
-            for(i=0; i<i_s ; i++)
+           */
+            for i in 0..<dev_grp.dev_info[dev_index].sys_var.var_num
             {
                 switch (buf[addr])
                 {
                 case REAL_DATA_TYPE_WTMP:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_WTMP;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.water_tmp = copy_byte2int(buf, addr);
-                    int index = comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_WTMP;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.water_tmp = Int(copy_byte2int(buf_info:buf, buf_addr:addr))
+                   /* int index = comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index;
                     comm_frame.dev.dev_info[dev_index].var.water_tmp_array[index] = comm_frame.dev.dev_info[dev_index].var.water_tmp;
                     comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index++;
                     if(comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index >= dev.DEV_VAR_ARRAY_LEN)
                     {
                         comm_frame.dev.dev_info[dev_index].var.cur_wtmp_index = 0;
-                    }
-                    addr+=REAL_DATA_TYPE_WTMP_LEN;
-                    break;
+                    }*/
+                    addr += Int(REAL_DATA_TYPE_WTMP_LEN)
+                    
                 case REAL_DATA_TYPE_DO:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_DO;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.oxygen = copy_byte2int(buf, addr);
-                    addr+=REAL_DATA_TYPE_DO_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_DO;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.oxygen = Int(copy_byte2int(buf_info:buf, buf_addr:addr));
+                    addr += Int(REAL_DATA_TYPE_DO_LEN)
+                    
                 case REAL_DATA_TYPE_ATMP:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_ATMP;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.air_tmp = copy_byte2int(buf, addr);
-                    addr+=REAL_DATA_TYPE_ATMP_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_ATMP;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.air_tmp = Int(copy_byte2int(buf_info:buf, buf_addr:addr));
+                    addr += Int(REAL_DATA_TYPE_ATMP_LEN)
+                    
                 case REAL_DATA_TYPE_STAT:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_STAT;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.motor_stat = buf[addr];
-                    addr+=REAL_DATA_TYPE_STAT_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_STAT;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.motor_stat = buf[addr];
+                    addr += Int(REAL_DATA_TYPE_STAT_LEN)
+                    
                 case REAL_DATA_TYPE_AWET:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_AWET;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.air_wet = copy_byte2int(buf, addr);
-                    addr+=REAL_DATA_TYPE_AWET_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_AWET;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.air_wet = Int(copy_byte2int(buf_info:buf, buf_addr:addr));
+                    addr += Int(REAL_DATA_TYPE_AWET_LEN)
+                   
                 case REAL_DATA_TYPE_SWET:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_SWET;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.soil_wet = copy_byte2short(buf, addr);
-                    addr+=REAL_DATA_TYPE_SWET_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_SWET;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.soil_wet = Int(copy_byte2short(buf_info:buf, buf_addr:addr))
+                    addr += Int(REAL_DATA_TYPE_SWET_LEN)
+                    
                 case REAL_DATA_TYPE_STMP:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_STMP;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.soil_tmp = copy_byte2short(buf, addr);
-                    addr+=REAL_DATA_TYPE_STMP_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_STMP;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.soil_tmp = Int(copy_byte2short(buf_info:buf, buf_addr:addr))
+                    addr += Int(REAL_DATA_TYPE_STMP_LEN)
+                    
                 case REAL_DATA_TYPE_CO2:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_CO2;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.co2 = copy_byte2short(buf, addr);
-                    addr+=REAL_DATA_TYPE_STMP_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_CO2;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.co2 = Int(copy_byte2short(buf_info:buf, buf_addr:addr))
+                    addr += Int(REAL_DATA_TYPE_STMP_LEN)
+                   
                 case REAL_DATA_TYPE_STAT_FLAG:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_STAT_FLAG;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.motor_stat_flag = buf[addr];
-                    addr+=REAL_DATA_TYPE_STAT_FLAG_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_STAT_FLAG;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.motor_stat_flag = buf[addr];
+                    addr += Int(REAL_DATA_TYPE_STAT_FLAG_LEN)
+                    
                 case REAL_DATA_TYPE_PH:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_PH;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.water_ph = copy_byte2short(buf, addr);
-                    addr+=REAL_DATA_TYPE_PH_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_PH;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.water_ph = Int(copy_byte2short(buf_info:buf, buf_addr:addr))
+                    addr += Int(REAL_DATA_TYPE_PH_LEN)
+                   
                     /*		case REAL_DATA_TYPE_FALSE:
-                     addr++;
+                     addr += 1
                      break;*/
                 case REAL_DATA_TYPE_ROLL_STAT:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_ROLL_STAT;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.roll_stat = copy_byte2short(buf, addr);
-                    addr+=REAL_DATA_TYPE_ROLL_STAT_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_ROLL_STAT;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.roll_stat = copy_byte2short(buf_info:buf, buf_addr:addr)
+                    addr += Int(REAL_DATA_TYPE_ROLL_STAT_LEN)
+                    
                 case REAL_DATA_TYPE_OP_FLAG:
-                    comm_frame.dev.dev_info[dev_index].var.var_type[i] = REAL_DATA_TYPE_OP_FLAG;
-                    addr++; //
-                    comm_frame.dev.dev_info[dev_index].var.op_flag = buf[addr];
-                    addr+=REAL_DATA_TYPE_OP_FLAG_LEN;
-                    break;
+                    dev_grp.dev_info[dev_index].sys_var.var_type[Int(i)] = REAL_DATA_TYPE_OP_FLAG;
+                    addr += 1 //
+                    dev_grp.dev_info[dev_index].sys_var.op_flag = buf[addr];
+                    addr += Int(REAL_DATA_TYPE_OP_FLAG_LEN)
+                    
+                default:
+                    var i = 1
                     //接收参数
                 }
-            }*/
+            }
         default:
             return -2
         }

@@ -61,14 +61,48 @@ public class sys_cfg_var_class
     var tmp_soil_max:UInt16?
 }
 
-public class real_data_rsp
+class real_data_rsp
 {
     var dev_id:[UInt8] = [UInt8](count: 8, repeatedValue: 0)
-    var dev_index:UInt?
-    var sys_ver:UInt16?
-    var mode_ver:UInt16?
-    var event_ver:UInt16?
-    var flag:UInt8?
+    var dev_index:UInt = 0
+    var sys_ver:UInt16 = 0
+    var mode_ver:UInt16 = 0
+    var event_ver:UInt16 = 0
+    var flag:UInt8 = 0
+}
+
+
+class sys_var_c
+{
+    var var_num:UInt16 = 0
+    var var_type:[UInt8] = [UInt8](count: 10, repeatedValue: 0)
+    var water_tmp:Int = 0
+    var water_ph:Int = 0
+    var roll_stat:UInt16 = 0
+   // public int[] water_tmp_array;
+    var oxygen:Int = 0
+  //  public int[] oxygen_array;
+    var motor_stat:UInt8 = 0
+    var motor_stat_flag:UInt8 = 0
+    var weather_tmp:Int = 0
+    var air_tmp:Int = 0
+    var air_wet:Int = 0
+    var soil_tmp:Int = 0
+    var soil_wet:Int = 0
+    var co2:Int = 0
+    var smp_time:UInt = 0
+    var op_flag:UInt8 = 0
+    var ph:Int = 0
+}
+
+class sys_date_c
+{
+    var year:UInt = 0
+    var mon:UInt = 0
+    var day:UInt = 0
+    var hour:UInt = 0
+    var min:UInt = 0
+    var sec:UInt = 0
 }
 
 struct dev_info_struct
@@ -77,7 +111,6 @@ struct dev_info_struct
     
     /* public sys_date date;
      public sys_date event_date;
-     public sys_var var;
      public byte his_day_type;
      public short his_data_num;
      public byte his_data_yday_num;
@@ -117,8 +150,8 @@ struct dev_info_struct
     var pool_area:UInt16?
     var pool_depth:UInt8?
     var fish_num:UInt?
-    var sys_ver:UInt16?
-    var mode_ver:UInt16?
+    var sys_ver:UInt16 = 0
+    var mode_ver:UInt16 = 0
     var event_type:UInt8?
     var event_num:UInt8?
     var  event_info:[event_st] = [event_st]()
@@ -129,31 +162,32 @@ struct dev_info_struct
     var cal_num:UInt?
     var send_num:UInt?
     var send_cnt:UInt?
-    var flag:Int = 0
+    var flag:UInt8 = 0
     var req_flag:UInt8?
     var dial_alarm:UInt16?
     var msg_alarm:UInt16?
     var Offline_detect_flag:UInt8?
     var low_ox_cnt:UInt8?
-    var sys_cfg_var:sys_cfg_var_class = sys_cfg_var_class()
+    var sys_cfg_var = sys_cfg_var_class()
     var his_barn_day_num:UInt8?
     // public history_barn_day_item_st[] his_barn_day_item;
-    var real_data_rsp_info:real_data_rsp =  real_data_rsp()
-   
+    var real_data_rsp_info =  real_data_rsp()
+    var sys_var = sys_var_c()
+    var sys_date = sys_date_c()
 }
 
 class dev_group
 {
-    var dev_login_num:Int = 0;
-    var dev_online_num:Int = 0;
-    var DEV_REG_NUM:Int = 32;
-    var DEV_GRP_FLAG_REG:Int = 0x1;
-    var dev_grp_flag:Int = 0;
+    var dev_login_num:Int = 0
+    var dev_online_num:Int = 0
+    var DEV_REG_NUM:Int = 32
+    var DEV_GRP_FLAG_REG:Int = 0x1
+    var dev_grp_flag:Int = 0
     
-    var  DEV_MODE_CFG_SYNC_SYS_FLAG = 0x1;
-    var  DEV_MODE_CFG_SYNC_MODE_FLAG = 0x2;
-    var  DEV_MODE_CFG_REQ_EVENT_FLAG = 0x4;
-    var  DEV_ONLINE_FLAG = 0x8;
+    var  DEV_MODE_CFG_SYNC_SYS_FLAG:UInt8 = 0x1
+    var  DEV_MODE_CFG_SYNC_MODE_FLAG:UInt8  = 0x2
+    var  DEV_MODE_CFG_REQ_EVENT_FLAG:UInt8  = 0x4
+    var  DEV_ONLINE_FLAG:UInt8  = 0x8
     var dev_info:[dev_info_struct] = [dev_info_struct]()   
 }
 
