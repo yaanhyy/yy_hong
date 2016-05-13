@@ -178,6 +178,92 @@ let	REAL_DATA_TYPE_OP_FLAG:UInt8	= 14;
 let	REAL_DATA_TYPE_OP_FLAG_LEN:UInt8 = 1;
 let	REAL_DATA_TYPE_FALSE:UInt8	= 0xff;
 
+//	SYS_CFG_FRM
+var MAX_SYS_VAR_NUM:UInt8 =	16;
+var SYS_CFG_TYPE_VAR:UInt8 = 1;
+var SYS_CFG_TYPE_ADJ:UInt8 = 2;
+var SYS_CFG_TYPE_SYNC:UInt8 = 3;
+var SYS_CFG_TYPE_ALARM:UInt8 = 5;
+
+var SYS_CFG_TYPE_ADDR:UInt8 = FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var SYS_CFG_TYPE_LEN:UInt8 = 1;
+var SYS_CFG_VER_ADDR:UInt8 = SYS_CFG_TYPE_ADDR + SYS_CFG_TYPE_LEN;
+var SYS_CFG_VER_LEN:UInt8 = 2;
+//var
+var SYS_CFG_NUM_ADDR:UInt8 = SYS_CFG_VER_ADDR+SYS_CFG_VER_LEN;
+var SYS_CFG_NUM_LEN:UInt8 = 1;
+var SYS_CFG_INFO_ADDR = SYS_CFG_NUM_ADDR+SYS_CFG_NUM_LEN;
+var SYS_CFG_INFO_TYPE_LEN:UInt8 = 1;
+var SYS_CFG_INFO_TYPE_DO_MAX:UInt8 = 1;
+var SYS_CFG_INFO_TYPE_DO_MIN:UInt8 = 2;
+var SYS_CFG_INFO_TYPE_DO_UP:UInt8 = 3;
+var SYS_CFG_INFO_TYPE_SALT:UInt8 = 4;
+var SYS_CFG_INFO_TYPE_TMP_AIR_MAX:UInt8 = 9;
+var SYS_CFG_INFO_TYPE_TMP_AIR_MIN:UInt8 = 0xa;
+var SYS_CFG_INFO_TYPE_WET_AIR_MAX:UInt8 = 0xb;
+var SYS_CFG_INFO_TYPE_WET_AIR_MIN:UInt8 = 0xc;
+var SYS_CFG_INFO_TYPE_DO_MIN1:UInt8 = 0xF;
+var SYS_CFG_INFO_TYPE_DO_MIN2:UInt8 = 0x10;
+var SYS_CFG_INFO_TYPE_DO_MIN3:UInt8 = 0x11;
+var SYS_CFG_INFO_TYPE_DO_MIN4:UInt8 = 0x12;
+var SYS_CFG_INFO_TYPE_WT_TMP_MAX:UInt8 = 0x13;
+var SYS_CFG_INFO_TYPE_WT_TMP_MIN:UInt8 = 0x14;
+var SYS_CFG_INFO_TYPE_TMP_AIR_MAX1:UInt8 = 0x15;
+var SYS_CFG_INFO_TYPE_TMP_AIR_MAX2:UInt8 = 0x16;
+var SYS_CFG_INFO_TYPE_TMP_AIR_MAX3:UInt8 = 0x17;
+var SYS_CFG_INFO_TYPE_TMP_AIR_MAX4:UInt8 = 0x18;
+var SYS_CFG_INFO_TYPE_TMP_AIR_NORM:UInt8 = 0x19;
+var SYS_CFG_INFO_TYPE_TMP_SOIL_MAX:UInt8 = 0x1a;
+var SYS_CFG_INFO_TYPE_TMP_SOIL_MIN:UInt8 = 0x1b;
+var SYS_CFG_INFO_TYPE_WET_SOIL_MAX:UInt8 = 0x1c;
+var SYS_CFG_INFO_TYPE_WET_SOIL_MIN:UInt8 = 0x1d;
+var SYS_CFG_INFO_DO_LEN:UInt8 = 2;
+var SYS_CFG_INFO_SALT_LEN:UInt8 = 2;
+var SYS_CFG_INFO_TMP_LEN:UInt8 = 2;
+var SYS_CFG_INFO_WET_LEN:UInt8 = 2;
+//adj
+var SYS_CFG_TYPE_ADJ_TMP:UInt8 = 0xd
+var SYS_CFG_TYPE_ADJ_DO:UInt8 = 0xa
+var SYS_CFG_ADJ_TYPE_ADDR:UInt8 = SYS_CFG_TYPE_ADDR+SYS_CFG_TYPE_LEN
+var SYS_CFG_ADJ_TYPE_LEN:UInt8 = 1
+var SYS_CFG_ADJ_TYPE_OX:UInt8 = 0xa
+var SYS_CFG_ADJ_TYPE_OX_ZORE:UInt8 = 0xb
+var SYS_CFG_ADJ_TYPE_PH_7:UInt8 = 0xc
+var SYS_CFG_ADJ_TYPE_PH_SCALE:UInt8 = 0xd
+var SYS_CFG_ADJ_TYPE_TMP:UInt8 = 0xe
+var SYS_CFG_ADJ_INFO_ADDR:UInt8 = SYS_CFG_ADJ_TYPE_ADDR+SYS_CFG_ADJ_TYPE_LEN
+var SYS_CFG_ADJ_INFO_TYPE_LEN:UInt8 = 1
+var SYS_CFG_ADJ_INFO_TMP_LEN:UInt8 = 4
+//sync
+var SYS_CFG_SYNC_LEN:UInt8 = SYS_CFG_VER_ADDR+SYS_CFG_VER_LEN;
+//alarm
+var SYS_CFG_ALARM_MSG:UInt8 = SYS_CFG_VER_ADDR+SYS_CFG_VER_LEN;
+var SYS_CFG_ALARM_MSG_LEN:UInt8 = 2;
+var SYS_CFG_ALARM_DIAL:UInt8 = SYS_CFG_ALARM_MSG+SYS_CFG_ALARM_MSG_LEN;
+var SYS_CFG_ALARM_DIAL_LEN:UInt8 = 2;
+var SYS_CFG_ALARM_LEN:UInt8 = SYS_CFG_ALARM_DIAL+SYS_CFG_ALARM_DIAL_LEN;
+//	SYS_CFG_RSP_FRM
+var SYS_CFG_RSP_TYPE_VAR:UInt8 = SYS_CFG_TYPE_VAR;
+var SYS_CFG_RSP_TYPE_ADJ:UInt8 = SYS_CFG_TYPE_ADJ;
+var SYS_CFG_RSP_TYPE_SYNC:UInt8 = SYS_CFG_TYPE_SYNC;
+var SYS_CFG_RSP_TYPE_ADDR:UInt8 = FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var SYS_CFG_RSP_TYPE_LEN:UInt8 = 1;
+
+var SYS_CFG_RSP_VER_ADDR:UInt8 =	SYS_CFG_RSP_TYPE_ADDR+SYS_CFG_RSP_TYPE_LEN;
+var SYS_CFG_RSP_VER_LEN:UInt8 =	2;
+//cfg
+var SYS_CFG_RSP_RES_ADDR:UInt8 =	SYS_CFG_RSP_VER_ADDR+SYS_CFG_RSP_VER_LEN;
+var SYS_CFG_RSP_RES_LEN:UInt8 =	1;
+
+//sync
+var SYS_CFG_RSP_NUM_ADDR:UInt8 =	SYS_CFG_RSP_VER_ADDR+SYS_CFG_RSP_VER_LEN;
+var SYS_CFG_RSP_NUM_LEN:UInt8 =	1;
+var SYS_CFG_RSP_INFO_ADDR:UInt8 = SYS_CFG_RSP_NUM_ADDR+SYS_CFG_RSP_NUM_LEN;
+//adj
+var SYS_CFG_RSP_TYPE_ADJ_ADDR:UInt8 = SYS_CFG_RSP_TYPE_ADDR+SYS_CFG_RSP_TYPE_LEN;
+var SYS_CFG_RSP_TYPE_ADJ_LEN:UInt8 =	1;
+
+
 public class user_info_c
 {
     var user_name:String?
@@ -244,23 +330,23 @@ var send_buf = [UInt8](count: 1024, repeatedValue: 0)
 func copy_byte2int(buf_info buf:[UInt8],  buf_addr:Int)->UInt
 {
     
-    var a:UInt = UInt(buf[buf_addr])<<24
-    var b:UInt = UInt(buf[buf_addr+1])<<16
-    var c:UInt = UInt(buf[buf_addr+2])<<8
-    var d:UInt = UInt(buf[buf_addr+3])
+    let a:UInt = UInt(buf[buf_addr])<<24
+    let b:UInt = UInt(buf[buf_addr+1])<<16
+    let c:UInt = UInt(buf[buf_addr+2])<<8
+    let d:UInt = UInt(buf[buf_addr+3])
     // b = (int)buf[buf_addr+1]&0xff;
-    var data:UInt = (a|b|c|d);
+    let data:UInt = (a|b|c|d);
     return data
 }
 
 func copy_byte2short(buf_info buf:[UInt8],  buf_addr:Int)->UInt16
 {
     
-    var a:UInt16 = UInt16(buf[buf_addr])
-    var b:UInt16 = UInt16(buf[buf_addr+1])
-    a = (a&0xff)<<8;
+    let a:UInt16 = UInt16(buf[buf_addr])<<8
+    let b:UInt16 = UInt16(buf[buf_addr+1])
+   // a = (a&0xff)<<8;
    // b = (int)buf[buf_addr+1]&0xff;
-    var data:UInt16 = (a|b);
+    let data:UInt16 = (a|b);
     return data;
 }
 
@@ -271,6 +357,14 @@ func copy_int2byte(inout buf_info buf:[UInt8], start buf_addr:Int, data_i data:U
     buf[buf_addr+2] = UInt8((data>>8)&0xff);
     buf[buf_addr+3] = UInt8(data&0xff);
 }
+
+func copy_short2byte(inout buf_info buf:[UInt8], start buf_addr:Int, data_s data:UInt16)
+{
+    buf[buf_addr] = UInt8((data>>8)&0xff);
+    buf[buf_addr+1] = UInt8(data&0xff);
+
+}
+
 
 func  GetCheckCode(buf_info buf:[UInt8], frame_len len:Int)->UInt16
 {
@@ -338,11 +432,11 @@ func copy_array(inout dst_in dst:[UInt8],src_in  src:[UInt8], dst_start dst_star
         dst[dst_start_addr+i] = src[src_start_addr+i]
     }
 }
-func array_equal(dst dst:[UInt8], src src:[UInt8], frame_len len:Int)->Bool
+func array_equal(dst dst:[UInt8], src src_b:[UInt8], frame_len len:Int)->Bool
 {
     for i in 0..<len
     {
-        if(dst[i] != src[i])
+        if(dst[i] != src_b[i])
         {
             return false
         }
@@ -535,7 +629,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                         dev_grp.dev_info[dev_index].real_data_rsp_info.flag &= ~dev_grp.DEV_MODE_CFG_SYNC_MODE_FLAG;
                     }
                     
-                    if((dev_grp.dev_info[dev_index].real_data_rsp_info.sys_ver != dev_grp.dev_info[i].sys_ver))
+                  if((dev_grp.dev_info[dev_index].real_data_rsp_info.sys_ver != dev_grp.dev_info[i].sys_ver))
                     {
                         if(dev_grp.dev_info[dev_index].dev_type != DEV_TYPE_FISH_ONLY_CTRL)
                         {
@@ -680,7 +774,163 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
     return 0
 }
 
-func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:UInt8 ) ->Int
+
+func get_sys_info(inout buf_info buf:[UInt8], start start_len:Int,dev_idx dev_index:Int)->UInt16
+{
+    var len = start_len
+    buf[Int(SYS_CFG_NUM_ADDR)] = dev_grp.dev_info[dev_index].sys_cfg_var.sys_var_num
+    
+    
+    for i in 0..<buf[Int(SYS_CFG_NUM_ADDR)]
+    {
+        switch(dev_grp.dev_info[dev_index].sys_cfg_var.sys_var_type[Int(i)])
+        {
+        case SYS_CFG_INFO_TYPE_DO_MAX:
+            buf[len] = SYS_CFG_INFO_TYPE_DO_MAX
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.do_max)
+            len += Int(SYS_CFG_INFO_DO_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_DO_MIN:
+            buf[len] = SYS_CFG_INFO_TYPE_DO_MIN;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.do_min);
+            len += Int(SYS_CFG_INFO_DO_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_DO_UP:
+            buf[len] = SYS_CFG_INFO_TYPE_DO_UP;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.do_up);
+            len += Int(SYS_CFG_INFO_DO_LEN )
+            break;
+        case SYS_CFG_INFO_TYPE_SALT:
+            buf[len] = SYS_CFG_INFO_TYPE_SALT;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.salt_cfg);
+            len += Int(SYS_CFG_INFO_SALT_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_AIR_MAX;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_AIR_MIN:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_AIR_MIN;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_min);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_WET_AIR_MAX:
+            buf[len] = SYS_CFG_INFO_TYPE_WET_AIR_MAX;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.wet_air_max);
+            len += Int(SYS_CFG_INFO_WET_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_WET_AIR_MIN:
+            buf[len] = SYS_CFG_INFO_TYPE_WET_AIR_MIN;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.wet_air_min);
+            len += Int(SYS_CFG_INFO_WET_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_DO_MIN1:
+            buf[len] = SYS_CFG_INFO_TYPE_DO_MIN1;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.do_min1);
+            len += Int(SYS_CFG_INFO_DO_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_DO_MIN2:
+            buf[len] = SYS_CFG_INFO_TYPE_DO_MIN2;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.do_min2);
+            len += Int(SYS_CFG_INFO_DO_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_DO_MIN3:
+            buf[len] = SYS_CFG_INFO_TYPE_DO_MIN3;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.do_min3);
+            len += Int(SYS_CFG_INFO_DO_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_DO_MIN4:
+            buf[len] = SYS_CFG_INFO_TYPE_DO_MIN4;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.do_min4);
+            len += Int(SYS_CFG_INFO_DO_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_WT_TMP_MIN:
+            buf[len] = SYS_CFG_INFO_TYPE_WT_TMP_MIN;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_wt_min);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_WT_TMP_MAX:
+            buf[len] = SYS_CFG_INFO_TYPE_WT_TMP_MAX;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_wt_max);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX1:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_AIR_MAX1;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max1);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX2:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_AIR_MAX2;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max2);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX3:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_AIR_MAX3;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max3);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX4:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_AIR_MAX4;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max4);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_AIR_NORM:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_AIR_NORM;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_normal);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+        case SYS_CFG_INFO_TYPE_TMP_SOIL_MIN:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_SOIL_MIN;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_soil_min);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_TMP_SOIL_MAX:
+            buf[len] = SYS_CFG_INFO_TYPE_TMP_SOIL_MAX;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.tmp_soil_max);
+            len += Int(SYS_CFG_INFO_TMP_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_WET_SOIL_MIN:
+            buf[len] = SYS_CFG_INFO_TYPE_WET_SOIL_MIN;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.wet_soil_min);
+            len += Int(SYS_CFG_INFO_WET_LEN)
+            break;
+        case SYS_CFG_INFO_TYPE_WET_SOIL_MAX:
+            buf[len] = SYS_CFG_INFO_TYPE_WET_SOIL_MAX;
+            len +=  Int(SYS_CFG_INFO_TYPE_LEN)
+            copy_short2byte(buf_info: &buf, start:len, data_s:dev_grp.dev_info[dev_index].sys_cfg_var.wet_soil_max);
+            len += Int(SYS_CFG_INFO_WET_LEN)
+            break;
+        default:
+             return 0
+        }
+    }
+    
+    return UInt16(len)
+}
+
+func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:Int ) ->Int
 {
     var frame_len:UInt16 = 0
     var len:Int = 0
@@ -714,7 +964,7 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:U
         send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
             
     case REAL_DATA_FRM:
-            var  city_code:UInt  = 1//user_grp.city_code;
+            let  city_code:UInt  = 1//user_grp.city_code;
             copy_int2byte(buf_info:&send_buf, start:Int(REAL_DATA_CITY_CODE_ADDR), data_i:city_code);
             frame_len = UInt16(REAL_DATA_LEN - REAL_DATA_CITY_CODE_ADDR);
          
@@ -722,14 +972,63 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:U
             send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
             send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
             len = Int(REAL_DATA_LEN)
+    case SYS_CFG_FRM:
+        if(child_type == SYS_CFG_TYPE_VAR)
+        {
+            frame_len = UInt16(SYS_CFG_INFO_ADDR)
+            send_buf[Int(SYS_CFG_TYPE_ADDR)] = SYS_CFG_TYPE_VAR
+            frame_len = get_sys_info(buf_info:&send_buf, start:Int(frame_len), dev_idx:Int(dev_index));
+            copy_short2byte(buf_info:&send_buf, start: Int(SYS_CFG_VER_ADDR), data_s: dev_grp.dev_info[Int(dev_index)].sys_ver);
+        }
+        else if(child_type == SYS_CFG_TYPE_ADJ)
+        {
+            frame_len = UInt16(SYS_CFG_ADJ_INFO_ADDR)
+            send_buf[Int(SYS_CFG_TYPE_ADDR)] = SYS_CFG_TYPE_ADJ
+            if(dev_grp.dev_info[Int(dev_index)].sys_adj_type == SYS_CFG_ADJ_TYPE_TMP)
+            {
+                send_buf[Int(SYS_CFG_ADJ_TYPE_ADDR)] = SYS_CFG_ADJ_TYPE_TMP;
+                send_buf[Int(SYS_CFG_ADJ_INFO_ADDR)] = 0x1;
+                frame_len += UInt16(SYS_CFG_ADJ_INFO_TYPE_LEN)
+                
+                //putFloat(buf, comm_frame.dev.dev_info[dev_index].sys_adj_tmp ,frame_head_info.frame_len);
+                //frame_head_info.frame_len += SYS_CFG_ADJ_INFO_TMP_LEN;
+            }
+            else if(dev_grp.dev_info[dev_index].sys_adj_type == SYS_CFG_ADJ_TYPE_OX)
+            {
+                send_buf[Int(SYS_CFG_ADJ_TYPE_ADDR)] = SYS_CFG_ADJ_TYPE_OX;
+                
+            }
+            else if(dev_grp.dev_info[dev_index].sys_adj_type == SYS_CFG_ADJ_TYPE_OX_ZORE)
+            {
+                send_buf[Int(SYS_CFG_ADJ_TYPE_ADDR)] = SYS_CFG_ADJ_TYPE_OX_ZORE;
+            }
+            else if(dev_grp.dev_info[dev_index].sys_adj_type == SYS_CFG_ADJ_TYPE_PH_7)
+            {
+                send_buf[Int(SYS_CFG_ADJ_TYPE_ADDR)] = SYS_CFG_ADJ_TYPE_PH_7;
+                
+            }
+            else if(dev_grp.dev_info[dev_index].sys_adj_type == SYS_CFG_ADJ_TYPE_PH_SCALE)
+            {
+                send_buf[Int(SYS_CFG_ADJ_TYPE_ADDR)] = SYS_CFG_ADJ_TYPE_PH_SCALE
+                
+            }
+        }
+  
+        send_buf[Int(FRM_TYPE_ADDR)] = frame_type;
+        frame_len -= UInt16(FRAME_HEAD_LEN);
+        send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
+        send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
         
+        send_buf[Int(SYS_CFG_TYPE_ADDR)] = child_type;
+        
+        len = Int(frame_len)+Int(FRAME_HEAD_LEN)
     case HIS_INFO_FRM:
         send_buf.append(0x76)
     default:
         send_buf.append(0x76)
         
     }
-    var crc_data:UInt16 = GetCheckCode(buf_info:send_buf, frame_len:len)
+    let crc_data:UInt16 = GetCheckCode(buf_info:send_buf, frame_len:len)
     send_buf[len] = UInt8(crc_data>>8);
     len += 1;
     send_buf[len] = UInt8(crc_data&0xff);

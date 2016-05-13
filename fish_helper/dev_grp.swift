@@ -34,31 +34,32 @@ class event_st
 
 public class sys_cfg_var_class
 {
-    var sys_var_num:UInt16?
-    var sys_var_type:[UInt8]?
-    var do_min:UInt16?
-    var do_min1:UInt16?
-    var do_min2:UInt16?
-    var do_min3:UInt16?
-    var do_min4:UInt16?
-    var do_max:UInt16?
-    var do_up:UInt16?
-    var salt_cfg:UInt16?
-    var tmp_air_min:UInt16?
-    var tmp_air_max:UInt16?
-    var wet_air_min:UInt16?
-    var wet_air_max:UInt16?
-    var wet_soil_min:UInt16?
-    var wet_soil_max:UInt16?
-    var tmp_wt_min:UInt16?
-    var tmp_wt_max:UInt16?
-    var tmp_air_max1:UInt16?
-    var tmp_air_max2:UInt16?
-    var tmp_air_max3:UInt16?
-    var tmp_air_max4:UInt16?
-    var tmp_air_normal:UInt16?
-    var tmp_soil_min:UInt16?
-    var tmp_soil_max:UInt16?
+    var sys_var_num:UInt8 = 0
+    var sys_var_type:[UInt8] = [UInt8](count: 10, repeatedValue: 0)
+
+    var do_min:UInt16 = 0
+    var do_min1:UInt16 = 0
+    var do_min2:UInt16 = 0
+    var do_min3:UInt16 = 0
+    var do_min4:UInt16 = 0
+    var do_max:UInt16 = 0
+    var do_up:UInt16 = 0
+    var salt_cfg:UInt16 = 0
+    var tmp_air_min:UInt16 = 0
+    var tmp_air_max:UInt16 = 0
+    var wet_air_min:UInt16 = 0
+    var wet_air_max:UInt16 = 0
+    var wet_soil_min:UInt16 = 0
+    var wet_soil_max:UInt16 = 0
+    var tmp_wt_min:UInt16 = 0
+    var tmp_wt_max:UInt16 = 0
+    var tmp_air_max1:UInt16 = 0
+    var tmp_air_max2:UInt16 = 0
+    var tmp_air_max3:UInt16 = 0
+    var tmp_air_max4:UInt16 = 0
+    var tmp_air_normal:UInt16 = 0
+    var tmp_soil_min:UInt16 = 0
+    var tmp_soil_max:UInt16 = 0
 }
 
 class real_data_rsp
