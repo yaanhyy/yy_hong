@@ -52,7 +52,7 @@ class ViewController: UIViewController ,UITextFieldDelegate{
  
    
     @IBAction func did_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
-        if user_name.text == "admin" && password.text == "123"{
+        if user_name.text == "123" && password.text == "123"{
             self.performSegueWithIdentifier("btn_login", sender: nil)
         }else{
             result_message_lable.text = "username or passward is error!"

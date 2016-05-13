@@ -17,7 +17,6 @@
 		783108651CE19EE7008EE608 /* comm_frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783108641CE19EE7008EE608 /* comm_frame.swift */; };
 		783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783BE06B1CE04790009DBF38 /* Main.storyboard */; };
 		783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783BE06E1CE05E20009DBF38 /* DevListViewController.swift */; };
-		784989931CE183270096F0BD /* drawable in Resources */ = {isa = PBXBuildFile; fileRef = 784989921CE183270096F0BD /* drawable */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +54,6 @@
 		783108641CE19EE7008EE608 /* comm_frame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = comm_frame.swift; sourceTree = "<group>"; };
 		783BE06C1CE04790009DBF38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		783BE06E1CE05E20009DBF38 /* DevListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevListViewController.swift; sourceTree = "<group>"; };
-		784989921CE183270096F0BD /* drawable */ = {isa = PBXFileReference; lastKnownFileType = folder; path = drawable; sourceTree = "<group>"; };
 		8AB7406D1A43D810B37409F0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,7 +109,6 @@
 			isa = PBXGroup;
 			children = (
 				783108641CE19EE7008EE608 /* comm_frame.swift */,
-				784989921CE183270096F0BD /* drawable */,
 				783BE06B1CE04790009DBF38 /* Main.storyboard */,
 				1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */,
 				1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */,
@@ -229,6 +226,7 @@
 				TargetAttributes = {
 					1FFBF9CD1CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 868MAGN5BR;
 					};
 					1FFBF9E11CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
@@ -267,7 +265,6 @@
 			files = (
 				1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */,
 				1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */,
-				784989931CE183270096F0BD /* drawable in Resources */,
 				783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -489,11 +486,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -505,11 +504,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
