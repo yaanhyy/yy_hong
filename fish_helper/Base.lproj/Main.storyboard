@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgd.png" translatesAutoresizingMaskIntoConstraints="NO" id="fDf-pw-4AF">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgd" translatesAutoresizingMaskIntoConstraints="NO" id="fDf-pw-4AF">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YK0-Uq-uYh" userLabel="user_password">
@@ -50,7 +50,7 @@
                                     <constraint firstAttribute="height" constant="83" id="Kdw-3C-j5j"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WfG-us-6IN">
@@ -75,7 +75,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="225"/>
                                 <color key="backgroundColor" red="0.58823529411764708" green="0.5384803436422102" blue="0.36536099774744435" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -132,43 +132,208 @@
                     <view key="view" contentMode="scaleToFill" id="tXY-Xg-615">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="weather_bj" translatesAutoresizingMaskIntoConstraints="NO" id="0KG-wW-jex">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="91"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clockbg_unpress" translatesAutoresizingMaskIntoConstraints="NO" id="cvr-YM-wv3">
+                                <rect key="frame" x="0.0" y="91" width="320" height="33"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="body_bj" translatesAutoresizingMaskIntoConstraints="NO" id="mR9-Hm-Pnj">
+                                <rect key="frame" x="0.0" y="123" width="320" height="445"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dev_add_unpress.png" translatesAutoresizingMaskIntoConstraints="NO" id="isZ-yL-VxY">
+                                <rect key="frame" x="271" y="95" width="29" height="25"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mulu" translatesAutoresizingMaskIntoConstraints="NO" id="tAP-gA-QZz">
+                                <rect key="frame" x="6" y="6" width="25" height="23"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="yun" translatesAutoresizingMaskIntoConstraints="NO" id="Xht-K1-L7s">
+                                <rect key="frame" x="6" y="37" width="55" height="46"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="flush" translatesAutoresizingMaskIntoConstraints="NO" id="G9J-um-A3G">
+                                <rect key="frame" x="261" y="37" width="49" height="46"/>
+                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="31" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BpT-RP-dAd">
+                                <rect key="frame" x="0.0" y="123" width="320" height="445"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DevCellIdentifier" rowHeight="180" id="kbQ-51-BJu" customClass="DevCell" customModule="fish_helper" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="180"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kbQ-51-BJu" id="IyU-cj-7Ka">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="179"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="yu_bj_unpress" translatesAutoresizingMaskIntoConstraints="NO" id="opf-lk-Wa3">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="187"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tmp" translatesAutoresizingMaskIntoConstraints="NO" id="8mk-Yl-F4Z">
+                                                    <rect key="frame" x="18" y="46" width="24" height="22"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="yu" translatesAutoresizingMaskIntoConstraints="NO" id="JX4-A7-ggJ">
+                                                    <rect key="frame" x="18" y="82" width="24" height="23"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="aerator_offline" translatesAutoresizingMaskIntoConstraints="NO" id="W3U-g4-Mbo">
+                                                    <rect key="frame" x="107" y="118" width="29" height="25"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="time_stat" translatesAutoresizingMaskIntoConstraints="NO" id="hWA-lM-MK4">
+                                                    <rect key="frame" x="16" y="149" width="29" height="22"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="event_btn_normal" translatesAutoresizingMaskIntoConstraints="NO" id="VKS-jB-s0K">
+                                                    <rect key="frame" x="246" y="120" width="59" height="51"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="更新时间:2016/05/13 11:07" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQJ-Cv-HUo">
+                                                    <rect key="frame" x="53" y="149" width="172" height="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.96080344915390015" green="0.98382073640823364" blue="0.94521111249923706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="接触器开关状态:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fo0-uw-OMe">
+                                                    <rect key="frame" x="16" y="120" width="89" height="23"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.9999127984046936" green="1" blue="0.99988144636154175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="水温" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jdF-1f-9eM">
+                                                    <rect key="frame" x="48" y="43" width="28" height="28"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="溶氧" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LGK-zA-dDf">
+                                                    <rect key="frame" x="48" y="86" width="24" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="乐从 梁培强" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cMS-cq-t9c">
+                                                    <rect key="frame" x="18" y="8" width="64" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="liG-Ks-2qn">
+                                                    <rect key="frame" x="97" y="56" width="150" height="2"/>
+                                                </progressView>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ihg-kj-XAe">
+                                                    <rect key="frame" x="97" y="99" width="150" height="2"/>
+                                                </progressView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="29.8 C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14Z-iV-JNf">
+                                                    <rect key="frame" x="255" y="46" width="42" height="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3.9mg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVd-M2-r2o">
+                                                    <rect key="frame" x="255" y="86" width="49" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="offline1" translatesAutoresizingMaskIntoConstraints="NO" id="YnQ-U1-OjQ">
+                                                    <rect key="frame" x="195" y="8" width="58" height="21"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="off" translatesAutoresizingMaskIntoConstraints="NO" id="eYM-AU-S9v">
+                                                    <rect key="frame" x="261" y="8" width="44" height="21"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="aerator_offline" translatesAutoresizingMaskIntoConstraints="NO" id="fYO-jy-5o0">
+                                                    <rect key="frame" x="139" y="118" width="29" height="25"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="aerator_offline" translatesAutoresizingMaskIntoConstraints="NO" id="HUp-fV-nto">
+                                                    <rect key="frame" x="170" y="118" width="28" height="25"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="aerator_offline" translatesAutoresizingMaskIntoConstraints="NO" id="fCB-NV-d7b">
+                                                    <rect key="frame" x="200" y="118" width="31" height="25"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="img_contactor1" destination="W3U-g4-Mbo" id="ViA-Y0-WuG"/>
+                                            <outlet property="img_contactor2" destination="fYO-jy-5o0" id="5V5-6Q-Tmv"/>
+                                            <outlet property="img_contactor3" destination="HUp-fV-nto" id="54P-Nn-wQq"/>
+                                            <outlet property="img_contactor4" destination="fCB-NV-d7b" id="VGl-8j-Kva"/>
+                                            <outlet property="img_dev_online" destination="YnQ-U1-OjQ" id="opb-ZM-r7I"/>
+                                            <outlet property="img_event" destination="VKS-jB-s0K" id="9QC-TE-an8"/>
+                                            <outlet property="img_notice_switch" destination="eYM-AU-S9v" id="aOQ-AM-WOq"/>
+                                            <outlet property="lab_dev_name" destination="cMS-cq-t9c" id="nVv-iT-aBI"/>
+                                            <outlet property="lab_oxy" destination="oVd-M2-r2o" id="3hc-BH-MXE"/>
+                                            <outlet property="lab_update_time" destination="VQJ-Cv-HUo" id="dM5-eW-8q9"/>
+                                            <outlet property="lab_water_tmp" destination="14Z-iV-JNf" id="A3e-G3-3ie"/>
+                                            <outlet property="pro_oxy" destination="Ihg-kj-XAe" id="EPh-VM-oHO"/>
+                                            <outlet property="pro_water_tmp" destination="liG-Ks-2qn" id="gIU-tc-cX9"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="护渔宝智能水产监控系统 400-0806390" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZX2-9S-uos">
+                                <rect key="frame" x="39" y="6" width="271" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text=" 德州 26度 阴 2016/5/10" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bMi-ob-I5A">
+                                <rect key="frame" x="76" y="37" width="184" height="46"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="设备数量:32台" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m9M-Wr-yQ6">
+                                <rect key="frame" x="6" y="97" width="114" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="在线设备:0台" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6e5-dR-lgi">
+                                <rect key="frame" x="128" y="97" width="121" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="img_dev_add" destination="isZ-yL-VxY" id="Ixx-Xb-1od"/>
+                        <outlet property="img_sideslip" destination="tAP-gA-QZz" id="cpu-2p-FGb"/>
+                        <outlet property="img_weather_flush" destination="G9J-um-A3G" id="NhW-UU-Xnt"/>
+                        <outlet property="img_weather_state" destination="Xht-K1-L7s" id="Sey-HF-Zzh"/>
+                        <outlet property="lab_dev_online" destination="6e5-dR-lgi" id="eCa-R9-3AA"/>
+                        <outlet property="lab_dev_sum" destination="m9M-Wr-yQ6" id="1kw-Js-HN0"/>
+                        <outlet property="lab_weather_details" destination="bMi-ob-I5A" id="i2V-Hk-Zwf"/>
+                        <outlet property="tab_dev_list" destination="BpT-RP-dAd" id="gnJ-m7-H4E"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bYp-vS-WDw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1848" y="425"/>
+            <point key="canvasLocation" x="1843" y="415"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="air-kZ-u5c">
             <objects>
-                <tableViewController id="gwJ-Mk-GuX" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="rJc-3E-SmQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="kB6-jt-otr">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kB6-jt-otr" id="Nd5-Qx-hWx">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="gwJ-Mk-GuX" id="GB6-NE-zBu"/>
-                            <outlet property="delegate" destination="gwJ-Mk-GuX" id="fvN-CB-Lan"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
+                <tableViewController id="gwJ-Mk-GuX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fee-jh-Plu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2254" y="415"/>
         </scene>
     </scenes>
     <resources>
-        <image name="backgd.png" width="421" height="716"/>
+        <image name="aerator_offline" width="10" height="10"/>
+        <image name="backgd" width="140" height="238"/>
+        <image name="body_bj" width="160" height="266"/>
+        <image name="clockbg_unpress" width="6" height="20"/>
+        <image name="dev_add_unpress.png" width="10" height="10"/>
+        <image name="event_btn_normal" width="28" height="24"/>
+        <image name="flush" width="21" height="21"/>
+        <image name="mulu" width="10" height="10"/>
+        <image name="off" width="25" height="10"/>
+        <image name="offline1" width="31" height="10"/>
+        <image name="time_stat" width="10" height="10"/>
+        <image name="tmp" width="10" height="10"/>
+        <image name="weather_bj" width="160" height="26"/>
+        <image name="yu" width="10" height="10"/>
+        <image name="yu_bj_unpress" width="160" height="76"/>
+        <image name="yun" width="237" height="111"/>
     </resources>
 </document>
