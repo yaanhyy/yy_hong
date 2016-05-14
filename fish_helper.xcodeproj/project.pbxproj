@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1C0F87AF45BC57526876B05B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 242DD9F132768B47E31ADEDB /* Pods.framework */; };
-		1FF572791CE32DB8007760CB /* dev_grp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF572781CE32DB8007760CB /* dev_grp.swift */; };
 		1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */; };
 		1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */; };
 		1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */; };
@@ -18,6 +17,7 @@
 		783108651CE19EE7008EE608 /* comm_frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783108641CE19EE7008EE608 /* comm_frame.swift */; };
 		783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783BE06B1CE04790009DBF38 /* Main.storyboard */; };
 		783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783BE06E1CE05E20009DBF38 /* DevListViewController.swift */; };
+		783D07421CE6FFFF001E64AD /* dev_grp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783D07411CE6FFFF001E64AD /* dev_grp.swift */; };
 		78F73D491CE5825B00F031EB /* Dev_item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D481CE5825B00F031EB /* Dev_item.swift */; };
 		78F73D4B1CE5842500F031EB /* DevCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D4A1CE5842500F031EB /* DevCell.swift */; };
 		78F73D4E1CE58DA400F031EB /* DevSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78F73D4C1CE58DA400F031EB /* DevSectionHeaderView.xib */; };
@@ -44,7 +44,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1FF572781CE32DB8007760CB /* dev_grp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dev_grp.swift; sourceTree = "<group>"; };
 		1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fish_helper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +61,7 @@
 		783108641CE19EE7008EE608 /* comm_frame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = comm_frame.swift; sourceTree = "<group>"; };
 		783BE06C1CE04790009DBF38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		783BE06E1CE05E20009DBF38 /* DevListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevListViewController.swift; sourceTree = "<group>"; };
+		783D07411CE6FFFF001E64AD /* dev_grp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dev_grp.swift; sourceTree = "<group>"; };
 		78F73D481CE5825B00F031EB /* Dev_item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dev_item.swift; sourceTree = "<group>"; };
 		78F73D4A1CE5842500F031EB /* DevCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevCell.swift; sourceTree = "<group>"; };
 		78F73D4D1CE58DA400F031EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/DevSectionHeaderView.xib; sourceTree = "<group>"; };
@@ -122,6 +122,7 @@
 		1FFBF9D01CD64B3F000B22C1 /* fish_helper */ = {
 			isa = PBXGroup;
 			children = (
+				783D07411CE6FFFF001E64AD /* dev_grp.swift */,
 				783108641CE19EE7008EE608 /* comm_frame.swift */,
 				783BE06B1CE04790009DBF38 /* Main.storyboard */,
 				78F73D4C1CE58DA400F031EB /* DevSectionHeaderView.xib */,
@@ -364,6 +365,7 @@
 				783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */,
 				78F73D491CE5825B00F031EB /* Dev_item.swift in Sources */,
 				78F73D541CE5AA6300F031EB /* DevItemSectionInfo.swift in Sources */,
+				783D07421CE6FFFF001E64AD /* dev_grp.swift in Sources */,
 				783108651CE19EE7008EE608 /* comm_frame.swift in Sources */,
 				78F73D521CE5A2A700F031EB /* DevSectionHeaderView.swift in Sources */,
 				1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */,

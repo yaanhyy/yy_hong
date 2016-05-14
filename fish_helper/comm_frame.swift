@@ -178,6 +178,40 @@ let	REAL_DATA_TYPE_OP_FLAG:UInt8	= 14;
 let	REAL_DATA_TYPE_OP_FLAG_LEN:UInt8 = 1;
 let	REAL_DATA_TYPE_FALSE:UInt8	= 0xff;
 
+
+//HIS
+var HIS_INFO_DAY_TYPE_AM:UInt8 = 0;
+var HIS_INFO_DAY_TYPE_PM:UInt8 = 1;
+var HIS_INFO_DAY_TYPE_ADDR:UInt8 = FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var HIS_INFO_DAY_TYPE_LEN:UInt8 = 1;
+
+var HIS_INFO_DATE_TYPE_TODAY:UInt8 = 0;
+var HIS_INFO_DATE_TYPE_YDAY:UInt8 = 1;
+var HIS_INFO_DATE_TYPE_Y2DAY:UInt8 = 2;
+var HIS_INFO_DATE_TYPE_Y7DAY:UInt8 = 3;
+var HIS_INFO_DATE_TYPE_YmoreDAY:UInt8 = 4;
+var HIS_INFO_DATE_TYPE_ADDR:UInt8 = HIS_INFO_DAY_TYPE_ADDR+HIS_INFO_DAY_TYPE_LEN;
+var HIS_INFO_DATE_TYPE_LEN:UInt8 = 2;
+//HIS_RSP
+
+var HIS_INFO_RSP_DAY_TYPE_ADDR:UInt8 = FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var HIS_INFO_RSP_DAY_TYPE_LEN:UInt8 = 1;
+
+var HIS_INFO_RSP_DATE_TYPE_ADDR:UInt8 = HIS_INFO_RSP_DAY_TYPE_ADDR+HIS_INFO_RSP_DAY_TYPE_LEN;
+var HIS_INFO_RSP_DATE_TYPE_LEN:UInt8 = 2;
+
+var HIS_INFO_RSP_INFO_ADDR:UInt8 = HIS_INFO_RSP_DATE_TYPE_ADDR + HIS_INFO_RSP_DATE_TYPE_LEN;
+var HIS_INFO_RSP_INFO_FISH_ADDR:UInt8 = HIS_INFO_RSP_DATE_TYPE_ADDR + HIS_INFO_RSP_DATE_TYPE_LEN-1;
+var HIS_INFO_RSP_INFO_VALID_LEN:UInt8 = 1;
+var HIS_INFO_RSP_INFO_TMP_LEN:UInt8 = 2;
+var HIS_INFO_RSP_INFO_WET_LEN:UInt8 = 2;
+var HIS_INFO_RSP_INFO_CO2_LEN:UInt8 = 2;
+var HIS_INFO_RSP_INFO_OX_LEN:UInt8 = 2;
+var HIS_INFO_RSP_INFO_PH_LEN:UInt8 = 2;
+var HIS_INFO_RSP_INFO_AM_LEN:UInt8 = 2;
+var HIS_INFO_RSP_INFO_LT_LEN:UInt8 = 2;//光照
+var HIS_INFO_RSP_INFO_STAT_LEN:UInt8 = 1;
+
 //	SYS_CFG_FRM
 var MAX_SYS_VAR_NUM:UInt8 =	16;
 var SYS_CFG_TYPE_VAR:UInt8 = 1;
@@ -291,6 +325,21 @@ class log_rsp
     
 }
 var log_rsp_data = log_rsp();
+
+var HIS_INFO_TYPE_FISH:UInt8 = 0;
+var HIS_INFO_TYPE_DAY:UInt8 = 1;
+var HIS_INFO_TYPE_TIME:UInt8 = 2;
+var HIS_INFO_TYPE_REAL:UInt8 = 3;
+var HIS_INFO_TYPE_HOUR:UInt8 = 4;
+
+
+class his_info_c
+{
+    var his_type:UInt8 = HIS_INFO_TYPE_TIME
+}
+
+
+var his_info = his_info_c()
 
 var USER_TYPE_NORMAL:UInt8 = 1;
 var USER_TYPE_MNG:UInt8 = 2;
@@ -767,6 +816,76 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                     //接收参数
                 }
             }
+        case HIS_INFO_RSP_FRM:
+            
+            var dev_index_cur:Int = 0
+            copy_array(dst_in: &frame_head_info.dev_id, src_in:send_buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
+            
+            for i in 0..<dev_grp.dev_login_num
+            {
+                if(array_equal(dst:frame_head_info.dev_id, src:dev_grp.dev_info[Int(i)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
+                {
+                    //comm_frame.dev.dev_info[i].mode_ver = time_cfg_rsp_data.mode_ver;
+                    dev_index_cur = i
+                    break
+                }
+            }
+            
+
+            var his_type:UInt8 =  buf[Int(HIS_INFO_RSP_DAY_TYPE_ADDR)]
+            if(his_type == HIS_INFO_TYPE_TIME)
+            {
+                
+                len = Int(HIS_INFO_RSP_INFO_FISH_ADDR)
+                for i in 0..<HIS_INFO_HOUR_NUM
+                {
+                    dev_grp.dev_info[dev_index_cur].his_info_item.append(his_info_item_class())
+                    dev_grp.dev_info[dev_index_cur].his_info_item[i].valid = buf[len];
+                    if (dev_grp.dev_info[dev_index_cur].his_info_item[i].valid == 1) {
+                        dev_grp.dev_info[dev_index_cur].his_data_num += 1
+                    }
+                    len += Int(HIS_INFO_RSP_INFO_VALID_LEN)
+                    if((dev_grp.dev_info[dev_index_cur].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[dev_index_cur].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[dev_index_cur].dev_type != DEV_TYPE_BARN_CO2))
+                    {
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].tmp = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_TMP_LEN)
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].ox = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_OX_LEN)
+                        if(dev_grp.dev_info[dev_index_cur].dev_type == DEV_TYPE_FISH_PH)
+                        {
+                            dev_grp.dev_info[dev_index_cur].his_info_item[i].ph = copy_byte2short(buf_info:buf, buf_addr:len)
+                            len += Int(HIS_INFO_RSP_INFO_PH_LEN)
+                            dev_grp.dev_info[dev_index_cur].his_info_item[i].am = copy_byte2short(buf_info:buf, buf_addr:len)
+                            len += Int(HIS_INFO_RSP_INFO_AM_LEN)
+                        }
+                    }
+                    else if(dev_grp.dev_info[dev_index_cur].dev_type == DEV_TYPE_BARN_CO2)
+                    {
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].tmp_air  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_TMP_LEN)
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].wet_air  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_WET_LEN)
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].soil_tmp  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_TMP_LEN)
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].soil_wet  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_WET_LEN)
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].co2  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_CO2_LEN)
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].lt  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_LT_LEN)
+                    }
+                    else
+                    {
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].tmp_air  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_TMP_LEN)
+                        dev_grp.dev_info[dev_index_cur].his_info_item[i].wet_air  = copy_byte2short(buf_info:buf, buf_addr:len)
+                        len += Int(HIS_INFO_RSP_INFO_WET_LEN)
+                    }
+                    dev_grp.dev_info[dev_index_cur].his_info_item[i].stat = buf[len];
+                    len += Int(HIS_INFO_RSP_INFO_STAT_LEN)
+                }
+                
+            }
         default:
             return -2
         }
@@ -1023,7 +1142,51 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
         
         len = Int(frame_len)+Int(FRAME_HEAD_LEN)
     case HIS_INFO_FRM:
-        send_buf.append(0x76)
+        
+        send_buf[Int(FRM_TYPE_ADDR)] = frame_type
+        
+        if(dev_grp.dev_info[dev_index].dev_type == DEV_TYPE_FISH_ONLY_CTRL)
+        {
+            his_info.his_type = HIS_INFO_TYPE_FISH;
+        }
+       
+        send_buf[Int(HIS_INFO_DAY_TYPE_ADDR)] = his_info.his_type;
+        frame_len += UInt16(HIS_INFO_DAY_TYPE_LEN)
+        if(his_info.his_type == HIS_INFO_TYPE_FISH)
+        {
+            send_buf[Int(HIS_INFO_DATE_TYPE_ADDR)] = 0//comm_frame.his_date_type;//今天值
+        }
+     /*   else if(comm_frame.his_type == HIS_INFO_TYPE_DAY)
+        {
+            Calendar c = Calendar.getInstance();
+            comm_frame.his_date_barn=(short)( ((c.get(Calendar.YEAR)-2010)<<9)|
+                (c.get(Calendar.MONTH)<<5)|
+                (c.get(Calendar.DATE)));
+            copy_short2byte(buf, HIS_INFO_DATE_TYPE_ADDR, comm_frame.his_date_barn);
+        }
+        else if(comm_frame.his_type == HIS_INFO_TYPE_HOUR)
+        {
+            send_buf[HIS_INFO_DATE_TYPE_ADDR] = comm_frame.his_date_type;//今天值
+        }*/
+        else if(his_info.his_type == HIS_INFO_TYPE_TIME)
+        {
+            //Calendar c = Calendar.getInstance();
+            //c.add(Calendar.DAY_OF_MONTH, -comm_frame.his_date_index);
+            let date = NSDate()
+            let calendar = NSCalendar.currentCalendar()
+            let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+            
+            let year:UInt16 =  UInt16(components.year)
+            let month:UInt16 = UInt16(components.month)-1
+            let day:UInt16 = UInt16(components.day)
+            var his_date:UInt16 =  ((year-2010)<<9)|(month<<5)|day
+            copy_short2byte(buf_info:&send_buf, start: Int(HIS_INFO_DATE_TYPE_ADDR), data_s:his_date);
+        }
+        
+        frame_len += UInt16(HIS_INFO_DATE_TYPE_LEN)
+        send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
+        send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
+        len = Int(frame_len) + Int(FRAME_HEAD_LEN)
     default:
         send_buf.append(0x76)
         

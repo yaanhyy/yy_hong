@@ -70,8 +70,10 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
     }
     
     @IBAction func did_register_onclick(sender: UIButton) {
+       // copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+       // var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:0)
         copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-        var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:0)
+        var len = frame_make( 0, frame_type: HIS_INFO_FRM, child_type:0,  dev_index:0)
         send_frame(len)
     }
     
@@ -123,8 +125,8 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         var result =  frame_analysis(buf_info: buf, frame_len: count)
         switch result {
         case 0:  //login in
-            //var i = 1
-            self.performSegueWithIdentifier("btn_login", sender: nil)
+            var i = 1
+           // self.performSegueWithIdentifier("btn_login", sender: nil)
         case 1:
             let alert = UIAlertController(title: "登陆错误",
                                           message: "用户不存在，请注册后使用", preferredStyle: .Alert)
