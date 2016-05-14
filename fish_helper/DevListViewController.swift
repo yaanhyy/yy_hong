@@ -44,8 +44,8 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        init_views()
+       plays = played()
+        init_view()
         // 为表视图添加缩放手势识别
         var pinchRecognizer = UIPinchGestureRecognizer(target: self, action:"handlePinch:")
         tab_dev_list.addGestureRecognizer(pinchRecognizer)
@@ -58,14 +58,14 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.uniformRowHeight = DefaultRowHeight
         self.opensectionindex = NSNotFound
         
-        let sectionHeaderNib: UINib = UINib(nibName: "SectionHeaderView", bundle: nil)
+        let sectionHeaderNib: UINib = UINib(nibName: "DevSectionHeaderView", bundle: nil)
         
         tab_dev_list.registerNib(sectionHeaderNib, forHeaderFooterViewReuseIdentifier: SectionHeaderViewIdentifier)
         
-        plays = played()
+        
     }
 
-    func init_views(){
+    func init_view(){
         init_btn_imgview_onclick(img_sideslip)
         img_sideslip.contentMode = UIViewContentMode.ScaleAspectFit
         
