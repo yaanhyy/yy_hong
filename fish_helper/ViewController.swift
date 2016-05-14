@@ -54,7 +54,15 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
 
     
     @IBAction func did_login_onclick(sender: AnyObject) {        /**登陆验证成功**/
-        if user_name.text == "123" && password.text == "123"{
+       
+        user_info.user_name = user_name.text
+        user_info.user_pwd = password.text
+        
+        var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:0,  dev_index:0)
+        send_frame(len)
+    
+        /*
+        if user_name.text == "admin" && password.text == "123"{
             self.performSegueWithIdentifier("btn_login", sender: nil)
         }else{
             result_message_lable.text = "username or passward is error!"
@@ -115,8 +123,8 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         var result =  frame_analysis(buf_info: buf, frame_len: count)
         switch result {
         case 0:  //login in
-            var i = 1
-            //self.performSegueWithIdentifier("btn_login", sender: nil)
+            //var i = 1
+            self.performSegueWithIdentifier("btn_login", sender: nil)
         case 1:
             let alert = UIAlertController(title: "登陆错误",
                                           message: "用户不存在，请注册后使用", preferredStyle: .Alert)

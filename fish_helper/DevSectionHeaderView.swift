@@ -17,8 +17,9 @@ protocol SectionHeaderViewDelegate: class, NSObjectProtocol{
 
 class DevSectionHeaderView: UITableViewHeaderFooterView {
     
-    @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var disclosureButton: UIButton!
+    @IBOutlet weak var lab_dev_name: UILabel!
+    @IBOutlet weak var lab_dev_online: UILabel!
+    @IBOutlet weak var btn_disclosure: UIButton!
     
     var delegate: SectionHeaderViewDelegate!
     
@@ -27,7 +28,7 @@ class DevSectionHeaderView: UITableViewHeaderFooterView {
     override func awakeFromNib() {
         
         // 设置disclosure 按钮的图片（被打开）
-        self.disclosureButton.setImage(UIImage(named: "carat-open"), forState: UIControlState.Selected)
+        self.btn_disclosure.setImage(UIImage(named: "dev_close"), forState: UIControlState.Selected)
         
         // 建立点击手势识别
         var tapGesture = UITapGestureRecognizer(target: self, action: "toggleOpen:")
@@ -42,11 +43,11 @@ class DevSectionHeaderView: UITableViewHeaderFooterView {
     func toggleOpenWithUserAction(userAction: Bool) {
         
         // 切换disclosure按钮的状态（开启/关闭）
-        self.disclosureButton.selected = !self.disclosureButton.selected
+        self.btn_disclosure.selected = !self.btn_disclosure.selected
         
         // 如果确信是用户进行的操作，将给委托传递相应的消息
         if userAction {
-            if self.disclosureButton.selected {
+            if self.btn_disclosure.selected {
                 if self.delegate.respondsToSelector("sectionHeaderView:sectionOpened:") {
                     NSLog("Press Open")
                     self.delegate.sectionHeaderView(self, sectionOpened: self.section)

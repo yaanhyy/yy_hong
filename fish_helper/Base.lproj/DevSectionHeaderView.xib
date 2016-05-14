@@ -40,9 +40,9 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="btn_open" destination="jsW-rh-Z6k" id="61m-dJ-MMI"/>
-                <outlet property="lab_dev_name" destination="sSS-ri-vVt" id="Kra-Cd-UJt"/>
-                <outlet property="lab_dev_online" destination="c73-aD-7Ys" id="L6W-O1-0W7"/>
+                <outlet property="btn_disclosure" destination="jsW-rh-Z6k" id="AhQ-rf-Fmj"/>
+                <outlet property="lab_dev_name" destination="sSS-ri-vVt" id="qyP-yt-a3v"/>
+                <outlet property="lab_dev_online" destination="c73-aD-7Ys" id="9rz-tb-NXD"/>
             </connections>
             <point key="canvasLocation" x="526" y="131"/>
         </view>

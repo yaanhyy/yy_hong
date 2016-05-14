@@ -62,7 +62,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         tab_dev_list.registerNib(sectionHeaderNib, forHeaderFooterViewReuseIdentifier: SectionHeaderViewIdentifier)
         
-        
+        //self.view.addSubview(tab_dev_list)
     }
 
     func init_view(){
@@ -264,7 +264,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // 返回指定的row 的cell。这个地方是比较关键的地方，一般在这个地方来定制各种个性化的 cell元素。这里只是使用最简单最基本的cell 类型。其中有一个主标题 cell.textLabel 还有一个副标题cell.detailTextLabel,  还有一个 image在最前头 叫cell.imageView.  还可以设置右边的图标，通过cell.accessoryType 可以设置是饱满的向右的蓝色箭头，还是单薄的向右箭头，还是勾勾标记。
         
-        let QuoteCellIdentifier = "QuoteCellIdentifier"
+        let QuoteCellIdentifier = "DevCellIdentifier"
         var cell: DevCell = tableView.dequeueReusableCellWithIdentifier(QuoteCellIdentifier) as! DevCell
         
         if MFMailComposeViewController.canSendMail() {
@@ -291,7 +291,8 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         var sectionInfo: DevItemSectionInfo = self.sectionInfoArray[section] as! DevItemSectionInfo
         sectionInfo.headerView = sectionHeaderView
         
-        sectionHeaderView.titleLabel.text = sectionInfo.play.Name
+        sectionHeaderView.lab_dev_name.text = sectionInfo.play.Name
+        sectionHeaderView.lab_dev_online.text = "在线"
         sectionHeaderView.section = section
         sectionHeaderView.delegate = self
         
