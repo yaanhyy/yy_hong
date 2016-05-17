@@ -178,6 +178,64 @@ let	REAL_DATA_TYPE_OP_FLAG:UInt8	= 14;
 let	REAL_DATA_TYPE_OP_FLAG_LEN:UInt8 = 1;
 let	REAL_DATA_TYPE_FALSE:UInt8	= 0xff;
 
+//  MODE_CFG_FRM
+var MODE_CFG_TYPE_TIME:UInt8	=	0x1;
+var MODE_CFG_TYPE_EXIT:UInt8	=	0x3;
+var MODE_CFG_TYPE_CTRL:UInt8	=	0x4;
+var MODE_CFG_TYPE_SYNC:UInt8	=	0x5;
+var MODE_CFG_TYPE_OP:UInt8	=	0x6;
+var MODE_CFG_TYPE_ADDR:UInt8 =  FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var MODE_CFG_TYPE_LEN:UInt8 = 1;
+var MODE_CFG_VER_ADDR:UInt8 = MODE_CFG_TYPE_ADDR+MODE_CFG_TYPE_LEN;
+var MODE_CFG_VER_LEN:UInt8 = 2;
+//cfg
+var MODE_CFG_NUM_ADDR:UInt8 = MODE_CFG_VER_ADDR+MODE_CFG_VER_LEN;
+var MODE_CFG_NUM_LEN:UInt8 = 1;
+var MODE_CFG_INFO_ADDR:UInt8 = MODE_CFG_NUM_ADDR+MODE_CFG_NUM_LEN;
+var MODE_CFG_INFO_START_LEN:UInt8 = 2;
+var MODE_CFG_INFO_END_LEN:UInt8 = 2;
+var MODE_CFG_INFO_STAT_SIG:UInt8 = 1;
+var MODE_CFG_INFO_STAT_ON:UInt8 = 16;
+var MODE_CFG_INFO_STAT_LEN:UInt8 = 1;
+var MODE_CFG_INFO_START_DATE_LEN:UInt8 = 2;
+var MODE_CFG_INFO_END_DATE_LEN:UInt8 = 2;
+var MODE_CFG_INFO_LEN:UInt8 = MODE_CFG_INFO_START_LEN + MODE_CFG_INFO_END_LEN + MODE_CFG_INFO_STAT_LEN+MODE_CFG_INFO_START_DATE_LEN + MODE_CFG_INFO_END_DATE_LEN;
+//sync
+
+var MODE_CFG_SYNC_LEN = MODE_CFG_VER_ADDR+MODE_CFG_VER_LEN;
+
+//manu_ctrl
+var MOTOR_STAT_FEED_ON:UInt8 = 3;
+var 	MOTOR_STAT_FEED_OFF:UInt8 = 2;
+var MODE_CFG_STAT_ADDR:UInt8	= MODE_CFG_VER_ADDR+MODE_CFG_VER_LEN;
+var MODE_CFG_STAT_LEN:UInt8 = 1;
+var MODE_CFG_DELAY_ADDR:UInt8 = MODE_CFG_STAT_ADDR + MODE_CFG_STAT_LEN;
+var MODE_CFG_DELAY_LEN:UInt8 = 2;
+var   MODE_CFG_STAT_FLAG_ADDR:UInt8 =    (MODE_CFG_DELAY_ADDR + MODE_CFG_DELAY_LEN);
+var    MODE_CFG_STAT_FLAG_LEN:UInt8   = 1;
+//mode_change
+var MODE_CFG_MODE_ADDR:UInt8	= MODE_CFG_VER_ADDR+MODE_CFG_VER_LEN;
+var MODE_CFG_MODE_LEN:UInt8 = 1;
+//  MODE_CFG_RSP_FRM
+var MODE_CFG_RSP_TYPE_EXIT:UInt8	=	MODE_CFG_TYPE_EXIT;
+var MODE_CFG_RSP_TYPE_CTRL:UInt8	=	MODE_CFG_TYPE_CTRL;
+var MODE_CFG_RSP_TYPE_TIME:UInt8	=	MODE_CFG_TYPE_TIME;
+var MODE_CFG_RSP_TYPE_OP:UInt8 	=	MODE_CFG_TYPE_OP;
+//var MODE_CFG_TYPE_SYNC	=	0x5;
+
+var MODE_CFG_RSP_TYPE_ADDR:UInt8 =  FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var MODE_CFG_RSP_TYPE_LEN:UInt8 = MODE_CFG_TYPE_LEN;
+//sync
+var MODE_CFG_RSP_VER_ADDR:UInt8 = MODE_CFG_RSP_TYPE_ADDR + MODE_CFG_RSP_TYPE_LEN;
+var MODE_CFG_RSP_VER_LEN:UInt8 = MODE_CFG_VER_LEN;
+
+var MODE_CFG_RSP_NUM_ADDR:UInt8 = MODE_CFG_RSP_VER_ADDR+MODE_CFG_RSP_VER_LEN;
+var MODE_CFG_RSP_NUM_LEN:UInt8 = MODE_CFG_NUM_LEN;
+
+var MODE_CFG_RSP_INFO_ADDR:UInt8 = MODE_CFG_RSP_NUM_ADDR+MODE_CFG_RSP_NUM_LEN;
+//else
+var MODE_CFG_RSP_RES_ADDR:UInt8 = MODE_CFG_RSP_VER_ADDR+MODE_CFG_RSP_VER_LEN;
+var MODE_CFG_RSP_RES_LEN:UInt8 = 1;
 
 //HIS
 var HIS_INFO_DAY_TYPE_AM:UInt8 = 0;
@@ -340,6 +398,17 @@ class his_info_c
 
 
 var his_info = his_info_c()
+
+class mode_cfg_c
+{
+    var delay_index:UInt16 = 0
+    var manu_stat:UInt8 = 0
+    var manu_mode:UInt8 = 0
+    var manu_stat_flag:UInt8 = 0
+    var op_flag:UInt8 = 0
+}
+
+var mode_cfg_info = mode_cfg_c()
 
 var USER_TYPE_NORMAL:UInt8 = 1;
 var USER_TYPE_MNG:UInt8 = 2;
@@ -555,7 +624,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                     addr += Int(USER_LOG_RSP_MODE_VER_LEN)
                     
                     var dev_num_stat:Int = 0
-                    
+                    /*
                     for j in 0..<dev_grp.dev_login_num
                     {
                        if(array_equal(dst:dev_info_rsp[Int(i)].dev_id, src:dev_grp.dev_info[Int(j)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
@@ -590,7 +659,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                             break;
                         }
                         dev_num_stat+=1
-                    }
+                    }*/
                 
                     if(dev_num_stat == dev_grp.dev_login_num)//no this dev, init to 0xffff
                     {
@@ -630,8 +699,8 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                   
                     copy_array(dst_in: &dev_grp.dev_info[i].dev_name, src_in:dev_info_rsp[i].dev_name, dst_start:0, src_start:0, arr_len:Int(USER_LOG_RSP_DEV_NAME_LEN))
                     dev_grp.dev_info[i].manu_id = dev_info_rsp[i].manu_id;
-                    //	comm_frame.dev.dev_info[i].mode_ver = log_rsp_data.dev_info[i].mode_ver;
-                    //	comm_frame.dev.dev_info[i].sys_ver = log_rsp_data.dev_info[i].sys_ver;
+                    dev_grp.dev_info[i].mode_ver = dev_info_rsp[i].mode_ver; //not use sync
+                    dev_grp.dev_info[i].sys_ver = dev_info_rsp[i].sys_ver; //not use sync
                     var flag:UInt8 = dev_grp.dev_info[i].flag & dev_grp.DEV_ONLINE_FLAG
                     dev_grp.dev_info[i].flag = dev_info_rsp[i].flag;
                     
@@ -815,6 +884,40 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                     var i = 1
                     //接收参数
                 }
+            }
+        case MODE_CFG_RSP_FRM:
+            var child_type = buf[Int(MODE_CFG_RSP_TYPE_ADDR)];
+            
+            
+            var dev_index_cur:Int = 0
+            copy_array(dst_in: &frame_head_info.dev_id, src_in:send_buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
+            
+            for i in 0..<dev_grp.dev_login_num
+            {
+                if(array_equal(dst:frame_head_info.dev_id, src:dev_grp.dev_info[Int(i)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
+                {
+                    //comm_frame.dev.dev_info[i].mode_ver = time_cfg_rsp_data.mode_ver;
+                    dev_index_cur = i
+                    break
+                }
+            }
+            var res = 0;
+            if(child_type == MODE_CFG_RSP_TYPE_CTRL)
+            {
+                
+                
+                res = Int(buf[Int(MODE_CFG_RSP_RES_ADDR)])
+                
+            }
+            else if(MODE_CFG_RSP_TYPE_EXIT == child_type)
+            {
+                
+                res = Int(buf[Int(MODE_CFG_RSP_RES_ADDR)])
+                
+            }
+            if(res != 0)
+            {
+                return res
             }
         case HIS_INFO_RSP_FRM:
             
@@ -1097,7 +1200,7 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
             frame_len = UInt16(SYS_CFG_INFO_ADDR)
             send_buf[Int(SYS_CFG_TYPE_ADDR)] = SYS_CFG_TYPE_VAR
             frame_len = get_sys_info(buf_info:&send_buf, start:Int(frame_len), dev_idx:Int(dev_index));
-            copy_short2byte(buf_info:&send_buf, start: Int(SYS_CFG_VER_ADDR), data_s: dev_grp.dev_info[Int(dev_index)].sys_ver);
+            copy_short2byte(buf_info:&send_buf, start: Int(SYS_CFG_VER_ADDR), data_s: dev_grp.dev_info[Int(dev_index)].sys_ver)
         }
         else if(child_type == SYS_CFG_TYPE_ADJ)
         {
@@ -1141,6 +1244,45 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
         send_buf[Int(SYS_CFG_TYPE_ADDR)] = child_type;
         
         len = Int(frame_len)+Int(FRAME_HEAD_LEN)
+    case MODE_CFG_FRM:
+        if(child_type == MODE_CFG_TYPE_TIME)
+        {
+          //  frame_head_info.frame_len = MODE_CFG_INFO_ADDR;
+           // frame_head_info.frame_len = get_time_cfg(buf, frame_head_info.frame_len);
+        }
+        else if(child_type == MODE_CFG_TYPE_SYNC)
+        {
+            frame_len = UInt16(MODE_CFG_SYNC_LEN)
+        }
+        else if(child_type == MODE_CFG_TYPE_CTRL)
+        {
+            send_buf[Int(MODE_CFG_STAT_ADDR)] =  1//mode_cfg_info.manu_stat;
+            var data_s = UInt16 (mode_cfg_info.delay_index * 15);
+            copy_short2byte(buf_info:&send_buf, start: Int(MODE_CFG_DELAY_ADDR), data_s: data_s)
+            send_buf[Int(MODE_CFG_STAT_FLAG_ADDR)] =  0x5//mode_cfg_info.manu_stat_flag
+            frame_len = UInt16(MODE_CFG_STAT_FLAG_ADDR) + UInt16(MODE_CFG_STAT_FLAG_LEN)
+        }
+        else if(child_type == MODE_CFG_TYPE_EXIT)
+        {
+            send_buf[Int(MODE_CFG_MODE_ADDR)] = mode_cfg_info.manu_stat;
+            frame_len = UInt16(MODE_CFG_MODE_ADDR) + UInt16(MODE_CFG_MODE_LEN)
+        }
+        else if(child_type == MODE_CFG_TYPE_OP)
+        {
+            send_buf[Int(MODE_CFG_MODE_ADDR)] = mode_cfg_info.op_flag;
+            frame_len = UInt16(MODE_CFG_MODE_ADDR) + UInt16(MODE_CFG_MODE_LEN)
+        }
+        
+        frame_len -= UInt16(FRAME_HEAD_LEN)
+        send_buf[Int(FRM_TYPE_ADDR)] = frame_type;
+        send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
+        send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
+        copy_short2byte(buf_info:&send_buf, start: Int(MODE_CFG_VER_ADDR), data_s: dev_grp.dev_info[dev_index].mode_ver)
+
+        send_buf[Int(MODE_CFG_TYPE_ADDR)] = child_type;
+        
+        len = Int(frame_len) + Int(FRAME_HEAD_LEN)
+    
     case HIS_INFO_FRM:
         
         send_buf[Int(FRM_TYPE_ADDR)] = frame_type

@@ -161,7 +161,7 @@ struct dev_info_struct
     var sys_adj_type:UInt8?
     var sys_adj_tmp:Float?
     var dev_id = [UInt8](count: Int(USER_LOG_RSP_ID_LEN), repeatedValue: 0)
-    var manu_id:UInt8?
+    var manu_id:UInt8 = 2
     var dev_name = [UInt8](count: Int(USER_LOG_RSP_DEV_NAME_LEN), repeatedValue: 0)
     var dev_pwd:[UInt8] = [UInt8]()
     var fish_type:[UInt8] = [UInt8]()
