@@ -173,14 +173,14 @@ struct dev_info_struct
     var his_barn_day_num:UInt8?
     // public history_barn_day_item_st[] his_barn_day_item;
     var real_data_rsp_info =  real_data_rsp()
-    var sys_var = sys_var_c()
+    var sys_var = sys_var_c()//事实针
     var sys_date = sys_date_c()
 }
 
 class dev_group
 {
-    var dev_login_num:Int = 0
-    var dev_online_num:Int = 0
+    var dev_login_num:Int = 0//台数
+    var dev_online_num:Int = 0//
     var DEV_REG_NUM:Int = 32
     var DEV_GRP_FLAG_REG:Int = 0x1
     var dev_grp_flag:Int = 0

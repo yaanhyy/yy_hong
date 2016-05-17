@@ -26,23 +26,28 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
       @IBOutlet weak var tab_dev_list: UITableView!
       @IBOutlet weak var lab_dev_online: UILabel!
     
-    let SectionHeaderViewIdentifier = "DevSectionHeaderViewIdentifier"
-    var plays:NSArray!
-    var sectionInfoArray:NSMutableArray!
+    let SectionHeaderViewIdentifier = "SectionHeaderViewIdentifier"
+    //var plays:NSArray!
+ 
     var pinchedIndexPath:NSIndexPath!
     var opensectionindex:Int!
     var initialPinchHeight:CGFloat!
     
-    var playe:NSMutableArray?
+    //var playe:NSMutableArray?
+    var arr_dev_list:NSMutableArray!
     
-    var sectionHeaderView:DevSectionHeaderView!
+    var sectionHeaderView:SectionHeaderView!
+    
+    var timer:NSTimer!
+    
     
     //当缩放手势同时改变了所有单元格高度时使用uniformRowHeight
     var uniformRowHeight: Int!
     
-    let DefaultRowHeight = 88
-    let HeaderHeight = 48
+    let DefaultRowHeight = 200
+    let HeaderHeight = 38
     
+
     
     func send_frame(frame_len: Int)
     {
@@ -84,34 +89,61 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         var buf = [UInt8](count: count, repeatedValue: 0)
         data.getBytes(&buf, length:count * sizeof(UInt8))
         var result =  frame_analysis(buf_info: buf, frame_len: count)
+        print(result)
         switch result {
         case 0:  //login in
-            //var i = 1
-            self.performSegueWithIdentifier("btn_login", sender: nil)
-        case 1:
-            let alert = UIAlertController(title: "登陆错误",
-                                          message: "用户不存在，请注册后使用", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion: nil)
-        case 2:
-            let alert = UIAlertController(title: "登陆错误",
-                                          message: "登陆密码错误，请重新输入", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion: nil)
-        default:
             var i = 1
+            print("获取实时帧成功")
+            //self.performSegueWithIdentifier("btn_login", sender: nil)
+//        case 1:
+//            let alert = UIAlertController(title: "登陆错误",
+//                                          message: "用户不存在，请注册后使用", preferredStyle: .Alert)
+//            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+//            alert.addAction(action)
+//            presentViewController(alert, animated: true, completion: nil)
+//        case 2:
+//            let alert = UIAlertController(title: "登陆错误",
+//                                          message: "登陆密码错误，请重新输入", preferredStyle: .Alert)
+//            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+//            alert.addAction(action)
+//            presentViewController(alert, animated: true, completion: nil)
+            break
+        default:
+            print("获取实时针失败！")
+            break
         }
         // print("incoming message: \(data)");
     }
     
+    //定时器触发函数
+    func did_request_real_data()
+    {
+        print("tick...")
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            dispatch_sync(dispatch_get_main_queue(),{
+                print("异步线程")
+                for i in 0..<dev_grp.dev_info.count{
+                    copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+                    var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
+                    self.send_frame(len)
+                }
+            })
+        })
+   
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-       plays = played()
+        
+        //setData()
+        //注册定时器
+        if(timer == nil){
+            timer = NSTimer.scheduledTimerWithTimeInterval(60,target:self,selector:Selector("did_request_real_data"),userInfo:nil,repeats:true)
+        }
+        
         init_view()
         // 为表视图添加缩放手势识别
-        var pinchRecognizer = UIPinchGestureRecognizer(target: self, action:"handlePinch:")
+        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action:"handlePinch:")
         tab_dev_list.addGestureRecognizer(pinchRecognizer)
         
         // 设置Header的高度
@@ -122,11 +154,22 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.uniformRowHeight = DefaultRowHeight
         self.opensectionindex = NSNotFound
         
-        let sectionHeaderNib: UINib = UINib(nibName: "DevSectionHeaderView", bundle: nil)
+        let sectionHeaderNib: UINib = UINib(nibName: "SectionHeaderView", bundle: nil)
         
         tab_dev_list.registerNib(sectionHeaderNib, forHeaderFooterViewReuseIdentifier: SectionHeaderViewIdentifier)
         
-        //self.view.addSubview(tab_dev_list)
+        //实时帧请求接口
+        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+        var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:0)
+        send_frame(len)
+        
+        //table代理
+        tab_dev_list.delegate = self
+        tab_dev_list.dataSource = self
+        
+        
+        
+        
     }
 
     func init_view(){
@@ -142,106 +185,10 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
 
         init_btn_imgview_onclick(img_weather_flush)
         
-        //setData()
-        
-        self.tab_dev_list.sectionHeaderHeight = CGFloat(66)
-       
-        tab_dev_list.registerClass(UITableViewCell.self, forCellReuseIdentifier: "MyTestCell")
-        self.view.addSubview(tab_dev_list)
-        
-        
-        
-//        let rec_screen:CGRect = UIScreen.mainScreen().bounds
-//        let val_screen_height = rec_screen.height
-//        let val_screen_width  = rec_screen.width
-        
-        //设备数量以上部分的 背景
-//        let img_top_views_backgd = UIImageView(image: UIImage(named: "weather_bj.png"))
-//        img_top_views_backgd.frame = CGRectMake(0, 0, val_screen_width, val_screen_height/6)
-//        self.view.addSubview(img_top_views_backgd)
-        
-        //侧滑的背景图片
-//        img_sideslip=UIImageView(image:UIImage(named:"mulu.png"))
-//        img_sideslip.frame=CGRectMake(0,0,val_screen_width*0.1,val_screen_height/24)
-//        self.view.addSubview(img_sideslip)
-//        init_btn_imgview_onclick(img_sideslip)
-        
-        //产品推广标签
-//        lab_title = UILabel(frame: CGRectMake(val_screen_width*0.1, 0, val_screen_width*0.9, val_screen_height/24))
-//        lab_title.text = "护渔宝智能水产监控系统 400-0806390"
-//        lab_title.adjustsFontSizeToFitWidth = true
-//        //lab_title.backgroundColor = UIColor.clearColor()
-//        lab_title.textColor = UIColor.whiteColor()
-//        self.view.addSubview(lab_title)
-        
-//        print(val_screen_height/24)
-//        //产品推广和天气分割线
-//        lab_underliner = UILabel(frame: CGRectMake(0, val_screen_height/24, val_screen_width, CGFloat(1)))
-//        //lab_title.backgroundColor = UIColor.blueColor()
-//        self.view.addSubview(lab_underliner)
-        
-        //天气状态图片
-//        img_weather_state = UIImageView(image: UIImage(named: "yun.png"))
-//        img_weather_state.frame = CGRectMake(0, val_screen_height/24+1, val_screen_width*0.2, (val_screen_height/6 - val_screen_height/24-1))
-//        img_weather_state.contentMode = UIViewContentMode.ScaleAspectFit
-//        self.view.addSubview(img_weather_state)
-        
-        //天气文字描述
-//        lab_weather_details = UILabel(frame: CGRectMake(val_screen_width*0.2, val_screen_height/24+1, val_screen_width*0.6, (val_screen_height/6 - val_screen_height/24-1)))
-//        lab_weather_details.adjustsFontSizeToFitWidth = true
-//        lab_weather_details.preferredMaxLayoutWidth = 2
-//        lab_weather_details.textColor = UIColor.whiteColor()
-//        self.view.addSubview(lab_weather_details)
-        
-        //天气刷新图片
-//        img_weather_flush = UIImageView(frame: CGRectMake(val_screen_width*0.8, val_screen_height/24+1, val_screen_width*0.2, (val_screen_height/6 - val_screen_height/24-1)))
-//        img_weather_flush.contentMode = UIViewContentMode.ScaleAspectFit
-//        self.view.addSubview(img_weather_flush)
-//        init_btn_imgview_onclick(img_weather_flush)
-        
-//        //设备数量一栏背景图片设置
-//        let img_dev_nums_views_backgd = UIImageView(image:UIImage(named:"clockbg_unpress.png"))
-//        img_dev_nums_views_backgd.frame=CGRectMake(0,val_screen_height/6,val_screen_width,val_screen_height/15)
-//        self.view.addSubview(img_dev_nums_views_backgd)
-        
-        //设备数量标签
-//        lab_dev_sum = UILabel(frame:CGRectMake(2,val_screen_height/6,val_screen_width*0.45,val_screen_height*1/15))// /15+/6
-//        lab_dev_sum.text = "设备数量:15台"
-//        lab_dev_sum.adjustsFontSizeToFitWidth = true
-//        self.view.addSubview(lab_dev_sum)
-        
-        //在线设备标签
-//        lab_dev_online = UILabel(frame:CGRectMake(2+val_screen_width*0.45,val_screen_height/6,val_screen_width*0.45,val_screen_height*1/15))// /15+/6
-//        lab_dev_online.text = "在线设备:0台"
-//        lab_dev_online.adjustsFontSizeToFitWidth = true;
-//        self.view.addSubview(lab_dev_online)
-        
-        //设备添加
-//        img_dev_add = UIImageView(image:UIImage(named:"dev_add_unpress.png"))
-//        img_dev_add.frame=CGRectMake(2+val_screen_width*0.9,val_screen_height/6+1,val_screen_width*0.1-4,val_screen_height*1/15-2)
-//        img_dev_add.contentMode = UIViewContentMode.ScaleAspectFit
-//        self.view.addSubview(img_dev_add)
-//        init_btn_imgview_onclick(img_dev_add)
-        
-        //列表一栏数据
-//        self.dataArray = NSMutableArray()
-//        self.dataArray!.addObject("11111")
-//        self.dataArray!.addObject("22222")
-//        self.dataArray!.addObject("33333")
-//        self.dataArray!.addObject("44444")
-//        
-//        //列表一栏控件UITableView(frame: CGRectMake(0, 0, 320, 600), style: UITableViewStyle.Plain)  
-//        tab_dev_list = UITableView(frame: CGRectMake(1, val_screen_height*7/30, val_screen_width-2, val_screen_height*23/30),style: UITableViewStyle.Plain)
-//        tab_dev_list.dataSource = self
-//        tab_dev_list.delegate = self
-//        
-//        tab_dev_list.registerClass(UITableViewCell.self, forCellReuseIdentifier: "MyTestCell")
-//        self.view.addSubview(tab_dev_list)
+        lab_dev_sum.text = "设备总数："+String(dev_grp.dev_login_num)
+        lab_dev_online.text =  "在线设备："+String(dev_grp.dev_online_num)
         
     }
-    
-    
-    
     
     //初始化图片点击事件
     func init_btn_imgview_onclick(imageview:UIImageView){
@@ -283,20 +230,19 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         return true
     }
     
+   //数据分组
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // 检查分节信息数组是否已被创建，如果其已创建，则再检查节的数量是否仍然匹配当前节的数量。通常情况下，您需要保持分节信息与单元格、分节格同步u过您要允许在表视图中编辑信息，您需要在编辑操作中适当更新分节信息。
-        
-        if self.sectionInfoArray == nil || self.sectionInfoArray.count != self.numberOfSectionsInTableView(tab_dev_list) {
+      
+        if self.arr_dev_list == nil || self.arr_dev_list.count != self.numberOfSectionsInTableView(tab_dev_list) {
+            print("数据需要更新")
             
-            //对于每个场次来说，需要为每个单元格设立一个一致的、包含默认高度的SectionInfo对象。
             var infoArray = NSMutableArray()
             
-            for play in self.plays {
-                var dic = (play as! Group).dev_items
+            for play in dev_grp.dev_info {
+                var dic = (play as! dev_info_struct)
                 var sectionInfo = DevItemSectionInfo()
-                sectionInfo.play = play as! Group
+                sectionInfo.play = play as! dev_info_struct
                 sectionInfo.open = false
                 
                 var defaultRowHeight = DefaultRowHeight
@@ -308,18 +254,28 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 infoArray.addObject(sectionInfo)
             }
             
-            self.sectionInfoArray  = infoArray
+            self.arr_dev_list  = infoArray
         }
     }
+ 
+    //[UInt8]转string
+    func StringToInt(bytes:[UInt8])->NSString{
+        var gbkEncoding: NSStringEncoding = CFStringConvertEncodingToNSStringEncoding(UInt32(CFStringEncodings.GB_18030_2000.rawValue))
+        let data = NSData(bytes: bytes, length: bytes.count)
+        let dogString:NSString = NSString(data: data, encoding:gbkEncoding )!
+        return dogString
+    }
+
     
+    //tabview方法
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // 这个方法返回 tableview 有多少个section
-        return self.plays.count
+        return dev_grp.dev_info.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // 这个方法返回对应的section有多少个元素，也就是多少行
-        var sectionInfo: DevItemSectionInfo = self.sectionInfoArray[section] as! DevItemSectionInfo
+        var sectionInfo: DevItemSectionInfo = self.arr_dev_list[section] as! DevItemSectionInfo
         var numStoriesInSection = 1
         var sectionOpen = sectionInfo.open!
         return sectionOpen ? numStoriesInSection : 0
@@ -329,7 +285,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         // 返回指定的row 的cell。这个地方是比较关键的地方，一般在这个地方来定制各种个性化的 cell元素。这里只是使用最简单最基本的cell 类型。其中有一个主标题 cell.textLabel 还有一个副标题cell.detailTextLabel,  还有一个 image在最前头 叫cell.imageView.  还可以设置右边的图标，通过cell.accessoryType 可以设置是饱满的向右的蓝色箭头，还是单薄的向右箭头，还是勾勾标记。
         
         let QuoteCellIdentifier = "DevCellIdentifier"
-        var cell: DevCell = tableView.dequeueReusableCellWithIdentifier(QuoteCellIdentifier) as! DevCell
+        var cell: DevCell = tab_dev_list.dequeueReusableCellWithIdentifier(QuoteCellIdentifier) as! DevCell
         
         if MFMailComposeViewController.canSendMail() {
             
@@ -342,30 +298,42 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.longPressRecognizer = nil
         }
         
-        var play:Group = (self.sectionInfoArray[indexPath.section] as! DevItemSectionInfo).play
-        cell.dev_item = play.dev_items
-        cell.setDevCell(cell.dev_item)
+        var play:dev_info_struct = (self.arr_dev_list[indexPath.section] as! DevItemSectionInfo).play
+        cell.dev_info_cell = play
+        cell.setDevCell(cell.dev_info_cell)
         cell.setTheLongPressRecognizer(cell.longPressRecognizer)
         return cell
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // 返回指定的 section header 的view，如果没有，这个函数可以不返回view
-        var sectionHeaderView: DevSectionHeaderView = tableView.dequeueReusableHeaderFooterViewWithIdentifier(SectionHeaderViewIdentifier) as! DevSectionHeaderView
-        var sectionInfo: DevItemSectionInfo = self.sectionInfoArray[section] as! DevItemSectionInfo
+        var sectionHeaderView: SectionHeaderView = tab_dev_list.dequeueReusableHeaderFooterViewWithIdentifier(SectionHeaderViewIdentifier) as! SectionHeaderView
+        var sectionInfo: DevItemSectionInfo = self.arr_dev_list[section] as! DevItemSectionInfo
         sectionInfo.headerView = sectionHeaderView
         
-        sectionHeaderView.lab_dev_name.text = sectionInfo.play.Name
-        sectionHeaderView.lab_dev_online.text = "在线"
+        
+        
+        
+        sectionHeaderView.lab_dev_name.text = StringToInt(dev_grp.dev_info[section].dev_name) as String
+//        sectionHeaderView.lab_dev_name.text = String(dev_grp.dev_info[section].dev_name) as String
+        if(dev_grp.dev_info[section].flag  & 0x8) == 0x8{
+            sectionHeaderView.lab_dev_online.text = "在线"
+        }
+        else{
+            sectionHeaderView.lab_dev_online.text = "离线"
+        }
+        sectionHeaderView.lab_dev_name.textColor=UIColor.blackColor()
+        sectionHeaderView.lab_dev_online.textColor = UIColor.blackColor()
         sectionHeaderView.section = section
         sectionHeaderView.delegate = self
         
         return sectionHeaderView
     }
     
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         // 这个方法返回指定的 row 的高度
-        var sectionInfo: DevItemSectionInfo = self.sectionInfoArray[indexPath.section] as! DevItemSectionInfo
+        var sectionInfo: DevItemSectionInfo = self.arr_dev_list[indexPath.section] as! DevItemSectionInfo
         
         return CGFloat(sectionInfo.objectInRowHeightsAtIndex(indexPath.row) as! NSNumber)
         //又或者，返回单元格的行高
@@ -374,9 +342,9 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     // _________________________________________________________________________
     // SectionHeaderViewDelegate
     
-   func sectionHeaderView(sectionHeaderView: DevSectionHeaderView, sectionOpened: Int) {
+   func sectionHeaderView(sectionHeaderView: SectionHeaderView, sectionOpened: Int) {
         
-        var sectionInfo: DevItemSectionInfo = self.sectionInfoArray[sectionOpened] as! DevItemSectionInfo
+        var sectionInfo: DevItemSectionInfo = self.arr_dev_list[sectionOpened] as! DevItemSectionInfo
         
         sectionInfo.open = true
         
@@ -396,7 +364,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         var previousOpenSectionIndex = self.opensectionindex
         if previousOpenSectionIndex != NSNotFound {
             
-            var previousOpenSection: DevItemSectionInfo = self.sectionInfoArray[previousOpenSectionIndex] as! DevItemSectionInfo
+            var previousOpenSection: DevItemSectionInfo = self.arr_dev_list[previousOpenSectionIndex] as! DevItemSectionInfo
             previousOpenSection.open = false
             previousOpenSection.headerView.toggleOpenWithUserAction(false)
             var countOfRowsToDelete = 1
@@ -426,10 +394,10 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         tab_dev_list.endUpdates()
     }
     
-    func sectionHeaderView(sectionHeaderView: DevSectionHeaderView, sectionClosed: Int) {
+    func sectionHeaderView(sectionHeaderView: SectionHeaderView, sectionClosed: Int) {
         
         // 在表格关闭的时候，创建一个包含单元格索引路径的数组，接下来从表格中删除这些行
-        var sectionInfo: DevItemSectionInfo = self.sectionInfoArray[sectionClosed] as! DevItemSectionInfo
+        var sectionInfo: DevItemSectionInfo = self.arr_dev_list[sectionClosed] as! DevItemSectionInfo
         
         sectionInfo.open = false
         var countOfRowsToDelete = tab_dev_list.numberOfRowsInSection(sectionClosed)
@@ -461,7 +429,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let newPinchedIndexPath = tab_dev_list.indexPathForRowAtPoint(pinchLocation)
             self.pinchedIndexPath = newPinchedIndexPath
             
-            let sectionInfo: DevItemSectionInfo = self.sectionInfoArray[newPinchedIndexPath!.section] as! DevItemSectionInfo
+            let sectionInfo: DevItemSectionInfo = self.arr_dev_list[newPinchedIndexPath!.section] as! DevItemSectionInfo
             self.initialPinchHeight = sectionInfo.objectInRowHeightsAtIndex(newPinchedIndexPath!.row) as! CGFloat
             NSLog("pinch Gesture began")
             // 也可以设置为 initialPinchHeight = uniformRowHeight
@@ -490,12 +458,10 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 newHeight = round(CGFloat(DefaultRowHeight))
             }
             
-            let sectionInfo: DevItemSectionInfo = self.sectionInfoArray[indexPath!.section] as! DevItemSectionInfo
+            var sectioninfo = DevItemSectionInfo()
+            let sectionInfo: DevItemSectionInfo = self.arr_dev_list[indexPath!.section] as! DevItemSectionInfo
             sectionInfo.replaceObjectInRowHeightsAtIndex(indexPath!.row, withObject: (newHeight))
-            // 也可以设置为 uniformRowHeight = newHeight
-            
-            // 在单元格高度改变时关闭动画， 不然的话就会有迟滞的现象
-            
+           
             let animationsEnabled: Bool = UIView.areAnimationsEnabled()
             UIView.setAnimationsEnabled(false)
             tab_dev_list.beginUpdates()
@@ -547,11 +513,12 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     func sendEmailForEntryAtIndexPath(indexPath: NSIndexPath) {
         
-        let play: Group = self.plays[indexPath.section] as! Group
-        let quotation: Dev_item = play.dev_items
+        //let play: [dev_info_struct] = dev_grp.dev_info[indexPath.section]
+         let play: [dev_info_struct] = dev_grp.dev_info
+        let quotation: dev_info_struct = play[indexPath.section]
         
         // 在实际使用中，可以调用邮件的API来实现真正的发送邮件
-        print("用以下语录发送邮件: \(quotation.Name)")
+        print("用以下语录发送邮件: \(quotation.dev_name)")
     }
     
     func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
@@ -563,40 +530,45 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         //}
     }
     
-    func played() -> NSArray {
-        
-        if playe == nil {
-            
-//            var url = NSBundle.mainBundle().URLForResource("PlaysAndQuotations", withExtension: "plist")
-//            var playDictionariesArray = NSArray(contentsOfURL: url!)
-//            playe = NSMutableArray(capacity: playDictionariesArray!.count)
-            playe = NSMutableArray(capacity: 3)
-            for i in 1...3 {
-                
-                let play: Group! = Group()
-                play.Name = "设备"+"\(i)"
-                
-                //var quotationDictionaries:NSArray = playDictionary["quotations"] as! NSArray
-                //var quotations = NSMutableArray(capacity: quotationDictionaries.count)
-                
-                //for quotationDictionary in quotationDictionaries {
-                    
-                    //var quotationDic:NSDictionary = quotationDictionary as! NSDictionary
-                play.dev_items.Name = play.Name
-                play.dev_items.not_turnon = true
-                play.dev_items.update_time="更新时间：2015/5/14 14:20:00"
-                play.dev_items.water_tmp = 80
-                play.dev_items.oxy_val = 100
-                    //quotation.setValuesForKeysWithDictionary(quotationDic as! [String: AnyObject])
-                
-                //}
-                playe!.addObject(play)
-            }
+//    func played() -> NSArray {
+//        
+//        if playe == nil {
+//            
+////            var url = NSBundle.mainBundle().URLForResource("PlaysAndQuotations", withExtension: "plist")
+////            var playDictionariesArray = NSArray(contentsOfURL: url!)
+////            playe = NSMutableArray(capacity: playDictionariesArray!.count)
+//            playe = NSMutableArray(capacity: 3)
+//            for i in 1...3 {
+//                
+//                let play: Group! = Group()
+//                play.Name = "设备"+"\(i)"
+//                
+//                //var quotationDictionaries:NSArray = playDictionary["quotations"] as! NSArray
+//                //var quotations = NSMutableArray(capacity: quotationDictionaries.count)
+//                
+//                //for quotationDictionary in quotationDictionaries {
+//                    
+//                    //var quotationDic:NSDictionary = quotationDictionary as! NSDictionary
+//                play.dev_items.Name = play.Name
+//                play.dev_items.not_turnon = true
+//                play.dev_items.update_time="更新时间：2015/5/14 14:20:00"
+//                play.dev_items.water_tmp = 80
+//                play.dev_items.oxy_val = 100
+//                    //quotation.setValuesForKeysWithDictionary(quotationDic as! [String: AnyObject])
+//                
+//                //}
+//                playe!.addObject(play)
+//            }
+//        }
+//        
+//        return playe!
+//    }
+    override func viewDidDisappear(animated: Bool) {
+        print("定时器取消。。。")
+        if timer != nil{
+            timer.invalidate()
         }
-        
-        return playe!
     }
-
   
 
 }

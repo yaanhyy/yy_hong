@@ -142,7 +142,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="body_bj" translatesAutoresizingMaskIntoConstraints="NO" id="mR9-Hm-Pnj">
                                 <rect key="frame" x="0.0" y="123" width="320" height="445"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dev_add_unpress.png" translatesAutoresizingMaskIntoConstraints="NO" id="isZ-yL-VxY">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dev_add_unpress" translatesAutoresizingMaskIntoConstraints="NO" id="isZ-yL-VxY">
                                 <rect key="frame" x="271" y="95" width="29" height="25"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mulu" translatesAutoresizingMaskIntoConstraints="NO" id="tAP-gA-QZz">
@@ -158,7 +158,7 @@
                                 <rect key="frame" x="0.0" y="123" width="320" height="445"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DevCell" rowHeight="180" id="kbQ-51-BJu" customClass="DevCell" customModule="fish_helper" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DevCellIdentifier" rowHeight="180" id="kbQ-51-BJu" customClass="DevCell" customModule="fish_helper" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="180"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kbQ-51-BJu" id="IyU-cj-7Ka">
@@ -166,7 +166,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="yu_bj_unpress" translatesAutoresizingMaskIntoConstraints="NO" id="opf-lk-Wa3">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="187"/>
+                                                    <rect key="frame" x="0.0" y="5" width="320" height="197"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tmp" translatesAutoresizingMaskIntoConstraints="NO" id="8mk-Yl-F4Z">
                                                     <rect key="frame" x="18" y="46" width="24" height="22"/>
@@ -178,7 +178,7 @@
                                                     <rect key="frame" x="107" y="118" width="29" height="25"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="time_stat" translatesAutoresizingMaskIntoConstraints="NO" id="hWA-lM-MK4">
-                                                    <rect key="frame" x="16" y="149" width="29" height="22"/>
+                                                    <rect key="frame" x="16" y="149" width="22" height="22"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="event_btn_normal" translatesAutoresizingMaskIntoConstraints="NO" id="VKS-jB-s0K">
                                                     <rect key="frame" x="246" y="120" width="59" height="51"/>
@@ -323,7 +323,7 @@
         <image name="backgd" width="140" height="238"/>
         <image name="body_bj" width="160" height="266"/>
         <image name="clockbg_unpress" width="6" height="20"/>
-        <image name="dev_add_unpress.png" width="11" height="11"/>
+        <image name="dev_add_unpress" width="21" height="21"/>
         <image name="event_btn_normal" width="28" height="24"/>
         <image name="flush" width="21" height="21"/>
         <image name="mulu" width="10" height="10"/>

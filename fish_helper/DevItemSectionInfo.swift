@@ -11,8 +11,8 @@ import Foundation
 // 定义了分节表头的一系列属性、方法
 class DevItemSectionInfo: NSObject {
     var open: Bool!
-    var play: Group!
-    var headerView: DevSectionHeaderView!
+    var play: dev_info_struct!
+    var headerView: SectionHeaderView!
     
     var rowHeights = NSMutableArray()
     

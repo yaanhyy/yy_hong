@@ -11,11 +11,11 @@ import UIKit
 // 该协议将被分节表头的委托实现； 当分节表被打开关闭时，分节表头将通知发送给委托
 protocol SectionHeaderViewDelegate: class, NSObjectProtocol{
     
-    func sectionHeaderView(sectionHeaderView: DevSectionHeaderView, sectionOpened: Int)
-    func sectionHeaderView(sectionHeaderView: DevSectionHeaderView, sectionClosed: Int)
+    func sectionHeaderView(sectionHeaderView: SectionHeaderView, sectionOpened: Int)
+    func sectionHeaderView(sectionHeaderView: SectionHeaderView, sectionClosed: Int)
 }
 
-class DevSectionHeaderView: UITableViewHeaderFooterView {
+class SectionHeaderView: UITableViewHeaderFooterView {
     
     @IBOutlet weak var lab_dev_name: UILabel!
     @IBOutlet weak var lab_dev_online: UILabel!
@@ -26,11 +26,9 @@ class DevSectionHeaderView: UITableViewHeaderFooterView {
     var section: Int!
     
     override func awakeFromNib() {
-        
-        // 设置disclosure 按钮的图片（被打开）
+        self.tintColor=UIColor.blackColor()
         self.btn_disclosure.setImage(UIImage(named: "dev_close"), forState: UIControlState.Selected)
         
-        // 建立点击手势识别
         var tapGesture = UITapGestureRecognizer(target: self, action: "toggleOpen:")
         
         self.addGestureRecognizer(tapGesture)
