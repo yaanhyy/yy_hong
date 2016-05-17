@@ -18,11 +18,9 @@
 		783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783BE06B1CE04790009DBF38 /* Main.storyboard */; };
 		783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783BE06E1CE05E20009DBF38 /* DevListViewController.swift */; };
 		783D07421CE6FFFF001E64AD /* dev_grp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783D07411CE6FFFF001E64AD /* dev_grp.swift */; };
-		78F73D491CE5825B00F031EB /* Dev_item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D481CE5825B00F031EB /* Dev_item.swift */; };
 		78F73D4B1CE5842500F031EB /* DevCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D4A1CE5842500F031EB /* DevCell.swift */; };
-		78F73D4E1CE58DA400F031EB /* DevSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78F73D4C1CE58DA400F031EB /* DevSectionHeaderView.xib */; };
-		78F73D501CE5A15400F031EB /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D4F1CE5A15400F031EB /* Group.swift */; };
-		78F73D521CE5A2A700F031EB /* DevSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D511CE5A2A700F031EB /* DevSectionHeaderView.swift */; };
+		78F73D4E1CE58DA400F031EB /* SectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78F73D4C1CE58DA400F031EB /* SectionHeaderView.xib */; };
+		78F73D521CE5A2A700F031EB /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D511CE5A2A700F031EB /* SectionHeaderView.swift */; };
 		78F73D541CE5AA6300F031EB /* DevItemSectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D531CE5AA6300F031EB /* DevItemSectionInfo.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,11 +60,9 @@
 		783BE06C1CE04790009DBF38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		783BE06E1CE05E20009DBF38 /* DevListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevListViewController.swift; sourceTree = "<group>"; };
 		783D07411CE6FFFF001E64AD /* dev_grp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dev_grp.swift; sourceTree = "<group>"; };
-		78F73D481CE5825B00F031EB /* Dev_item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dev_item.swift; sourceTree = "<group>"; };
 		78F73D4A1CE5842500F031EB /* DevCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevCell.swift; sourceTree = "<group>"; };
-		78F73D4D1CE58DA400F031EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/DevSectionHeaderView.xib; sourceTree = "<group>"; };
-		78F73D4F1CE5A15400F031EB /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
-		78F73D511CE5A2A700F031EB /* DevSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevSectionHeaderView.swift; sourceTree = "<group>"; };
+		78F73D4D1CE58DA400F031EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SectionHeaderView.xib; sourceTree = "<group>"; };
+		78F73D511CE5A2A700F031EB /* SectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		78F73D531CE5AA6300F031EB /* DevItemSectionInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevItemSectionInfo.swift; sourceTree = "<group>"; };
 		8AB7406D1A43D810B37409F0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,9 +121,7 @@
 				783D07411CE6FFFF001E64AD /* dev_grp.swift */,
 				783108641CE19EE7008EE608 /* comm_frame.swift */,
 				783BE06B1CE04790009DBF38 /* Main.storyboard */,
-				78F73D4C1CE58DA400F031EB /* DevSectionHeaderView.xib */,
-				78F73D4F1CE5A15400F031EB /* Group.swift */,
-				78F73D481CE5825B00F031EB /* Dev_item.swift */,
+				78F73D4C1CE58DA400F031EB /* SectionHeaderView.xib */,
 				78F73D4A1CE5842500F031EB /* DevCell.swift */,
 				1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */,
 				1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */,
@@ -135,7 +129,7 @@
 				1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */,
 				1FFBF9DD1CD64B3F000B22C1 /* Info.plist */,
 				783BE06E1CE05E20009DBF38 /* DevListViewController.swift */,
-				78F73D511CE5A2A700F031EB /* DevSectionHeaderView.swift */,
+				78F73D511CE5A2A700F031EB /* SectionHeaderView.swift */,
 				78F73D531CE5AA6300F031EB /* DevItemSectionInfo.swift */,
 			);
 			path = fish_helper;
@@ -247,7 +241,6 @@
 				TargetAttributes = {
 					1FFBF9CD1CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 868MAGN5BR;
 					};
 					1FFBF9E11CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
@@ -285,7 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */,
-				78F73D4E1CE58DA400F031EB /* DevSectionHeaderView.xib in Resources */,
+				78F73D4E1CE58DA400F031EB /* SectionHeaderView.xib in Resources */,
 				1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */,
 				783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */,
 			);
@@ -361,13 +354,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				78F73D4B1CE5842500F031EB /* DevCell.swift in Sources */,
-				78F73D501CE5A15400F031EB /* Group.swift in Sources */,
 				783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */,
-				78F73D491CE5825B00F031EB /* Dev_item.swift in Sources */,
 				78F73D541CE5AA6300F031EB /* DevItemSectionInfo.swift in Sources */,
 				783D07421CE6FFFF001E64AD /* dev_grp.swift in Sources */,
 				783108651CE19EE7008EE608 /* comm_frame.swift in Sources */,
-				78F73D521CE5A2A700F031EB /* DevSectionHeaderView.swift in Sources */,
+				78F73D521CE5A2A700F031EB /* SectionHeaderView.swift in Sources */,
 				1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */,
 				1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */,
 			);
@@ -421,12 +412,12 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		78F73D4C1CE58DA400F031EB /* DevSectionHeaderView.xib */ = {
+		78F73D4C1CE58DA400F031EB /* SectionHeaderView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				78F73D4D1CE58DA400F031EB /* Base */,
 			);
-			name = DevSectionHeaderView.xib;
+			name = SectionHeaderView.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
