@@ -106,6 +106,23 @@ class sys_date_c
     var sec:UInt = 0
 }
 
+class his_info_item_class
+{
+    var valid:UInt8 = 0
+    var tmp_air:UInt16 = 0
+    var wet_air:UInt16 = 0
+    var soil_tmp:UInt16 = 0
+    var soil_wet:UInt16 = 0
+    var co2:UInt16 = 0
+    var lt:UInt16 = 0
+    var tmp:UInt16 = 0
+    var ox:UInt16 = 0
+    var ph:UInt16 = 0
+    var stat:UInt8 = 0
+    var  am:UInt16 = 0
+}
+
+
 struct dev_info_struct
 {
     
@@ -113,7 +130,7 @@ struct dev_info_struct
     /* public sys_date date;
      public sys_date event_date;
      public byte his_day_type;
-     public short his_data_num;
+     
      public byte his_data_yday_num;
      public byte his_data_y2day_num;
      public byte his_data_today_num;
@@ -137,12 +154,14 @@ struct dev_info_struct
      public his_info_item_class[] his_info_y10day_item;
      public his_info_item_class[] his_info_y8day_item;
      public his_info_item_class[] his_info_y9day_item;
-     public his_info_item_class[] his_info_item;
+     
      public List<dev_group.his_info_item_class[]> his_info_y7day_item;*/
+    var  his_data_num:UInt16 = 0
+    var his_info_item = [his_info_item_class]()
     var sys_adj_type:UInt8?
     var sys_adj_tmp:Float?
     var dev_id = [UInt8](count: Int(USER_LOG_RSP_ID_LEN), repeatedValue: 0)
-    var manu_id:UInt8?
+    var manu_id:UInt8 = 2
     var dev_name = [UInt8](count: Int(USER_LOG_RSP_DEV_NAME_LEN), repeatedValue: 0)
     var dev_pwd:[UInt8] = [UInt8]()
     var fish_type:[UInt8] = [UInt8]()
