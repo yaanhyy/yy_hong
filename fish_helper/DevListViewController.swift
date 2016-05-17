@@ -287,21 +287,23 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         let QuoteCellIdentifier = "DevCellIdentifier"
         var cell: DevCell = tab_dev_list.dequeueReusableCellWithIdentifier(QuoteCellIdentifier) as! DevCell
         
-        if MFMailComposeViewController.canSendMail() {
+        
             
-            if cell.longPressRecognizer == nil {
+         if cell.longPressRecognizer == nil {
                 var longPressRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
                 cell.longPressRecognizer = longPressRecognizer
-            }
-        }
-        else {
-            cell.longPressRecognizer = nil
-        }
+         }
+        if cell.onlickRecognizer == nil {
+                var onclickRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleonlick:")
+                cell.onlickRecognizer = onclickRecognizer
+         }
+       
         
         var play:dev_info_struct = (self.arr_dev_list[indexPath.section] as! DevItemSectionInfo).play
         cell.dev_info_cell = play
         cell.setDevCell(cell.dev_info_cell)
         cell.setTheLongPressRecognizer(cell.longPressRecognizer)
+        cell.setTheOnclickRecognizer(cell.onlickRecognizer!)
         return cell
     }
     
@@ -472,7 +474,6 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     // ________________________________________________________________________
     // 处理长按手势
-    
     func handleLongPress(longPressRecognizer: UILongPressGestureRecognizer) {
         
         // 对于长按手势来说，唯一的状态是Began
@@ -486,18 +487,37 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             if pressedIndexPath != nil && pressedIndexPath?.row != NSNotFound && pressedIndexPath?.section != NSNotFound {
                 
                 self.becomeFirstResponder()
-                let title = NSBundle.mainBundle().localizedStringForKey("邮件", value: "", table: nil)
-                let menuItem: EmailMenuItem = EmailMenuItem(title: title, action: "emailMenuButtonPressed:")
-                menuItem.indexPath = pressedIndexPath
-                
-                let menuController = UIMenuController.sharedMenuController()
-                menuController.menuItems = [menuItem]
-                
-                var cellRect = tab_dev_list.rectForRowAtIndexPath(pressedIndexPath!)
-                // 略微减少对象的长宽高（不要让其在单元格上方显示得太高）
-                cellRect.origin.y = cellRect.origin.y + 40.0
-                menuController.setTargetRect(cellRect, inView: tab_dev_list)
-                menuController.setMenuVisible(true, animated: true)
+                print("长按手势")
+//                let title = NSBundle.mainBundle().localizedStringForKey("邮件", value: "", table: nil)
+//                let menuItem: EmailMenuItem = EmailMenuItem(title: title, action: "emailMenuButtonPressed:")
+//                menuItem.indexPath = pressedIndexPath
+//                
+//                let menuController = UIMenuController.sharedMenuController()
+//                menuController.menuItems = [menuItem]
+//                
+//                var cellRect = tab_dev_list.rectForRowAtIndexPath(pressedIndexPath!)
+//                // 略微减少对象的长宽高（不要让其在单元格上方显示得太高）
+//                cellRect.origin.y = cellRect.origin.y + 40.0
+//                menuController.setTargetRect(cellRect, inView: tab_dev_list)
+//                menuController.setMenuVisible(true, animated: true)
+            }
+        }
+    }
+    //处理点击手势
+    func handleonlick(onlickRecognizer: UITapGestureRecognizer) {
+        
+        // 对于长按手势来说，唯一的状态是Began
+        // 当长按手势被识别后，将会找寻按压点的单元格的索引路径
+        // 如果按压位置存在一个单元格，那么就会创建一个菜单并展示它
+        
+        if onlickRecognizer.state == UIGestureRecognizerState.Began {
+            
+            let pressedIndexPath = tab_dev_list.indexPathForRowAtPoint(onlickRecognizer.locationInView(tab_dev_list))
+            
+            if pressedIndexPath != nil && pressedIndexPath?.row != NSNotFound && pressedIndexPath?.section != NSNotFound {
+                 self.becomeFirstResponder()
+                print("点击事件")
+                //
             }
         }
     }
@@ -506,6 +526,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         let menuItem: EmailMenuItem = UIMenuController.sharedMenuController().menuItems![0] as! EmailMenuItem
         if menuItem.indexPath != nil {
+            print("email...")
             self.resignFirstResponder()
             self.sendEmailForEntryAtIndexPath(menuItem.indexPath)
         }
