@@ -159,9 +159,11 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         tab_dev_list.registerNib(sectionHeaderNib, forHeaderFooterViewReuseIdentifier: SectionHeaderViewIdentifier)
         
         //实时帧请求接口
-        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-        var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:0)
-        send_frame(len)
+        for i in 0..<dev_grp.dev_info.count{
+            copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+            var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
+            self.send_frame(len)
+        }
         
         //table代理
         tab_dev_list.delegate = self

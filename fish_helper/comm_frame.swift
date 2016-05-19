@@ -717,7 +717,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                 
             }
         case REAL_DATA_RSP_FRM:
-            copy_array(dst_in: &frame_head_info.dev_id, src_in:send_buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
+            copy_array(dst_in: &frame_head_info.dev_id, src_in:buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
             // int dev_index = 0;
            // byte[] dev_id = new byte[DEV_ID_LEN];
            // System.arraycopy(buf, DEV_ID_ADDR, dev_id, 0, DEV_ID_LEN);
@@ -890,7 +890,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
             
             
             var dev_index_cur:Int = 0
-            copy_array(dst_in: &frame_head_info.dev_id, src_in:send_buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
+            copy_array(dst_in: &frame_head_info.dev_id, src_in:buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
             
             for i in 0..<dev_grp.dev_login_num
             {
@@ -922,7 +922,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
         case HIS_INFO_RSP_FRM:
             
             var dev_index_cur:Int = 0
-            copy_array(dst_in: &frame_head_info.dev_id, src_in:send_buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
+            copy_array(dst_in: &frame_head_info.dev_id, src_in:buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
             
             for i in 0..<dev_grp.dev_login_num
             {
