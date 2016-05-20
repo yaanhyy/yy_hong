@@ -59,9 +59,7 @@ class DevCell: UITableViewCell{
 //            newdev_class.last_time = newdev_class.last_time
 //        }
         
-        init_btn_imgview_onclick(img_notice_switch)
-        init_btn_imgview_onclick(img_event)
-        init_btn_imgview_onclick(img_cell_backgd)
+      
         lab_update_time.text = "更新时间："+String(newdev_class.sys_date.year)+"-"+String(newdev_class.sys_date.mon)+"-"+String(newdev_class.sys_date.day)+" "+String(newdev_class.sys_date.hour)+":"+String(newdev_class.sys_date.min)+":"+String(newdev_class.sys_date.sec)
         
         if(newdev_class.sys_var.motor_stat_flag & 0x1 ) == 0x1 {
@@ -110,48 +108,27 @@ class DevCell: UITableViewCell{
         }
     }
     
-    func init_btn_imgview_onclick(imageview:UIImageView){
-        //设置允许交互属性
-        imageview.userInteractionEnabled = true
-        //添加tapGuestureRecognizer手势
-        var tapGR = UITapGestureRecognizer(target: self,action:#selector(DevCell.did_event_onclick(_:)))
-        if imageview == img_event{
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(DevCell.did_event_onclick(_:)))
-        }
-        else if imageview == img_notice_switch{
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(DevCell.did_notice_switch_onclick(_:)))
-        }
-        else if imageview == img_cell_backgd{
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(DevCell.did_cell_backgd_onclick(_:)))
-        }
-        imageview.addGestureRecognizer(tapGR)
-        
-    }
+   
     
     //开关手势
-    func did_notice_switch_onclick(sender:UITapGestureRecognizer){
-        if self.dev_info_cell.sys_var.op_flag == 1 {
-            self.dev_info_cell.sys_var.op_flag = 0
-            img_notice_switch.image = UIImage(named: "off")
-        }
-        else{
-            self.dev_info_cell.sys_var.op_flag = 1
-            img_notice_switch.image = UIImage(named: "on")
-        }
-        
-    }
+//    func did_notice_switch_onclick(sender:UITapGestureRecognizer){
+//        if self.dev_info_cell.sys_var.op_flag == 1 {
+//            self.dev_info_cell.sys_var.op_flag = 0
+//            img_notice_switch.image = UIImage(named: "off")
+//        }
+//        else{
+//            self.dev_info_cell.sys_var.op_flag = 1
+//            img_notice_switch.image = UIImage(named: "on")
+//        }
+//        
+//    }
     
     //查询事件手势
-    func did_event_onclick(sender:UITapGestureRecognizer){
-        
-        print("时间查询手势响应")
-        
-    }
-    
-    //cell点击手势
-    func did_cell_backgd_onclick(sender:UITapGestureRecognizer){
-        print("cell背景手势响应")
-    }
+//    func did_event_onclick(sender:UITapGestureRecognizer){
+//        
+//        print("时间查询手势响应")
+//        
+//    }
     
     var longPressRecognizer: UILongPressGestureRecognizer?
     
@@ -168,19 +145,7 @@ class DevCell: UITableViewCell{
         
         longPressRecognizer = newLongPressRecognizer
     }
-    
-    var onlickRecognizer: UITapGestureRecognizer?
-    func setTheOnclickRecognizer(newOnclickRecongnizer:UITapGestureRecognizer){
-        if onlickRecognizer != nil {
-            self.removeGestureRecognizer(onlickRecognizer!)
-        }
-        
-//        if newOnclickRecongnizer != nil {
-            self.addGestureRecognizer(newOnclickRecongnizer)
-//        }
-        
-        onlickRecognizer = newOnclickRecongnizer
-    }
+  
     
     //[UInt8]转string
     func StringToInt(bytes:[UInt8])->NSString{

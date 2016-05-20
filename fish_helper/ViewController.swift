@@ -136,8 +136,8 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         var result =  frame_analysis(buf_info: buf, frame_len: count)
         switch result {
         case 0:  //login in
-            var i = 1
-           // self.performSegueWithIdentifier("btn_login", sender: nil)
+            //var i = 1
+           self.performSegueWithIdentifier("btn_login", sender: nil)
         case 1:
             let alert = UIAlertController(title: "登陆错误",
                                           message: "用户不存在，请注册后使用", preferredStyle: .Alert)

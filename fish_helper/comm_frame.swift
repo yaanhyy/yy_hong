@@ -354,6 +354,10 @@ var SYS_CFG_RSP_INFO_ADDR:UInt8 = SYS_CFG_RSP_NUM_ADDR+SYS_CFG_RSP_NUM_LEN;
 //adj
 var SYS_CFG_RSP_TYPE_ADJ_ADDR:UInt8 = SYS_CFG_RSP_TYPE_ADDR+SYS_CFG_RSP_TYPE_LEN;
 var SYS_CFG_RSP_TYPE_ADJ_LEN:UInt8 =	1;
+//date
+var year1:UInt16 =  0
+var month1:UInt16 = 0
+var day1:UInt16 = 0
 
 
 public class user_info_c
@@ -1314,14 +1318,17 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
         {
             //Calendar c = Calendar.getInstance();
             //c.add(Calendar.DAY_OF_MONTH, -comm_frame.his_date_index);
-            let date = NSDate()
-            let calendar = NSCalendar.currentCalendar()
-            let components = calendar.components([.Day , .Month , .Year], fromDate: date)
-            
-            let year:UInt16 =  UInt16(components.year)
-            let month:UInt16 = UInt16(components.month)-1
-            let day:UInt16 = UInt16(components.day)
-            var his_date:UInt16 =  ((year-2010)<<9)|(month<<5)|day
+            if (year1==0)&&(month1==0)&&(day1==0)
+            {
+                let date = NSDate()
+                let calendar = NSCalendar.currentCalendar()
+                let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+                
+                year1 =  UInt16(components.year)
+                month1 = UInt16(components.month)-1
+                day1 = UInt16(components.day)
+            }
+            var his_date:UInt16 =  ((year1-2010)<<9)|(month1<<5)|day1
             copy_short2byte(buf_info:&send_buf, start: Int(HIS_INFO_DATE_TYPE_ADDR), data_s:his_date);
         }
         

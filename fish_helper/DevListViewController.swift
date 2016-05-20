@@ -47,8 +47,14 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     let DefaultRowHeight = 200
     let HeaderHeight = 38
     
+    var focus_dev_index:Int = 0
 
     
+    /******************************************************************
+     *
+     *   发送函数
+     *
+     ******************************************************************/
     func send_frame(frame_len: Int)
     {
         //send login reqsend_buf.append(0x86)
@@ -80,7 +86,28 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             print(error)
         }
     }
+    //定时器触发函数
+    func did_request_real_data()
+    {
+        print("tick...")
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            dispatch_sync(dispatch_get_main_queue(),{
+                print("异步线程")
+                for i in 0..<dev_grp.dev_info.count{
+                    copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+                    var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
+                    self.send_frame(len)
+                }
+            })
+        })
+        
+    }
     
+    /******************************************************************
+     *
+     *   数据接收函数
+     *
+     ******************************************************************/
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,  withFilterContext filterContext: AnyObject!)
     {
         let count = data.length / sizeof(UInt8)
@@ -115,23 +142,12 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         // print("incoming message: \(data)");
     }
     
-    //定时器触发函数
-    func did_request_real_data()
-    {
-        print("tick...")
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            dispatch_sync(dispatch_get_main_queue(),{
-                print("异步线程")
-                for i in 0..<dev_grp.dev_info.count{
-                    copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-                    var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
-                    self.send_frame(len)
-                }
-            })
-        })
-   
-    }
     
+    /******************************************************************
+     *
+     *   界面初始化
+     *
+     ******************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -172,6 +188,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
     }
 
+    //界面view初始化
     func init_view(){
         init_btn_imgview_onclick(img_sideslip)
         img_sideslip.contentMode = UIViewContentMode.ScaleAspectFit
@@ -190,12 +207,18 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
     }
     
+    
+    /******************************************************************
+     *
+     *   主界面点击事件添加
+     *
+     ******************************************************************/
     //初始化图片点击事件
     func init_btn_imgview_onclick(imageview:UIImageView){
         //设置允许交互属性
         imageview.userInteractionEnabled = true
         //添加tapGuestureRecognizer手势
-        var tapGR = UITapGestureRecognizer(target: self,action:#selector(DevListViewController.did_sideslip_onclick(_:)))
+        var tapGR = UITapGestureRecognizer(target: self,action: #selector(DevListViewController.did_sideslip_onclick(_:)))
         if imageview == img_sideslip{
            tapGR = UITapGestureRecognizer(target: self,action:#selector(DevListViewController.did_sideslip_onclick(_:)))
         }
@@ -205,14 +228,12 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         imageview.addGestureRecognizer(tapGR)
         
     }
-    
     //侧滑手势处理函数
     func did_sideslip_onclick(sender:UITapGestureRecognizer) {
        
             self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
         
     }
-    
     //天气刷新手势处理函数
     func did_weather_flush_onclick(sender:UITapGestureRecognizer) {
         
@@ -257,7 +278,12 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             self.arr_dev_list  = infoArray
         }
     }
- 
+    
+    /******************************************************************
+     *
+     *   转换函数
+     *
+     ******************************************************************/
     //[UInt8]转string
     func StringToInt(bytes:[UInt8])->NSString{
         var gbkEncoding: NSStringEncoding = CFStringConvertEncodingToNSStringEncoding(UInt32(CFStringEncodings.GB_18030_2000.rawValue))
@@ -267,10 +293,15 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
 
     
+    /******************************************************************
+     *
+     *   折叠tableview函数实现 （包括table 和 section）
+     *
+     ******************************************************************/
     //tabview方法
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // 这个方法返回 tableview 有多少个section
-        return dev_grp.dev_info.count
+        return dev_grp.dev_login_num
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -293,19 +324,20 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 var longPressRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
                 cell.longPressRecognizer = longPressRecognizer
          }
-        if cell.onlickRecognizer == nil {
-                var onclickRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleonlick:")
-                cell.onlickRecognizer = onclickRecognizer
-         }
-       
+      
+        init_did_cellView_onclick(cell.img_cell_backgd,cell: cell)
+        init_did_cellView_onclick(cell.img_notice_switch, cell: cell)
+        init_did_cellView_onclick(cell.img_event, cell: cell)
         
         var play:dev_info_struct = (self.arr_dev_list[indexPath.section] as! DevItemSectionInfo).play
+        focus_dev_index = indexPath.section
         cell.dev_info_cell = play
         cell.setDevCell(cell.dev_info_cell)
         cell.setTheLongPressRecognizer(cell.longPressRecognizer)
-        cell.setTheOnclickRecognizer(cell.onlickRecognizer!)
         return cell
     }
+    
+
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // 返回指定的 section header 的view，如果没有，这个函数可以不返回view
@@ -332,19 +364,17 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         return sectionHeaderView
     }
     
-    
+    // 这个方法返回指定的 row 的高度
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        // 这个方法返回指定的 row 的高度
         var sectionInfo: DevItemSectionInfo = self.arr_dev_list[indexPath.section] as! DevItemSectionInfo
         
         return CGFloat(sectionInfo.objectInRowHeightsAtIndex(indexPath.row) as! NSNumber)
         //又或者，返回单元格的行高
     }
     
-    // _________________________________________________________________________
-    // SectionHeaderViewDelegate
     
-   func sectionHeaderView(sectionHeaderView: SectionHeaderView, sectionOpened: Int) {
+    // SectionHeaderViewDelegate
+    func sectionHeaderView(sectionHeaderView: SectionHeaderView, sectionOpened: Int) {
         
         var sectionInfo: DevItemSectionInfo = self.arr_dev_list[sectionOpened] as! DevItemSectionInfo
         
@@ -414,9 +444,11 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.opensectionindex = NSNotFound
     }
     
-    // ____________________________________________________________________
-    // 缩放操作处理
-    
+    /******************************************************************
+     *
+     *   缩放操作处理
+     *
+     ******************************************************************/
     func handlePinch(pinchRecognizer: UIPinchGestureRecognizer) {
         
         // 有手势识别有很多状态来对应不同的动作：
@@ -472,7 +504,14 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }
     }
     
-    // ________________________________________________________________________
+    
+    
+    
+    /******************************************************************
+     *     
+     *   cell中手势函数
+     *
+     ******************************************************************/
     // 处理长按手势
     func handleLongPress(longPressRecognizer: UILongPressGestureRecognizer) {
         
@@ -503,25 +542,44 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
         }
     }
-    //处理点击手势
-    func handleonlick(onlickRecognizer: UITapGestureRecognizer) {
-        
-        // 对于长按手势来说，唯一的状态是Began
-        // 当长按手势被识别后，将会找寻按压点的单元格的索引路径
-        // 如果按压位置存在一个单元格，那么就会创建一个菜单并展示它
-        
-        if onlickRecognizer.state == UIGestureRecognizerState.Began {
-            
-            let pressedIndexPath = tab_dev_list.indexPathForRowAtPoint(onlickRecognizer.locationInView(tab_dev_list))
-            
-            if pressedIndexPath != nil && pressedIndexPath?.row != NSNotFound && pressedIndexPath?.section != NSNotFound {
-                 self.becomeFirstResponder()
-                print("点击事件")
-                //
-            }
+    //cell中控件添加手势函数
+    func init_did_cellView_onclick(img:UIImageView,cell:DevCell){
+        img.userInteractionEnabled = true
+        var signTap:UITapGestureRecognizer!
+        if img == cell.img_cell_backgd {
+            signTap = UITapGestureRecognizer(target: self, action: "did_cell_backgd_onlick:")
         }
+        else if img == cell.img_event {
+            signTap = UITapGestureRecognizer(target: self, action: "did_img_event_onclick:")
+        }
+        else if img == cell.img_notice_switch {
+            signTap = UITapGestureRecognizer(target: self, action: "did_img_notice_switch_onclick:")
+        }
+        img.addGestureRecognizer(signTap)
+        //signTap.view!.tag = indexPath.section
+    }
+    //处理cell整体点击手势
+    func did_cell_backgd_onlick(recognizer: UITapGestureRecognizer){
+        print("cell 整体点击事件响应")
+        self.performSegueWithIdentifier("seg_ToFullintent", sender: self)
+    }
+    //处理cell事件图片点击手势
+    func did_img_event_onclick(recognizer: UITapGestureRecognizer){
+        print("事件查询事件响应")
+        print(focus_dev_index)
+    }
+    //处理cell开关通知图片点击手势
+    func did_img_notice_switch_onclick(recognizer: UITapGestureRecognizer){
+        print("开关事件响应")
+        print(focus_dev_index)
     }
     
+    
+    /******************************************************************
+     *
+     *   发送邮件
+     *
+     ******************************************************************/
     func emailMenuButtonPressed(menuController: UIMenuController) {
         
         let menuItem: EmailMenuItem = UIMenuController.sharedMenuController().menuItems![0] as! EmailMenuItem
@@ -546,48 +604,31 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         self.dismissViewControllerAnimated(true, completion: nil)
         //if result.Value== MFMailComposeResultFailed.value {
-        // 在实际使用中，显示一个合适的警告框来提示用户
+        //在实际使用中，显示一个合适的警告框来提示用户
         //print("邮件发送失败,错误信息: \(error)")
         //}
     }
     
-//    func played() -> NSArray {
-//        
-//        if playe == nil {
-//            
-////            var url = NSBundle.mainBundle().URLForResource("PlaysAndQuotations", withExtension: "plist")
-////            var playDictionariesArray = NSArray(contentsOfURL: url!)
-////            playe = NSMutableArray(capacity: playDictionariesArray!.count)
-//            playe = NSMutableArray(capacity: 3)
-//            for i in 1...3 {
-//                
-//                let play: Group! = Group()
-//                play.Name = "设备"+"\(i)"
-//                
-//                //var quotationDictionaries:NSArray = playDictionary["quotations"] as! NSArray
-//                //var quotations = NSMutableArray(capacity: quotationDictionaries.count)
-//                
-//                //for quotationDictionary in quotationDictionaries {
-//                    
-//                    //var quotationDic:NSDictionary = quotationDictionary as! NSDictionary
-//                play.dev_items.Name = play.Name
-//                play.dev_items.not_turnon = true
-//                play.dev_items.update_time="更新时间：2015/5/14 14:20:00"
-//                play.dev_items.water_tmp = 80
-//                play.dev_items.oxy_val = 100
-//                    //quotation.setValuesForKeysWithDictionary(quotationDic as! [String: AnyObject])
-//                
-//                //}
-//                playe!.addObject(play)
-//            }
-//        }
-//        
-//        return playe!
-//    }
+    //界面销毁是销毁必须销毁的东西
     override func viewDidDisappear(animated: Bool) {
-        print("定时器取消。。。")
+       
         if timer != nil{
             timer.invalidate()
+            print("定时器取消。。。")
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        // Get the new view controller using segue.destinationViewController.
+        
+        // Pass the selected object to the new view controller.
+        print("prepare")
+        if segue.identifier == "seg_ToFullintent" {
+            let dev=segue.destinationViewController as! FullintentViewController
+           
+            dev.fullintent_focus_dev_index=focus_dev_index
+            print(dev.fullintent_focus_dev_index)
         }
     }
   
