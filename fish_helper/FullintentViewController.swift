@@ -13,11 +13,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     
     @IBOutlet weak var lab_dev_name: UILabel!
     @IBOutlet weak var img_dev_online: UILabel!
-    @IBOutlet weak var lab_more_day: UILabel!
-    @IBOutlet weak var lab_seven_days: UILabel!
-    @IBOutlet weak var lab_two_day: UILabel!
-    @IBOutlet weak var lab_yesterday: UILabel!
-    @IBOutlet weak var lab_today: UILabel!
+ 
     @IBOutlet weak var view_top: UIView!
     @IBOutlet weak var view_bottom: UIView!
     @IBOutlet weak var view_start: UIView!
@@ -25,7 +21,9 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     @IBOutlet weak var view_auto: UIView!
     @IBOutlet weak var view_setting: UIView!
     @IBOutlet weak var img_reback: UIImageView!
-    
+    @IBOutlet weak var lab_date: UILabel!
+    @IBOutlet weak var btn_severn_day: UIButton!
+    @IBOutlet weak var btn_one_day: UIButton!
     var dev_name:String!
     var his_stat:UInt8 = 0
     
@@ -37,6 +35,8 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     var var_sel_index:UInt8 = 0
     var tmp_sum:Float = 0    
     var his_data_type:Bool = true //one day ; false is severn days
+    var his_severn_day_type:Bool = true //true no his_data;
+    var bol_view_label:Bool = false //view_top and view_bottom didn't add label;
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -101,20 +101,31 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         var result =  frame_analysis(buf_info: buf, frame_len: count)
         switch result {
         case 0:  //login in
-            var i = 1
+            var i:Int = 1
             
             if his_data_type
             {
                 his_stat = HIS_INFO_TYPE_TIME
-                did_clear_drawing_onclick()//清除所有点
+                did_clear_drawing_onclick()//清除view中所有子视图
                 did_top_draw_onclick(view_top)
                 did_bottom_draw_onclick(view_bottom)
             }
             else
             {
-                if val_severn_days_sum < 7{
-                    
-                     dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.addObject(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item)
+                
+                //var s:arr = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item
+//                s.copy;
+                var s:[his_info_item_class] = copy_struct()
+               dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.append(s)
+                //dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[Int(val_severn_days_sum)].unshare()
+                print("--------------------------------------------------------------")
+                
+//                for j in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item.count
+//                {
+//                    print("vaild = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[j].valid)")
+//                }
+                print("--------------------------------------------------------------")
+                if val_severn_days_sum < 6{
                     val_severn_days_sum++
                     let date = NSDate().dateByAddingTimeInterval(-(86400*Double(val_severn_days_sum)))
                     let calendar = NSCalendar.currentCalendar()
@@ -126,19 +137,51 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     
                 }
                 else{
+                    print("count = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.count)")
+                     print("--------------------------------------------------------------")
+                    for i in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.count
+                    {
+                        for j in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i].count
+                        {
+                            print("vaild = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j].valid)")
+                        }
+                    }
+                    
                     his_stat = HIS_INFO_TYPE_TIME
-                    did_clear_drawing_onclick()//清除所有点
+                    did_clear_drawing_onclick()
                     did_top_draw_onclick(view_top)
                     did_bottom_draw_onclick(view_bottom)
                 }
                
             }
-            
-            
+           
         default:
             var i = 0
         }
         // print("incoming message: \(data)");
+    }
+
+    func copy_struct()-> [his_info_item_class]{
+        
+        var s = [his_info_item_class]()
+        for i in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item.count
+        {
+              s.append(his_info_item_class())
+             //s[i].valid = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].vaild
+             s[i].tmp_air = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].tmp_air
+            s[i].wet_air = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].wet_air
+            s[i].soil_tmp = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].soil_tmp
+            s[i].soil_wet = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].soil_wet
+            s[i].co2 = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].co2
+            s[i].lt = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].lt
+            s[i].tmp = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].tmp
+            s[i].ox = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].ox
+            s[i].ph = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].ph
+            s[i].stat = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].stat
+            s[i].am = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].am
+            s[i].valid = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].valid
+        }
+        return s
     }
 
     
@@ -167,7 +210,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
 //            var i:UInt8 = 0;
 //            if HIS_INFO_TYPE_FISH == his_info.his_type
 //            {
-                did_clear_drawing_onclick()
+        
                 did_top_draw_onclick(view_top)
                 did_bottom_draw_onclick(view_bottom)
 //            }
@@ -429,6 +472,76 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
      *   给控件添加手势
      *
      ******************************************************************/
+    @IBAction func did_btn_severn_day_onclick(sender: AnyObject) {
+        
+        
+        his_data_type = false
+        
+        //did_clear_drawing_onclick(view_top)
+        //did_clear_drawing_onclick(view_bottom)
+       
+        if his_severn_day_type
+        {
+            his_stat = HIS_STAT_LOADING
+            send_commond()
+            his_severn_day_type = false
+        }
+        else{
+            his_stat = HIS_INFO_TYPE_TIME
+        }
+        did_clear_drawing_onclick()
+        did_top_draw_onclick(view_top)
+        did_bottom_draw_onclick(view_bottom)
+
+    }
+    @IBAction func did_btn_one_day_onclick(sender: AnyObject) {
+        
+        his_stat = HIS_STAT_LOADING
+        his_data_type = true
+        //did_clear_drawing_onclick(view_top)
+        //did_clear_drawing_onclick(view_bottom)
+        
+        //ox_sum = 0
+        let alertController:UIAlertController=UIAlertController(title: "\n\n\n\n\n\n\n\n\n\n\n\n", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        // 初始化 datePicker
+        let datePicker = UIDatePicker( )
+        //将日期选择器区域设置为中文，则选择器日期显示为中文
+        datePicker.locale = NSLocale(localeIdentifier: "zh_CN")
+        // 设置样式，当前设为同时显示日期和时间
+        datePicker.datePickerMode = UIDatePickerMode.Date
+        // 设置默认时间
+        datePicker.date = NSDate()
+        // 响应事件（只要滚轮变化就会触发）
+        // datePicker.addTarget(self, action:Selector("datePickerValueChange:"), forControlEvents: UIControlEvents.ValueChanged)
+        alertController.addAction(UIAlertAction(title: "确定", style: UIAlertActionStyle.Default){
+            (alertAction)->Void in
+            print("date select: \(datePicker.date.description)")
+            let calendar = NSCalendar.currentCalendar()
+            let components = calendar.components([.Day , .Month , .Year], fromDate: datePicker.date)
+            year1 =  UInt16(components.year)
+            month1 = UInt16(components.month)-1
+            day1 = UInt16(components.day)
+            
+            //print()
+            self.did_clear_drawing_onclick()
+            self.did_top_draw_onclick(self.view_top)
+            self.did_bottom_draw_onclick(self.view_bottom)
+            self.lab_date.text = "\(year1)" + "-" + "\(month1+1)" + "-" + "\(day1)"
+            self.send_commond()
+            //获取上一节中自定义的按钮外观DateButton类，设置DateButton类属性thedate
+            //            let myDateButton=self.Datebutt as? DateButton
+            //            myDateButton?.thedate=datePicker.date
+            //            //强制刷新
+            //            myDateButton?.setNeedsDisplay()
+            })
+        alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel,handler:nil))
+        
+        alertController.view.addSubview(datePicker)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+
+        
+    }
     func init_btn_imgview_onclick(view:UIView){
         //设置允许交互属性
         view.userInteractionEnabled = true
@@ -449,12 +562,12 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         else if view == view_setting {
             tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
         }
-        else if view == lab_seven_days {
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_severn_days_onclick(_:)))
-        }
-        else if view == lab_today {
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_one_day_onclick(_:)))
-        }
+//        else if view == btn_severn_day {
+//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_severn_days_onclick(_:)))
+//        }
+//        else if view == btn_one_day{
+//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_one_day_onclick(_:)))
+//        }
         else if view == view_setting {
             tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
         }
@@ -488,22 +601,33 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     //设置手势处理函数
     func did_setting_onclick(sender:UITapGestureRecognizer) {
         
-        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+        self.performSegueWithIdentifier("seg_ToSetting", sender: nil)//跳转到CfgMenuViewController.swift 选择设置选项
         
     }
     //七天手势处理函数
-    func did_severn_days_onclick(sender:UITapGestureRecognizer){
-        his_stat = HIS_STAT_LOADING
-        his_data_type = false
-        send_commond()
-    }
+//    func did_severn_days_onclick(sender:UITapGestureRecognizer){
+//        
+//       
+//    }
     //一天手势处理函数
-    func did_one_day_onclick(sender:UITapGestureRecognizer){
-        his_stat = HIS_STAT_LOADING
-        his_data_type = true
-        send_commond()
-    }
+//    func did_one_day_onclick(sender:UITapGestureRecognizer){
+//            }
     
+    func did_btn_backgd_change(dex:UInt8){
+        if dex == 1
+        {
+            btn_severn_day.setBackgroundImage(UIImage(named: "top_select1.png"), forState: UIControlState.Normal)
+            btn_one_day.setBackgroundImage(UIImage(named: "top_select.png"), forState: UIControlState.Normal)
+            lab_date.text = "\(year1)"+"-"+"\(month1)"+"-"+"\(day1)"
+            
+        }
+        else if dex == 2
+        {
+            btn_severn_day.setBackgroundImage(UIImage(named: "top_select1.png"), forState: UIControlState.Normal)
+            btn_one_day.setBackgroundImage(UIImage(named: "top_select.png"), forState: UIControlState.Normal)
+        }
+       
+    }
     
     /******************************************************************
      *
@@ -523,21 +647,26 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
      *   画曲线函数集
      *
      ******************************************************************/
+ 
+   // var arr_top_view_label:[UILabel] = [UILabel]()
+    
     //上半部分曲线图
-    func did_top_draw_onclick(view:UIView){
+    func did_top_draw_onclick(uiview:UIView){
 
-        var length:Int8 = 7
+        var days:Int8 = 7
         
         var iq:Int = 0
-        var width:CGFloat = view.bounds.width
-        var height:CGFloat = view.bounds.height
-    
+        var width:CGFloat = uiview.bounds.width
+        var height:CGFloat = uiview.bounds.height
+        var view:UIView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        uiview.addSubview(view)
         if((his_stat == HIS_STAT_FAIL) )
         {
             var lab_message:UILabel = UILabel(frame: CGRect(x: 10, y: 0, width: width-20, height: height*0.1))
             lab_message.font = UIFont.boldSystemFontOfSize(width/18)
             lab_message.text = "读取历史数据记录失败，请稍后登陆查询"
             lab_message.textColor = UIColor.whiteColor()
+            view.addSubview(lab_message)
         }
         else if (dev_grp.dev_info[fullintent_focus_dev_index].his_data_num != 0 )||(his_stat == HIS_STAT_LOADING)
         {
@@ -547,151 +676,315 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             var tmp_max:Float!
             var tmp_min:Float!
             
-            var tmp_max_arr = [Float](count:7,repeatedValue:0)
-            var tmp_min_arr = [Float](count:7,repeatedValue:0)
+            var tmp_max_arr = [Float](count:Int(days),repeatedValue:0)
+            var tmp_min_arr = [Float](count:Int(days),repeatedValue:0)
             
             
             if(var_sel_index < 2)
             {
                 
-                for i in 0..<7{
-                    tmp_max_arr[i] = -50
-                    tmp_min_arr[i] = 127
-                }
-                tmp_max = -50;
-                tmp_min = 127;//(float)100;//128.1 «Œﬁ¥´∏–∆˜µƒ«Èøˆ º‰∏ÙŒ™5.8
+                    tmp_max = -50;
+                    tmp_min = 127;//Float(100;//128.1 «Œﬁ¥´∏–∆˜µƒ«Èøˆ º‰∏ÙŒ™5.8
+                
+                    for i in 0..<Int(days){
+                        tmp_max_arr[i] = -50
+                        tmp_min_arr[i] = 127
+                    }
+              
                 
             }
             else if(var_sel_index ==  2)
             {
                 
-                for i in 0..<7{
-                    tmp_max_arr[i] = 0;
-                    tmp_min_arr[i] = 10000;
-                }
-                tmp_max=0;
-	            tmp_min=10000;
+                    tmp_max=0;
+                    tmp_min=10000;
+               
+                    for i in 0..<Int(days){
+                        tmp_max_arr[i] = 0;
+                        tmp_min_arr[i] = 10000;
+                    }
+                
+                
+              
                 
             }
             else{
                 
-                for i in 0..<7{
-                    tmp_max_arr[i] = 40;
-                    tmp_min_arr[i] = 0;
-                }
-                tmp_max = 40;
-                tmp_min = 0;
+                
+                
+                    tmp_max = 40;
+                    tmp_min = 0;
+               
+                    for i in 0..<Int(days){
+                        tmp_max_arr[i] = 40;
+                        tmp_min_arr[i] = 0;
+                    }
+                
                 
             }
             
             tmp_sum = 0;            
             
-            for iq in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item.count
+            if his_stat==HIS_STAT_LOADING
             {
-                    if dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1
+                
+            }
+            else
+            {
+                if his_data_type //一天曲线
+                {
+                    for iq in 0..<HIS_INFO_HOUR_NUM
                     {
-                        
-                        var tmp:Float = 0
-                        if var_sel_index == 0
+                        if dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1
                         {
-                            if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
+                            
+                            var tmp:Float = 0
+                            if var_sel_index == 0
                             {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp)/10
+                                if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp)/10
+                                }
+                                else
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp_air)/10
+                                }
                             }
-                            else
+                            else if var_sel_index == 1
                             {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp_air)/10
+                                if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN) && (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ph)/10
+                                }
+                                else
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_tmp)/10
+                                }
+                                
                             }
-                        }
-                        else if var_sel_index == 1
-                        {
-                            if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN) && (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
+                            else if(var_sel_index == 2)
                             {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ph)/10
+                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].co2)
                             }
-                            else
+                            tmp_sum = tmp_sum + tmp;
+                            
+                            if(tmp > tmp_max)
                             {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_tmp)/10
+                                tmp_max = tmp;
+                            }
+                            if(tmp < tmp_min)
+                            {
+                                tmp_min = tmp;
                             }
                             
                         }
-                        else if(var_sel_index == 2)
-                        {
-                            tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].co2)
-                        }
-                        tmp_sum = tmp_sum + tmp;
-                        
-                        if(tmp > tmp_max)
-                        {
-                            tmp_max = tmp;
-                        }
-                        if(tmp < tmp_min)
-                        {
-                            tmp_min = tmp;
-                        }
-                        
                     }
+                    var data_t:Float  = (tmp_max+2)
+                    tmp_max = data_t;
+                    data_t = (tmp_min - 1)
+                    tmp_min = data_t;
+                }
+                else{//七天曲线
+                    for i in 0..<Int(days)
+                    {   for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
+                    {
+                        if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].valid == 1)
+                        {
+                            dev_grp.dev_info[fullintent_focus_dev_index].his_data_num++;
+                            var tmp:Float = 0;
+                            
+                            if(var_sel_index == 0)
+                            {
+                                if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2))
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].tmp)/10;
+                                }
+                                else
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].tmp_air)/10;
+                                }
+                            }
+                            else if(var_sel_index == 1)
+                            {
+                                if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2))
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].ph)/10;
+                                }
+                                else
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].soil_tmp)/10;
+                                }
+                                
+                            }
+                            else if(var_sel_index == 2)
+                            {
+                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].co2);
+                            }
+                            
+                            tmp_sum += tmp;
+                            
+                            if(tmp > tmp_max_arr[i])
+                            {
+                                tmp_max_arr[i] = tmp;
+                            }
+                            if(tmp < tmp_min_arr[i])
+                            {
+                                tmp_min_arr[i] = tmp;
+                            }
+                            
+                        }
+                        
+                        }
+                        if(tmp_max_arr[i] > tmp_max)
+                        {
+                            tmp_max = Float(Int(tmp_max_arr[i]))
+                        }
+                        if(tmp_min_arr[i] < tmp_min)
+                        {
+                            tmp_min = Float(Int(tmp_min_arr[i]))
+                        }
+                        var data_t:Int  = Int(tmp_max_arr[i]+2);/*tmp_max+1,把最大值变大，拉大纵向距离*/
+                        tmp_max_arr[i] = Float(data_t)
+                        data_t = Int(tmp_min_arr[i]-2);
+                        tmp_min_arr[i] = Float(data_t)
+                    }
+                    
+                    var data_t:Int  = Int((tmp_max+2)) /*tmp_max+1),把最大值变大，拉大纵向距离*/
+                    tmp_max = Float(data_t)
+                    data_t = Int(tmp_min-2);
+                    tmp_min = Float(data_t);
+                }
+
             }
-                var data_t:Float  = (tmp_max+2)
-                tmp_max = data_t;
-                data_t = (tmp_min - 1)
-                tmp_min = data_t;
-           
+            
+            
             //    			Log.e("his_data_num",""+dev_grp.dev_info[fullintent_focus_dev_index].his_data_num);
             var width_slice:Float =  Float(width)/Float(HIS_INFO_HOUR_NUM)
             var tmp_px = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
             var tmp_py = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
             
             
-//            float[][] tmp_px_arr = new float[length][dev_group.HIS_INFO_HOUR_NUM];
-//            float[][] tmp_py_arr = new float[length][dev_group.HIS_INFO_HOUR_NUM];
+            var tmp_px_arr = [[Float]]()
+             var tmp_py_arr = [[Float]]()
+             var tmp_val_arr = [[Float]]()
+            
+            for i in 0..<Int(days)
+            {
+                var s = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
+                tmp_px_arr.append(s)
+                s = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
+                tmp_py_arr.append(s)
+                s = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
+                tmp_val_arr.append(s)
+            }
             
             var tmp_val:[Float] = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
-
-            //获取值
-                var j:Int=0;
-                for iq in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item.count
+           
+            
+            if his_stat==HIS_STAT_LOADING
+            {
+                
+            }
+            else
+            {
+                //获取值
+                if his_data_type
                 {
-                    tmp_px[iq] = Float(iq)*(Float(width)/Float(equal)*12)/Float(HIS_INFO_HOUR_NUM)
-                    if dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1
+                    var j:Int=0;
+                    for iq in 0..<HIS_INFO_HOUR_NUM
                     {
-                        var tmp:Float=0;
-                        if var_sel_index == 0
+                        tmp_px[iq] = Float(iq)*(Float(width)/Float(equal)*12)/Float(HIS_INFO_HOUR_NUM)
+                        if dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1
                         {
-                            if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                            var tmp:Float=0;
+                            if var_sel_index == 0
                             {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp)/10
+                                if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp)/10
+                                }
+                                else
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp_air)/10
+                                }
+                            }
+                            else if var_sel_index == 1
+                            {
+                                if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ph)/10
+                                }
+                                else
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_tmp)/10
+                                }
                             }
                             else
                             {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].tmp_air)/10
+                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].co2)
                             }
-                        }
-                        else if var_sel_index == 1
-                        {
-                            if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
-                            {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ph)/10
+                            if iq%2 == 0 {
+                                tmp_val[j] = tmp
+                                j++
                             }
-                            else
-                            {
-                                tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_tmp)/10
-                            }
+                            //Log.e("tmp_val"+iq,""+tmp_val[iq]);
+                            tmp_py[iq] = Float(Float(height)*0.7-(tmp-tmp_min)*(Float(height)*0.7/(tmp_max-tmp_min))+Float(width)/10)
+                            //Log.e("tmp_py: "+" "+iq,""+tmp_py[iq]);
                         }
-                        else
-                        {
-                            tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].co2)
-                        }
-                        if iq%2 == 0 {
-                            tmp_val[j] = tmp
-                            j++
-                        }
-                        //Log.e("tmp_val"+iq,""+tmp_val[iq]);
-                        tmp_py[iq] = Float(Float(height)*0.7-(tmp-tmp_min)*(Float(height)*0.7/(tmp_max-tmp_min))+Float(width)/10)
-                        //Log.e("tmp_py: "+" "+iq,""+tmp_py[iq]);
                     }
                 }
-//            }
+                else{
+                    for(var i:Int = 0; i < Int(days) ; i++){
+                        var k:Int = 0;
+                        for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
+                        {
+                            tmp_px_arr[i][iq] = Float(iq)*(Float(width)/Float(equal)*12)/Float(HIS_INFO_HOUR_NUM)
+                            //Log.e("tmp_px_arr: "+i+" "+iq,""+tmp_px_arr[i][iq]);
+                            if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].valid == 1)
+                            {
+                                var tmp:Float = 0;
+                                if(var_sel_index == 0)
+                                {
+                                    if((dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
+                                    {
+                                        tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].tmp)/10;
+                                    }
+                                    else
+                                    {
+                                        tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].tmp_air)/10;
+                                    }
+                                }
+                                else if(var_sel_index == 1)
+                                {
+                                    if((dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2))
+                                    {
+                                        tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].ph)/10;
+                                    }
+                                    else
+                                    {
+                                        tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].soil_tmp)/10;
+                                    }
+                                }
+                                else
+                                {
+                                    tmp = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].co2);
+                                }
+                                if((iq%2) == 0){
+                                    tmp_val_arr[i][k] = tmp;
+                                    k++;
+                                }
+                                tmp_py_arr[i][iq] = Float(Float(height)*0.7-(tmp-tmp_min)*(Float(height)*0.7/(tmp_max-tmp_min))+Float(width)/10)
+                                
+                                //Float((height*0.7-(tmp-tmp_min)*(height*0.7/(tmp_max-tmp_min))+width/10))
+                                //Log.e("tmp_py_arr: "+i+" "+iq,""+tmp_py_arr[i][iq]);
+                            }
+                        }
+                    }
+                }
+ 
+            }
+            
+            //            }
             //----------------±≥æ∞
             var line_tem_px0:Float = Float(1 * Float(width)/Float(equal))
             var line_tem_px1:Float = Float(2*Float(width)/Float(equal))
@@ -715,26 +1008,26 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             
             for ii in 0..<13
             {
-                did_two_point_line(CGFloat(line_tem_x[ii])+CGFloat(line_tem_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_tem_x[ii])+CGFloat(line_tem_px0)/3,y1:height*0.87,color: 1,v: view_top)
-                //canvas.drawLine((float)(line_tem_x[ii]+line_tem_px0/3),(float)(height/7+(width/96+1)/2),(float)line_tem_x[ii]+line_tem_px0/3,(float)(height*0.87),p_xy);
+                did_two_point_line(CGFloat(line_tem_x[ii])+CGFloat(line_tem_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_tem_x[ii])+CGFloat(line_tem_px0)/3,y1:height*0.87,color: 1,v: view)
+                //canvas.drawLine(Float((line_tem_x[ii]+line_tem_px0/3),Float((height/7+(width/96+1)/2),Float(line_tem_x[ii]+line_tem_px0/3,Float((height*0.87),p_xy);
             }
 
-            did_two_point_line(CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3,y0: (height/7+(width/96+1)/2),x1: CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3,y1: height*0.87,color: 1,v: view_top)
-            did_two_point_line(CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y0: (height/7+(width/96+1)/2), x1: CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y1: (height*0.87),color: 1,v: view_top)
-            //canvas.drawLine((float)line_tem_px0+line_tem_px0/3,(float)(height/7+(width/96+1)/2),(float)line_tem_px0+line_tem_px0/3,(float)(height*0.87),p1);
-            //canvas.drawLine((float)line_tem_px12+line_tem_px0/3,(float)(height/7+(width/96+1)/2),(float)line_tem_px12+line_tem_px0/3,(float)(height*0.87),p1);
+            did_two_point_line(CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3,y0: (height/7+(width/96+1)/2),x1: CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3,y1: height*0.87,color: 1,v: view)
+            did_two_point_line(CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y0: (height/7+(width/96+1)/2), x1: CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y1: (height*0.87),color: 1,v: view)
+            //canvas.drawLine(Float(line_tem_px0+line_tem_px0/3,Float((height/7+(width/96+1)/2),Float(line_tem_px0+line_tem_px0/3,Float((height*0.87),p1);
+            //canvas.drawLine(Float(line_tem_px12+line_tem_px0/3,Float((height/7+(width/96+1)/2),Float(line_tem_px12+line_tem_px0/3,Float((height*0.87),p1);
             var iii:Int;
-            for iii in 1..<7
+            for iii in 1..<Int(days)
             {
-                did_two_point_line(CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3, y0: (CGFloat(iii)*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: (CGFloat(iii)*height/7+(width/96+1)/2),color: 1,v: view_top)
-                //canvas.drawLine((float)line_tem_px0+line_tem_px0/3,(float)(iii*height/7+(width/96+1)/2),(float)width-width/equal+line_tem_px0/3,(float)(iii*height/7+(width/96+1)/2),p_xy);
+                did_two_point_line(CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3, y0: (CGFloat(iii)*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: (CGFloat(iii)*height/7+(width/96+1)/2),color: 1,v: view)
+                //canvas.drawLine(Float(line_tem_px0+line_tem_px0/3,Float((iii*height/7+(width/96+1)/2),Float(width-width/equal+line_tem_px0/3,Float((iii*height/7+(width/96+1)/2),p_xy);
             }
-            did_two_point_line(CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3, y0: (6*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: (6*height/7+(width/96+1)/2),color: 1,v: view_top)
+            did_two_point_line(CGFloat(line_tem_px0)+CGFloat(line_tem_px0)/3, y0: (6*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: (6*height/7+(width/96+1)/2),color: 1,v: view)
           
             var time_jj = [String](arrayLiteral: "0:00","    ","4:00","    ","8:00","    ","12:00","    ","16:00","    ","20:00","","24:00")
             //String[] time_jjj=new String[]{"   ","40","32","24","16","  8","  0"};
-            var time_jjj:[String];
-            if(tmp_max<0){
+            var time_jjj: [String] = []
+            if(tmp_max<0)||(his_stat==HIS_STAT_LOADING){
                 time_jjj=[String](arrayLiteral: "","100","80","60","40","20","0")
             }
             else{
@@ -749,16 +1042,16 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             for jj in 0..<13
             {
                 //p1.setTextSize(width/30);//…Ë÷√◊÷ÃÂ¥Û–°12(480*800)
-                did_drawlable_onlick(CGFloat(line_tem_x[jj])-width/60,y0: (height*0.96),text: time_jj[jj],color: 1,view: view_top)
-                //canvas.drawText(time_jj[jj], line_tem_x[jj]-width/60, (float)(height*0.96), p1);
+                did_drawlable_onlick(CGFloat(line_tem_x[jj])-width/60,y0: (height*0.96),text: time_jj[jj],color: 1,view: view)
+                //canvas.drawText(time_jj[jj], line_tem_x[jj]-width/60, Float((height*0.96), p1);
             }
             // jjj;
-            for jjj in 1..<7
+            for jjj in 1..<Int(days)
             {
                 //p1.setTextSize(width/30);//…Ë÷√◊÷ÃÂ¥Û–°12(480*800)
-                //canvas.drawText(time_jjj[jjj], (float)(line_tem_px0-width/20), (float)(jjj*height/7+(width/96+1)/2+width/60), p1);
-                did_drawlable_onlick(CGFloat(line_tem_px0)-width/15,y0: (CGFloat(jjj)*height/7+(width/96+1)/2+width/60),text: time_jjj[jjj],color: 1,view: view_top)
-                //canvas.drawText(time_jjj[jjj],(float)(line_tem_px0-width/15), (float)(jjj*height/7+(width/96+1)/2+width/60), p1);
+                //canvas.drawText(time_jjj[jjj], Float((line_tem_px0-width/20), Float((jjj*height/7+(width/96+1)/2+width/60), p1);
+                did_drawlable_onlick(CGFloat(line_tem_px0)-width/15,y0: (CGFloat(jjj)*height/7+(width/96+1)/2+width/60),text: time_jjj[jjj],color: 1,view: view)
+                //canvas.drawText(time_jjj[jjj],Float((line_tem_px0-width/15), Float((jjj*height/7+(width/96+1)/2+width/60), p1);
             }
             //-----------------------------------------------------------------------------◊¯±Íœ‘ æend
             
@@ -766,62 +1059,98 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             if(his_stat == HIS_STAT_LOADING)
             {
                 //p1.setTextSize(width / 18);// …Ë÷√◊÷ÃÂ¥Û–°
-                var label:UILabel = UILabel(frame: CGRect(x: (width * 0.03), y: (height * 0.1), width: width*0.6, height: height*0.3))
+                var label:UILabel = UILabel(frame: CGRect(x: (width * 0.02), y: (height * 0.01), width: width*0.6, height: height*0.1))
                 label.text="温度（加载中）"
                 label.textColor = UIColor.whiteColor()
                 label.font = UIFont.boldSystemFontOfSize(12.0)
                 label.backgroundColor = UIColor.clearColor()
                 label.textAlignment = NSTextAlignment.Center
                 label.userInteractionEnabled = true
-
+                view.addSubview(label)
             }
             else
             {
-                
-                var k:Int=0
-                    //
-                //var pointArray:[CGPoint] = [CGPoint]()
-                for i in 0..<HIS_INFO_HOUR_NUM-1
+                if his_data_type
                 {
-                    
+                    var k:Int=0
+                    //var pointArray:[CGPoint] = [CGPoint]()
+                    for i in 0..<HIS_INFO_HOUR_NUM-1
+                    {
+                        
                         if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].valid == 1)&&(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i+1].valid == 1)
                         {
                             
-                            did_two_point_line(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), x1: CGFloat(tmp_px[i+1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py[i+1]),color: 2,v: view_top)
-                            //canvas.drawLine((float)tmp_px[i]+width/equal+line_tem_px0/3, (float)(tmp_py[i]), (float)tmp_px[i+1]+width/equal+line_tem_px0/3, (float)tmp_py[i+1], pp[1]);//p4
+                            did_two_point_line(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), x1: CGFloat(tmp_px[i+1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py[i+1]),color: 2,v: view)
+                            //canvas.drawLine(Float(tmp_px[i]+width/equal+line_tem_px0/3, Float((tmp_py[i]), Float(tmp_px[i+1]+width/equal+line_tem_px0/3, Float(tmp_py[i+1], pp[1]);//p4
                             
                             if i%2 == 0 {
                                 //Log.e("tmp_val "+" "+k,""+tmp_val[k]);
-                                //Log.e("tmp_py "+" "+k,""+(float)(tmp_py[i]-5));
+                                //Log.e("tmp_py "+" "+k,""+Float((tmp_py[i]-5));
                                 if (k==0)&&(tmp_val[k+1]<=tmp_val[k])
                                 {
-                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view_top)
-                                    //canvas.drawText(""+(float)tmp_val[k], (float)tmp_px[i]+width/equal+line_tem_px0/3, (float)(tmp_py[i])-5, p1);
+                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view)
+                                    //canvas.drawText(""+Float(tmp_val[k], Float(tmp_px[i]+width/equal+line_tem_px0/3, Float((tmp_py[i])-5, p1);
                                 }
                                 else if (k==0)&&(tmp_val[k+1]>tmp_val[k]) {
-                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view_top)
-                                    //canvas.drawText(""+(float)tmp_val[k], (float)tmp_px[i]+width/equal+line_tem_px0/3, (float)(tmp_py[i])+5, p1);
+                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view)
+                                    //canvas.drawText(""+Float(tmp_val[k], Float(tmp_px[i]+width/equal+line_tem_px0/3, Float((tmp_py[i])+5, p1);
                                 }
                                 else if(tmp_val[k]<tmp_val[k+1]){
-                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view_top)
-                                    //canvas.drawText(""+(float)tmp_val[k], (float)tmp_px[i]+width/equal+line_tem_px0/3, (float)(tmp_py[i])-8, p1);
+                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view)
+                                    //canvas.drawText(""+Float(tmp_val[k], Float(tmp_px[i]+width/equal+line_tem_px0/3, Float((tmp_py[i])-8, p1);
                                 }
                                 else {
-                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view_top)
-                                    //canvas.drawText(""+(float)tmp_val[k], (float)tmp_px[i]+width/equal+line_tem_px0/3, (float)(tmp_py[i])-10, p1);
+                                    did_drawlable_onlick(CGFloat(tmp_px[i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[i]), text: String(tmp_val[k]), color: 2,view: view)
+                                    //canvas.drawText(""+Float(tmp_val[k], Float(tmp_px[i]+width/equal+line_tem_px0/3, Float((tmp_py[i])-10, p1);
                                 }
                                 
                                 k++;
                             }
-                          
+                            
                         }
                         
-                }
-                
+                    }
+                    
                     if dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].valid == 1
                     {
-                        did_two_point_line(CGFloat(tmp_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py[HIS_INFO_HOUR_NUM-1]),color: 2,v: view_top)
+                        did_two_point_line(CGFloat(tmp_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py[HIS_INFO_HOUR_NUM-1]),color: 2,v: view)
                     }
+                }
+                else
+                {
+                    //p1.setTextSize(width/42);//设置字体大小12(480*800)
+                    //for(int j = 0 ; j < comm_frame.dev.dev_info[focus_dev_index].his_info_y7day_item.size() ; j++){
+                    for(var j:Int = 0 ; j < Int(days) ; j++){
+//                        if(!comm_frame.dev.dev_info[focus_dev_index].his_data_y7day_draw[j])
+//                            continue;
+                        var k:Int=0
+                        for(var i:Int = 0; i<(HIS_INFO_HOUR_NUM-1); i++)
+                        {
+                            if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[j][i].valid == 1)&&(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[j][i+1].valid == 1))
+                            {
+                                 did_two_point_line(CGFloat(tmp_px_arr[j][i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][i]), x1: CGFloat(tmp_px_arr[j][i+1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py_arr[j][i+1]),color: 2,v: view)
+                                //canvas.drawLine((float)tmp_px_arr[j][i]+width/equal+line_tem_px0/3, (float)(tmp_py_arr[j][i]), (float)tmp_px_arr[j][i+1]+width/equal+line_tem_px0/3, (float)tmp_py_arr[j][i+1], pp[j]);//p4
+                                
+                                if((i%2) == 0){
+                                    did_drawlable_onlick(CGFloat(tmp_px_arr[j][i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][i]), text: String(tmp_val_arr[j][k]), color: 2,view: view)
+                                    k++;
+                                }
+                                //canvas.drawText(""+(float)tmp_val_arr[j][i], (float)line_tem_var_x[i], (float)(tmp_py_arr[j][i]), p1);
+                                
+                                //Log.e("tmp_px_arr "+j +" "+i,""+tmp_px_arr[j][i]);
+                            }
+                            
+                        }
+                        if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[j][HIS_INFO_HOUR_NUM-1].valid == 1)
+                        {
+                            did_two_point_line(CGFloat(tmp_px_arr[j][HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py_arr[j][HIS_INFO_HOUR_NUM-1]),color: 2,v: view)
+                        //canvas.drawLine((float)tmp_px_arr[j][i]+width/equal+line_tem_px0/3, (float)(tmp_py_arr[j][i]), (float)(line_tem_px12+line_tem_px0/3), (float)tmp_py_arr[j][i], pp[j]);//p4
+                        }
+                    }
+                    
+                    
+                }
+                
 
                 
                 var label:UILabel = UILabel(frame: CGRect(x: (width * 0.02), y: (height * 0.01), width: width*0.4, height: height*0.11))
@@ -830,7 +1159,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 label.backgroundColor = UIColor.clearColor()
                 label.textAlignment = NSTextAlignment.Center
                 label.userInteractionEnabled = true
-                view_top.addSubview(label)
+                view.addSubview(label)
                 
                 if(var_sel_index == 0)
                 {
@@ -850,18 +1179,18 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
                     {
                         label.text = "PH:"+String(dev_grp.dev_info[fullintent_focus_dev_index].sys_var.ph/10)
-                        //canvas.drawText("PH : " +(float)dev_grp.dev_info[fullintent_focus_dev_index].var1.ph/10 , (float)(width*0.03), (float)(height*0.1),  p1);
+                        //canvas.drawText("PH : " +Float(dev_grp.dev_info[fullintent_focus_dev_index].var1.ph/10 , Float((width*0.03), Float((height*0.1),  p1);
                     }
                     else
                     {
                         label.text = "土壤温度: "+String(dev_grp.dev_info[fullintent_focus_dev_index].sys_var.soil_tmp/10)
-                        //canvas.drawText("Õ¡»¿Œ¬∂»: " +(float)dev_grp.dev_info[fullintent_focus_dev_index].var1.soil_tmp/10 , (float)(width*0.03), (float)(height*0.1),  p1);
+                        //canvas.drawText("Õ¡»¿Œ¬∂»: " +Float(dev_grp.dev_info[fullintent_focus_dev_index].var1.soil_tmp/10 , Float((width*0.03), Float((height*0.1),  p1);
                     }
                 }
                 else
                 {
                     label.text = "二氧化碳: "+String(dev_grp.dev_info[fullintent_focus_dev_index].sys_var.co2)
-                    //canvas.drawText("∂˛—ıªØÃº: " +(float)dev_grp.dev_info[fullintent_focus_dev_index].var1.co2 , (float)(width*0.03), (float)(height*0.1),  p1);
+                    //canvas.drawText("∂˛—ıªØÃº: " +Float(dev_grp.dev_info[fullintent_focus_dev_index].var1.co2 , Float((width*0.03), Float((height*0.1),  p1);
                 }
                 //p4.setTextSize(width/20);
             }
@@ -876,18 +1205,20 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             label.backgroundColor = UIColor.clearColor()
             label.textAlignment = NSTextAlignment.Center
             label.userInteractionEnabled = true
-            view_top.addSubview(label)
+            view.addSubview(label)
             
         }
     }
 
     //画下半部分曲线
-    func did_bottom_draw_onclick(view:UIView){
-        var days:Int8 = 7
+    func did_bottom_draw_onclick(uiview:UIView){
+        var days:Int = 7
         
         var iq:Int = 0
-        var width:CGFloat = view.bounds.width
-        var height:CGFloat = view.bounds.height
+        var width:CGFloat = uiview.bounds.width
+        var height:CGFloat = uiview.bounds.height
+        var view:UIView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        uiview.addSubview(view)
         var power_sum:UInt8 = 0
         var ox_sum:Float = 0
        
@@ -904,7 +1235,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             var down_down:Float = 0
             if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_SIG_CTRL)||(dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_DETECT_CTRL)
             {
-                down_down=Float(dev_grp.dev_info[fullintent_focus_dev_index].sys_cfg_var.do_min4)/10;//0
+                down_down=Float(dev_grp.dev_info[fullintent_focus_dev_index].sys_cfg_var.do_min1)/10;//0
             }
             else if(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
             {
@@ -948,77 +1279,182 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 ox_sum = 0;
                 var var1:Float = 0;
 
-                    for(iq=0; iq<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item.count; iq++)
+                if his_stat == HIS_STAT_LOADING
+                {
+                    
+                }
+                else
+                {
+                    if his_data_type
                     {
-                        if dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1
+                        for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
                         {
-                            if(var_sel_index == 0)
+                            if dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1
                             {
-                                if (dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                if(var_sel_index == 0)
                                 {
-                                    var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ox)/10;
+                                    if (dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                    {
+                                        var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ox)/10;
+                                    }
+                                    else
+                                    {
+                                        var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].wet_air)/10;
+                                    }
+                                }
+                                else if(var_sel_index == 1)
+                                {
+                                    if (dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_wet)/10;
+                                    }
                                 }
                                 else
                                 {
-                                    var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].wet_air)/10;
+                                    var1 = 0;
                                 }
-                            }
-                            else if(var_sel_index == 1)
-                            {
-                                if (dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                
+                                ox_sum += var1
+                                if(var1 > var_max)
                                 {
-                                    
+                                    var_max = var1;
                                 }
-                                else
+                                if(var1 < var_min)
                                 {
-                                    var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_wet)/10;
+                                    var_min = var1;
                                 }
-                            }
-                            else
-                            {
-                                var1 = 0;
-                            }
-                            
-                            ox_sum += var1
-                            if(var1 > var_max)
-                            {
-                                var_max = var1;
-                            }
-                            if(var1 < var_min)
-                            {
-                                var_min = var1;
-                            }
-                            if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].stat == 1)
-                            {
-                                power_sum++;
+                                if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].stat == 1)
+                                {
+                                    power_sum++;
+                                }
                             }
                         }
+                        
+                        /*int data_t  = (int)(do_max+1);
+                         do_max = data_t;
+                         data_t = (int)do_min;
+                         do_min = data_t;*/
+                        //----------------比较上下限值与曲线最值
+                        var data_t:Float  = Float(var_max+2);/*do_max+1，拉大纵向距离*/
+                        if(data_t>up_up)
+                        {
+                            var_max=data_t;
+                        }else{
+                            var_max=(up_up+1);
+                        }
+                        data_t = (var_min - 1);
+                        if(data_t<down_down)
+                        {
+                            var_min=data_t;
+                        }else{
+                            var_min=down_down;
+                        }
+                        if(var_min == 0){
+                            var_min = 0
+                        }
+                        do_up=Float((Float(height)*0.7-(up_up-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)+Float(width)/100)
+                        do_down=Float( (Float(height)*0.7-(down_down-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)+Float(width)/100)
                     }
-                    
-                    /*int data_t  = (int)(do_max+1);
-                     do_max = data_t;
-                     data_t = (int)do_min;
-                     do_min = data_t;*/
-                    //----------------比较上下限值与曲线最值
-                    var data_t:Float  = Float(var_max+2);/*do_max+1，拉大纵向距离*/
-                    if(data_t>up_up)
+                    else
                     {
-                        var_max=data_t;
-                    }else{
-                        var_max=(up_up+1);
+                        for(var i:Int = 0 ; i < days ; i++){
+                            for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
+                            {
+                                if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].valid == 1)
+                                {
+                                    if(var_sel_index == 0)
+                                    {
+                                        if(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                        {
+                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].ox)/10;
+                                        }
+                                        else
+                                        {
+                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].wet_air)/10;
+                                        }
+                                    }
+                                    else if(var_sel_index == 1)
+                                    {
+                                        if(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                        {
+                                            
+                                        }
+                                        else
+                                        {
+                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].soil_wet)/10;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var1 = 0;
+                                    }
+                                    
+                                    ox_sum += var1;
+                                    if(var1 > var_max_arr[i])
+                                    {
+                                        var_max_arr[i] = var1;
+                                    }
+                                    if(var1 < var_min_arr[i])
+                                    {
+                                        var_min_arr[i] = var1;
+                                    }
+                                    if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].stat == 1)
+                                    {
+                                        power_sum++;
+                                    }
+                                }
+                                if(var_max_arr[i] > var_max)
+                                {
+                                    var_max = var_max_arr[i];
+                                }
+                                if(var_min_arr[i] < var_min)
+                                {
+                                    var_min = var_min_arr[i];
+                                }
+                            }
+                            
+                            var data_t:Int  = Int(var_max_arr[i]+2);/*do_max+1，拉大纵向距离*/
+                            if(Float(data_t) > up_up)
+                            {
+                                var_max_arr[i] = Float(data_t);
+                            }else{
+                                var_max_arr[i]=(Float)(up_up+1);
+                            }
+                            data_t = Int(var_min_arr[i]);
+                            if(Float(data_t)<down_down)
+                            {
+                                var_min_arr[i]=Float(data_t)
+                            }else{
+                                var_min_arr[i]=Float(down_down)
+                            }
+                            do_up_arr[i]=Float((Float(height)*0.7-(up_up-var_min_arr[i])*(Float(height)*0.7/(var_max_arr[i]-var_min_arr[i]))+Float(width)/10)+Float(width)/100)
+                            do_down_arr[i]=Float( (Float(height)*0.7-(down_down-var_min_arr[i])*(Float(height)*0.7/(var_max_arr[i]-var_min_arr[i]))+Float(width)/10)+Float(width)/100 )
+                        }
+                        var data_t:Int  = Int(var_max+2);/*do_max+1，拉大纵向距离*/
+                        if(Float(data_t) > up_up)
+                        {
+                            var_max=Float(data_t)
+                        }else{
+                            var_max=Float(up_up+1);
+                        }
+                        data_t = Int(var_min)
+                        if(Float(data_t)<down_down)
+                        {
+                            var_min=Float(data_t)
+                        }else{
+                            var_min=Float(down_down)
+                        }
+                        do_up=Float((Float(height)*0.7-(up_up-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)+Float(width)/100)
+                        do_down=Float( (Float(height)*0.7-(down_down-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)+Float(width)/100)
+                        
                     }
-                    data_t = (var_min - 1);
-                    if(data_t<down_down)
-                    {
-                        var_min=data_t;
-                    }else{
-                        var_min=down_down;
-                    }
-                    if(var_min == 0){
-                        var_min = 0
-                    }
-                    do_up=Float((Float(height)*0.7-(up_up-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)+Float(width)/100)
-                    do_down=Float( (Float(height)*0.7-(down_down-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)+Float(width)/100)
+
+                }
+                
 //                }
                 
                 
@@ -1028,71 +1464,138 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 var width_slice:Float = Float(width)/Float(HIS_INFO_HOUR_NUM)
                 var ox_px = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
                 var ox_py = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
-//                var ox_px_arr = new float[length][dev_group.HIS_INFO_HOUR_NUM];
-//                var ox_py_arr = new float[length][dev_group.HIS_INFO_HOUR_NUM];
+                var ox_px_arr = [[Float]]()
+                var ox_py_arr = [[Float]]()
+                var ox_val_arr = [[Float]]()
+                for i in 0..<Int(days)
+                {
+                    var s = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
+                    ox_px_arr.append(s)
+                    s = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
+                    ox_py_arr.append(s)
+                    s = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
+                    ox_val_arr.append(s)
+
+                }
+                
                 //	float[] ox_text = new float[dev_group.HIS_INFO_HOUR_NUM];
-//                var ox_val_arr = new float[length][dev_group.HIS_INFO_HOUR_NUM];
+                
                 var ox_val = [Float](count:HIS_INFO_HOUR_NUM,repeatedValue:0)
                 var1 = 0;
-                
 
-                var k:UInt8 = 0;
-                    for(iq=0; iq<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item.count; iq++)
+                if his_stat==HIS_STAT_LOADING
+                {
+                    
+                }
+                else
+                {
+                    if his_data_type
                     {
-                        ox_px[iq] = Float((Float(iq)*(Float(width)/Float(equal)*12)/Float(HIS_INFO_HOUR_NUM)));
-                        if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1)
+                        var k:UInt8 = 0;
+                        for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
                         {
-                            if(var_sel_index == 0)
+                            ox_px[iq] = Float((Float(iq)*(Float(width)/Float(equal)*12)/Float(HIS_INFO_HOUR_NUM)));
+                            if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1)
                             {
-                                if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
+                                if(var_sel_index == 0)
                                 {
-                                    var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ox)/10;
+                                    if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
+                                    {
+                                        var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].ox)/10;
+                                    }
+                                    else
+                                    {
+                                        var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].wet_air)/10;
+                                    }
+                                }
+                                else if(var_sel_index == 1)
+                                {
+                                    if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_wet)/10;
+                                    }
                                 }
                                 else
                                 {
-                                    var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].wet_air)/10;
+                                    var1 = 0; //no sunshine
                                 }
-                            }
-                            else if(var_sel_index == 1)
-                            {
-                                if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
+                                
+                                if(iq % 2 == 0){
+                                    ox_val[Int(k)] = var1;
+                                    k++;
+                                }
+                                if((var1<=100) && (var1 >= -1))
                                 {
-                                    
+                                    ox_py[iq] = Float((Float(height)*0.7-(var1-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)-Float(width)/100);
                                 }
                                 else
                                 {
-                                    var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].soil_wet)/10;
+                                    ox_py[iq]=0;
                                 }
+                                
                             }
-                            else
-                            {
-                                var1 = 0; //no sunshine
-                            }
-                            //		ox_text[iq]=var;
-                            /*if(ox < do_min)
-                             {
-                             do_min = ox;
-                             }
-                             else if(ox > do_max)
-                             {
-                             do_max = ox;
-                             }*/
-                            if(iq % 2 == 0){
-                                ox_val[Int(k)] = var1;
-                                k++;
-                            }
-                            if((var1<=100) && (var1 >= -1))
-                            {
-                                ox_py[iq] = Float((Float(height)*0.7-(var1-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)-Float(width)/100);
-                            }
-                            else
-                            {
-                                ox_py[iq]=0;
-                            }
-                            
                         }
+                        
                     }
-//                }
+                    else
+                    {
+                        for(var i:Int = 0 ; i < days; i++){
+                            var k:UInt8 = 0;
+                            for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
+                            {
+                                ox_px_arr[i][iq] = Float((Float(iq)*(Float(width)/Float(equal)*12)/Float(HIS_INFO_HOUR_NUM)))
+                                if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].valid == 1)
+                                {
+                                    if(var_sel_index == 0)
+                                    {
+                                        if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
+                                        {
+                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].ox)/10;
+                                        }
+                                        else
+                                        {
+                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].wet_air)/10;
+                                        }
+                                    }
+                                    else if(var_sel_index == 1)
+                                    {
+                                        if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
+                                        {
+                                            
+                                        }
+                                        else
+                                        {
+                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].soil_wet)/10;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var1 = 0;
+                                    }
+                                    if(iq % 2 == 0){
+                                        ox_val_arr[i][Int(k)] = var1;
+                                        k++;
+                                    }
+                                    if((var1<=100) && (var1 >= -1))
+                                    {
+                                        ox_py_arr[i][iq] = Float((Float(height)*0.7-(var1-var_min)*(Float(height)*0.7/(var_max-var_min))+Float(width)/10)-Float(width)/100);
+                                    }
+                                    else
+                                    {
+                                        ox_py_arr[i][iq]=0;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                    }
+
+                }
                 
                 
                 //----------------背景
@@ -1113,74 +1616,84 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                
                 for(var ii:Int=0;ii<Int(equal-1);ii++)
                 {//竖线
-                     did_two_point_line(CGFloat(line_do_x[ii])+CGFloat(line_do_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_do_x[ii])+CGFloat(line_do_px0)/3,y1:height*0.87,color: 1,v: view_bottom)
-                    //canvas.drawLine((float)(line_do_x[ii]+line_do_px0/3),(float)(height/7+(width/96+1)/2),(float)line_do_x[ii]+line_do_px0/3,(float)(height*0.87),p_xy);
+                     did_two_point_line(CGFloat(line_do_x[ii])+CGFloat(line_do_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_do_x[ii])+CGFloat(line_do_px0)/3,y1:height*0.87,color: 1,v: view)
+                    //canvas.drawLine(Float((line_do_x[ii]+line_do_px0/3),Float((height/7+(width/96+1)/2),Float(line_do_x[ii]+line_do_px0/3,Float((height*0.87),p_xy);
                 }
                 
-               did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_do_px0)+CGFloat(line_do_px0)/3,y1:height*0.87,color: 1,v: view_bottom)
-               did_two_point_line(CGFloat(line_do_px12)+CGFloat(line_do_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_do_px12)+CGFloat(line_do_px0)/3,y1:height*0.87,color: 1,v: view_bottom)
-                //canvas.drawLine((float)line_do_px0+line_do_px0/3,(float)(height/7+(width/96+1)/2),(float)line_do_px0+line_do_px0/3,(float)(height*0.87),p1);
-                //canvas.drawLine((float)line_do_px12+line_do_px0/3,(float)(height/7+(width/96+1)/2),(float)line_do_px12+line_do_px0/3,(float)(height*0.87),p1);
+               did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_do_px0)+CGFloat(line_do_px0)/3,y1:height*0.87,color: 1,v: view)
+               did_two_point_line(CGFloat(line_do_px12)+CGFloat(line_do_px0/3),y0:height/7+(width/96+1)/2,x1:CGFloat(line_do_px12)+CGFloat(line_do_px0)/3,y1:height*0.87,color: 1,v: view)
+                //canvas.drawLine(Float(line_do_px0+line_do_px0/3,Float((height/7+(width/96+1)/2),Float(line_do_px0+line_do_px0/3,Float((height*0.87),p1);
+                //canvas.drawLine(Float(line_do_px12+line_do_px0/3,Float((height/7+(width/96+1)/2),Float(line_do_px12+line_do_px0/3,Float((height*0.87),p1);
                 //int iii;//line_do_px0/3为x 平移
-                for(var iii:Int=1;iii<Int(days);iii++)
+                for(var iii:Int=1;iii<7;iii++)
                 {//横线
-                    did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0)/3, y0: (CGFloat(iii)*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: (CGFloat(iii)*height/7+(width/96+1)/2),color: 1,v: view_bottom)
+                    did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0)/3, y0: (CGFloat(iii)*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: (CGFloat(iii)*height/7+(width/96+1)/2),color: 1,v: view)
                     
-                    //canvas.drawLine((float)line_do_px0+line_do_px0/3,(float)(iii*height/7+(width/96+1)/2),(float)width-width/equal+line_do_px0/3,(float)(iii*height/7+(width/96+1)/2),p_xy);
+                    //canvas.drawLine(Float(line_do_px0+line_do_px0/3,Float((iii*height/7+(width/96+1)/2),Float(width-width/equal+line_do_px0/3,Float((iii*height/7+(width/96+1)/2),p_xy);
                 }
-                did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0)/3, y0: (6*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: (6*height/7+(width/96+1)/2),color: 1,v: view_bottom)
-                //canvas.drawLine((float)line_do_px0+line_do_px0/3,(float)(6*height/7+(width/96+1)/2),(float)width-width/equal+line_do_px0/3,(float)(6*height/7+(width/96+1)/2),p1);
+                did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0)/3, y0: (6*height/7+(width/96+1)/2), x1: width-width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: (6*height/7+(width/96+1)/2),color: 1,v: view)
+                //canvas.drawLine(Float(line_do_px0+line_do_px0/3,Float((6*height/7+(width/96+1)/2),Float(width-width/equal+line_do_px0/3,Float((6*height/7+(width/96+1)/2),p1);
                 //上下限
-                did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0)/3, y0: CGFloat(do_up)-height*0.02, x1: width-width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(do_up)-height*0.02,color: 5,v: view_bottom)
+                did_two_point_line(CGFloat(line_do_px0)+CGFloat(line_do_px0)/3, y0: CGFloat(do_up)-height*0.02, x1: width-width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(do_up)-height*0.02,color: 5,v: view)
                 
-                did_drawlable_onlick((width*0.9-width/CGFloat(equal)+CGFloat(line_do_px0)/3),y0: CGFloat(do_up)-height*0.02,text: String(up_up),color: 5,view: view_bottom)
-                did_drawlable_onlick((width*0.9-width/CGFloat(equal)+CGFloat(line_do_px0)/3),y0: CGFloat(do_down)-height*0.04,text: String(down_down),color: 5,view: view_bottom)
-                //canvas.drawText(""+down_down, (float)(width*0.9-width/equal+line_do_px0/3), (float)(do_down-height*0.04), p5);
+                did_drawlable_onlick((width*0.9-width/CGFloat(equal)+CGFloat(line_do_px0)/3),y0: CGFloat(do_up)-height*0.02,text: String(up_up),color: 5,view: view)
+                did_drawlable_onlick((width*0.9-width/CGFloat(equal)+CGFloat(line_do_px0)/3),y0: CGFloat(do_down)-height*0.04,text: String(down_down),color: 5,view: view)
+                //canvas.drawText(""+down_down, Float((width*0.9-width/equal+line_do_px0/3), Float((do_down-height*0.04), p5);
                 
                 var time_jj = [String](arrayLiteral: "0:00","    ","4:00","    ","8:00","    ","12:00","    ","16:00","    ","20:00","    ","24:00")
-                var time_jjj:[String]=[String](arrayLiteral:"",String(var_max),
-                    String(4*(var_max-var_min)/5+var_min),
-                    String(3*(var_max-var_min)/5+var_min),
-                    String(2*(var_max-var_min)/5+var_min),
-                    String(1*(var_max-var_min)/5+var_min),
-                    String(var_min))
+                 var time_jjj:[String]=[]
+                if his_stat==HIS_STAT_LOADING
+                {
+                    time_jjj=[String](arrayLiteral:"6","5","4","3","2","1","0")
+                }
+                else
+                {
+                    time_jjj=[String](arrayLiteral:"",String(var_max),
+                                      String(4*(var_max-var_min)/5+var_min),
+                                      String(3*(var_max-var_min)/5+var_min),
+                                      String(2*(var_max-var_min)/5+var_min),
+                                      String(1*(var_max-var_min)/5+var_min),
+                                      String(var_min))
+
+                }
                 
                 for jj in 0..<Int(equal-1)
                 {
                     //p1.setTextSize(width/30);//设置字体大小12(480*800)
-                    //canvas.drawText(time_jj[jj], do_x[jj]-width/40, (float)(height*0.96), p1);
-                     did_drawlable_onlick(CGFloat(line_do_x[jj])-width/60,y0: (height*0.96),text: time_jj[jj],color: 1,view: view_bottom)
-                    //canvas.drawText(time_jj[jj], line_do_x[jj]-width/60, (float)(height*0.96), p1);
+                    //canvas.drawText(time_jj[jj], do_x[jj]-width/40, Float((height*0.96), p1);
+                     did_drawlable_onlick(CGFloat(line_do_x[jj])-width/60,y0: (height*0.96),text: time_jj[jj],color: 1,view: view)
+                    //canvas.drawText(time_jj[jj], line_do_x[jj]-width/60, Float((height*0.96), p1);
                 }
                 //int jjj;
-                for jjj in 0..<Int(days)
+                for jjj in 1..<7
                 {
                     //p1.setTextSize(width/30);//设置字体大小12(480*800)
-                    did_drawlable_onlick(CGFloat(line_do_px0)-width/15+CGFloat(line_do_px0)/3,y0: (CGFloat(jjj)*height/7+(width/96+1)/2+width/60),text: time_jjj[jjj],color: 1,view: view_bottom)
-                   //canvas.drawText(time_jjj[jjj], (float)(line_do_px0-width/15+line_do_px0/3), (float)(jjj*height/7+(width/96+1)/2+width/60), p1);
+                    did_drawlable_onlick(CGFloat(line_do_px0)-width/15+CGFloat(line_do_px0)/3,y0: (CGFloat(jjj)*height/7+(width/96+1)/2+width/60),text: time_jjj[jjj],color: 1,view: view)
+                   //canvas.drawText(time_jjj[jjj], Float((line_do_px0-width/15+line_do_px0/3), Float((jjj*height/7+(width/96+1)/2+width/60), p1);
                 }
                 
                 if(his_stat == HIS_STAT_LOADING)
                 {
                     //p1.setTextSize(width / 18);// 设置字体大小
-                    var label:UILabel = UILabel(frame: CGRect(x: (width * 0.03), y: (height * 0.1), width: width*0.6, height: height*0.3))
+                    var label:UILabel = UILabel(frame: CGRect(x: (width * 0.02), y: (height * 0.01), width: width*0.6, height: height*0.1))
                     label.textColor = UIColor.whiteColor()
                     label.font = UIFont.boldSystemFontOfSize(12.0)
                     label.backgroundColor = UIColor.clearColor()
                     label.textAlignment = NSTextAlignment.Center
                     label.userInteractionEnabled = true
+                    view.addSubview(label)
                     if(var_sel_index == 0)
                     {
                         
                         if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)||(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2)||(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP))
                         {
                             label.text = "空气湿度（加载中）"
-                            //canvas.drawText("空气湿度" + "（" + "加载中" + "）", (float) (width * 0.03),(float) (height * 0.1), p1);
+                            //canvas.drawText("空气湿度" + "（" + "加载中" + "）", Float( (width * 0.03),Float( (height * 0.1), p1);
                         }
                         else
                         {
                             label.text = "溶氧（加载中）"
-                            //canvas.drawText("溶氧" + "（" + "加载中" + "）", (float) (width * 0.03),(float) (height * 0.1), p1);
+                            //canvas.drawText("溶氧" + "（" + "加载中" + "）", Float( (width * 0.03),Float( (height * 0.1), p1);
                         }
                     }
                     else if(var_sel_index == 1)
@@ -1188,26 +1701,26 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                         if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)||(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2)||(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP))
                         {
                             label.text = "土壤湿度（加载中）"
-                            //canvas.drawText("土壤湿度" + "（" + "加载中" + "）", (float) (width * 0.03),(float) (height * 0.1), p1);
+                            //canvas.drawText("土壤湿度" + "（" + "加载中" + "）", Float( (width * 0.03),Float( (height * 0.1), p1);
                         }
                         else
                         {
                             label.text = "氨氮（加载中）"
-                            //canvas.drawText("氨氮" + "（" + "加载中" + "）", (float) (width * 0.03),(float) (height * 0.1), p1);
+                            //canvas.drawText("氨氮" + "（" + "加载中" + "）", Float( (width * 0.03),Float( (height * 0.1), p1);
                         }
                     }
                     else
                     {
                         label.text = "光照度（加载中）"
-                        //canvas.drawText("光照度" + "（" + "加载中" + "）", (float) (width * 0.03),(float) (height * 0.1), p1);
+                        //canvas.drawText("光照度" + "（" + "加载中" + "）", Float( (width * 0.03),Float( (height * 0.1), p1);
                     }
                 }
                 else
                 {
-                
-
-                    var k:Int = 0;
-                    for(var i:Int=0; i<(HIS_INFO_HOUR_NUM-1); i++)
+                    if his_data_type
+                    {
+                        var k:Int = 0;
+                        for(var i:Int=0; i<(HIS_INFO_HOUR_NUM-1); i++)
                         {//---------------线--点--文本
                             if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i].valid == 1)&&(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i+1].valid == 1))
                             {
@@ -1216,119 +1729,121 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                                 //Log.e("ox_py[i]"+i,""+ox_py[i]);
                                 if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[i+1].stat==1)
                                 {
-                                    did_two_point_line(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), x1: CGFloat(ox_px[i+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[i+1]),color: 2,v: view_bottom)
-                                    //canvas.drawLine((float)ox_px[i]+width/equal+line_do_px0/3, (float)(ox_py[i]), (float)ox_px[i+1]+width/equal+line_do_px0/3, (float)ox_py[i+1], p);
+                                    did_two_point_line(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), x1: CGFloat(ox_px[i+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[i+1]),color: 2,v: view)
+                                    //canvas.drawLine(Float(ox_px[i]+width/equal+line_do_px0/3, Float((ox_py[i]), Float(ox_px[i+1]+width/equal+line_do_px0/3, Float(ox_py[i+1], p);
                                     
                                 }else{
-                                    did_two_point_line(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), x1: CGFloat(ox_px[i+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[i+1]),color: 3,v: view_bottom)
-                                    //canvas.drawLine((float)ox_px[i]+width/equal+line_do_px0/3, (float)(ox_py[i]), (float)ox_px[i+1]+width/equal+line_do_px0/3, (float)ox_py[i+1], p4);
+                                    did_two_point_line(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), x1: CGFloat(ox_px[i+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[i+1]),color: 3,v: view)
+                                    //canvas.drawLine(Float(ox_px[i]+width/equal+line_do_px0/3, Float((ox_py[i]), Float(ox_px[i+1]+width/equal+line_do_px0/3, Float(ox_py[i+1], p4);
                                     
                                 }
                                 
                                 if(i%2 == 0){
                                     //if((k==0)&&(ox_val[k+1]<=ox_val[k])){
-                                        did_drawlable_onlick(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), text: String(ox_val[k]), color: 2,view: view_bottom)
-                                        //canvas.drawText(""+(float)ox_val[k], (float)ox_px[i]+width/equal+line_do_px0/3, (float)(ox_py[i])-5, p1);
-//                                    }
-//                                    else if((k==0)&&(ox_val[k+1]>ox_val[k])){
-//                                        canvas.drawText(""+(float)ox_val[k], (float)ox_px[i]+width/equal+line_do_px0/3, (float)(ox_py[i])+5, p1);
-//                                    }
-//                                    else if(ox_val[k]<ox_val[k+1]){
-//                                        canvas.drawText(""+(float)ox_val[k], (float)ox_px[i]+width/equal+line_do_px0/3, (float)(ox_py[i])-8, p1);   
-//                                    }
-//                                    else {
-//                                        canvas.drawText(""+(float)ox_val[k], (float)ox_px[i]+width/equal+line_do_px0/3, (float)(ox_py[i])-10, p1);   							
-//                                    }
-//                                    
+                                    did_drawlable_onlick(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), text: String(ox_val[k]), color: 2,view: view)
+                                    //canvas.drawText(""+Float(ox_val[k], Float(ox_px[i]+width/equal+line_do_px0/3, Float((ox_py[i])-5, p1);
+                                    //                                    }
+                                    //                                    else if((k==0)&&(ox_val[k+1]>ox_val[k])){
+                                    //                                        canvas.drawText(""+Float(ox_val[k], Float(ox_px[i]+width/equal+line_do_px0/3, Float((ox_py[i])+5, p1);
+                                    //                                    }
+                                    //                                    else if(ox_val[k]<ox_val[k+1]){
+                                    //                                        canvas.drawText(""+Float(ox_val[k], Float(ox_px[i]+width/equal+line_do_px0/3, Float((ox_py[i])-8, p1);
+                                    //                                    }
+                                    //                                    else {
+                                    //                                        canvas.drawText(""+Float(ox_val[k], Float(ox_px[i]+width/equal+line_do_px0/3, Float((ox_py[i])-10, p1);
+                                    //                                    }
+                                    //
                                     k++;
                                 }
                             }
-                           
+                            
                         }
-                    if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].valid == 1) ){
-                        if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].stat==1)
-                        {
-                            did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 2,v: view_top)
-                            //canvas.drawLine((float)ox_px[HIS_INFO_HOUR_NUM-1]+width/equal+line_do_px0/3, (float)(ox_py[HIS_INFO_HOUR_NUM-1]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[HIS_INFO_HOUR_NUM-1], p);
-                            
-                        }else{
-                            did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 3,v: view_top)
-                           // canvas.drawLine((float)ox_px[HIS_INFO_HOUR_NUM-1]+width/equal+line_do_px0/3, (float)(ox_py[HIS_INFO_HOUR_NUM-1]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[HIS_INFO_HOUR_NUM-1], p4);
-                            
+                        if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].valid == 1) ){
+                            if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].stat==1)
+                            {
+                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 2,v: view)
+                                //canvas.drawLine(Float(ox_px[HIS_INFO_HOUR_NUM-1]+width/equal+line_do_px0/3, Float((ox_py[HIS_INFO_HOUR_NUM-1]), Float((line_do_px12+line_do_px0/3), Float(ox_py[HIS_INFO_HOUR_NUM-1], p);
+                                
+                            }else{
+                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 3,v: view)
+                                // canvas.drawLine(Float(ox_px[HIS_INFO_HOUR_NUM-1]+width/equal+line_do_px0/3, Float((ox_py[HIS_INFO_HOUR_NUM-1]), Float((line_do_px12+line_do_px0/3), Float(ox_py[HIS_INFO_HOUR_NUM-1], p4);
+                                
+                            }
                         }
                     }
+                    else
+                    {
+                        //p1.setTextSize(width / 42);//
+                        for(var i:Int = 0 ; i < days ; i++){
+                            
+//                            if(!comm_frame.dev.dev_info[focus_dev_index].his_data_y7day_draw[i])
+//                                continue;
+                             var k:Int = 0;
+                             var j:Int = 0;
+                            for(; j<(HIS_INFO_HOUR_NUM-1); j++)
+                            {
+                                
+                                if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j].valid == 1)&&(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j+1].valid == 1))
+                                {
+                                    if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j+1].stat==1)
+                                    {
+                                         did_two_point_line(CGFloat(ox_px_arr[i][j])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][j]), x1: CGFloat(ox_px_arr[i][j+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][j+1]),color: 2,v: view)
+                                        //canvas.drawLine((float)ox_px_arr[i][j]+width/equal+line_do_px0/3, (float)(ox_py_arr[i][j]), (float)ox_px_arr[i][j+1]+width/equal+line_do_px0/3, (float)ox_py_arr[i][j+1], pp[i]);
+                                        
+                                    }else{
+                                         did_two_point_line(CGFloat(ox_px_arr[i][j])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][j]), x1: CGFloat(ox_px_arr[i][j+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][j+1]),color: 3,v: view)
+                                        //canvas.drawLine((float)ox_px_arr[i][j]+width/equal+line_do_px0/3, (float)(ox_py_arr[i][j]), (float)ox_px_arr[i][j+1]+width/equal+line_do_px0/3, (float)ox_py_arr[i][j+1], pp4[i]);
+                                    }
+                                    if(j%2 == 0){
+                                        did_drawlable_onlick(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), text: String(ox_val[k]), color: 2,view: view)
+                                            //canvas.drawText(""+(float)ox_val_arr[i][k], (float)ox_px_arr[i][j]+width/equal+line_do_px0/3, (float)(ox_py_arr[i][j])-5, p1);
+                                        
+                                        k++;
+                                    }
+                                    
+                                }
+                                
+                            }
+                            if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].valid == 1) )
+                            {
+                            if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].stat==1)
+                            {
+                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 2,v: view)
+                                //canvas.drawLine((float)ox_px[j]+width/equal+line_do_px0/3, (float)(ox_py[j]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[j], p);
+                                
+                            }else{
+                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 3,v: view)
+                               // canvas.drawLine((float)ox_px[j]+width/equal+line_do_px0/3, (float)(ox_py[j]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[j], p4);
+                                
+                            }
+                            }
+                        }
+                        
+                    }
                     
-//                    p1.setColor(Color.WHITE);// 设置白色
-//                    int j;
-//                    for(j=1;j<dev_group.HIS_INFO_HOUR_NUM;j++)
-//                    {//---------------点和文本
-//                        
-//                        //if((j%12) == 0)
-//                        if((j%24) == 0)
-//                        {
-//                            if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[j].valid == 1))
-//                            {
-//                                canvas.drawCircle(line_do_x[j/12]+line_do_px0/3, (float)(ox_py[j]), width/96, p1);
-//                                p1.setTextSize(width/20);//设置字体大小24(480*800)
-//                                if(var_sel_index == 0)
-//                                {
-//                                    
-//                                    if((dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)
-//                                        &&(dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
-//                                        &&(dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
-//                                    {
-//                                        canvas.drawText(String.valueOf((float)dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[j].ox/10),line_do_x[j/12]-width/40+line_do_px0/3, ox_py[j]-height/25, p1);
-//                                    }
-//                                    else
-//                                    {
-//                                        canvas.drawText(String.valueOf((float)dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[j].wet_air/10),line_do_x[j/12]-width/40+line_do_px0/3, ox_py[j]-height/25, p1);
-//                                    }
-//                                }
-//                                else if(var_sel_index == 1)
-//                                {
-//                                    if((dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)
-//                                        &&(dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)
-//                                        &&(dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
-//                                    {
-//                                        
-//                                    }
-//                                    else
-//                                    {
-//                                        canvas.drawText(String.valueOf((float)dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[j].soil_wet/10),line_do_x[j/12]-width/40+line_do_px0/3, ox_py[j]-height/25, p1);
-//                                    }
-//                                }
-//                                else
-//                                {
-//                                    
-//                                }
-//                                
-//                            }
-//                        }
-//                        
-//                    }
-                    //------溶氧
-                    //p1.setTextSize(width/20);//设置字体大小
-                    //if(his_stat == HIS_STAT_DISP)
+                    
+                    
+
                     var label:UILabel = UILabel(frame: CGRect(x: (width * 0.02), y: (height * 0.01), width: width*0.4, height: height*0.11))
                     label.textColor = UIColor.whiteColor()
                     label.font = UIFont.boldSystemFontOfSize(12.0)
                     label.backgroundColor = UIColor.clearColor()
                     label.textAlignment = NSTextAlignment.Center
                     label.userInteractionEnabled = true
-                    view_bottom.addSubview(label)
+                    view.addSubview(label)
                     if(var_sel_index == 0)
                     {
                         if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
                         {
                             label.text="平均溶氧("+String(Float(Int(ox_sum*10)/Int(dev_grp.dev_info[fullintent_focus_dev_index].his_data_num))/10)+")°C"
-                            //canvas.drawText("平均溶氧"+ "("+(float) ((int)(ox_sum*10)/dev_grp.dev_info[fullintent_focus_dev_index].his_data_num)/10  +"mg)"+"  "+"开机时间"+"("+ (float)(int)(power_sum)+"小时)" , (float)(width*0.03), (float)(height*0.1), p1);
+                            //canvas.drawText("平均溶氧"+ "("+Float( ((int)(ox_sum*10)/dev_grp.dev_info[fullintent_focus_dev_index].his_data_num)/10  +"mg)"+"  "+"开机时间"+"("+ Float((int)(power_sum)+"小时)" , Float((width*0.03), Float((height*0.1), p1);
                         }
                         else
                         {
                             
-                            //canvas.drawText("湿度: " +"  "+"开机时间"+ "（"+ (float)((int)(power_sum*100/60))/10 +"小时）" , (float)(width*0.03), (float)(height*0.1), p1);
+                            //canvas.drawText("湿度: " +"  "+"开机时间"+ "（"+ Float(((int)(power_sum*100/60))/10 +"小时）" , Float((width*0.03), Float((height*0.1), p1);
                             label.text="空气湿度:"+String(Float(dev_grp.dev_info[fullintent_focus_dev_index].sys_var.air_wet)/10)
-                            //canvas.drawText("空气湿度: " +(float)dev_grp.dev_info[fullintent_focus_dev_index].var1.air_wet/10 , (float)(width*0.03), (float)(height*0.1),  p1);
+                            //canvas.drawText("空气湿度: " +Float(dev_grp.dev_info[fullintent_focus_dev_index].var1.air_wet/10 , Float((width*0.03), Float((height*0.1),  p1);
                         }
                     }
                     else if(var_sel_index == 1)
@@ -1336,19 +1851,19 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                         if((dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[  fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
                         {
                             label.text = "氨氮: 未连接传感器"
-                            //canvas.drawText("氨氮: " +"未连接传感器" , (float)(width*0.03), (float)(height*0.1),  p1);
+                            //canvas.drawText("氨氮: " +"未连接传感器" , Float((width*0.03), Float((height*0.1),  p1);
                         }
                         else
                         {
                             label.text = "土壤湿度: "+String(Float(dev_grp.dev_info[fullintent_focus_dev_index].sys_var.soil_wet)/10)
-                            //canvas.drawText("土壤湿度: " +(float)dev_grp.dev_info[fullintent_focus_dev_index].var1.soil_wet/10 , (float)(width*0.03), (float)(height*0.1),  p1);
+                            //canvas.drawText("土壤湿度: " +Float(dev_grp.dev_info[fullintent_focus_dev_index].var1.soil_wet/10 , Float((width*0.03), Float((height*0.1),  p1);
                         }
                     }
                         
                     else
                     {
                         label.text = "光照度: " + "未连接传感器"
-                        //canvas.drawText("光照度: " +"未连接传感器" , (float)(width*0.03), (float)(height*0.1),  p1);
+                        //canvas.drawText("光照度: " +"未连接传感器" , Float((width*0.03), Float((height*0.1),  p1);
                     }
                     //p4.setTextSize(width/20);
                 }
@@ -1363,12 +1878,12 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 label.backgroundColor = UIColor.clearColor()
                 label.textAlignment = NSTextAlignment.Center
                 label.userInteractionEnabled = true
-                view_bottom.addSubview(label)
+                view.addSubview(label)
 
-                //canvas.drawText("本日没有历史数据记录", (float)(width*0.03), (float)(height*0.1), p1);
+                //canvas.drawText("本日没有历史数据记录", Float((width*0.03), Float((height*0.1), p1);
                 //p4.setTextSize(width/20);
             }
-            //canvas.drawText("线“━”,表示增氧机关", (float)(width*0.5), (float)(height*0.1), p4);
+            //canvas.drawText("线“━”,表示增氧机关", Float((width*0.5), Float((height*0.1), p4);
         
     }
 
@@ -1449,19 +1964,16 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         }
         
     }
-    var _curves:[UIBezierPath]=[]
+    
+ 
     func did_clear_drawing_onclick(){
-        for i in 0..<_curves.count
-        {
-            _curves[i].removeAllPoints()
-        }
-        _curves.removeAll()
+        view_top.subviews[0].removeFromSuperview()
+        view_bottom.subviews[0].removeFromSuperview()
     }
     // 画曲线
     func did_drawline_onclick(view:UIView,pointArray:[CGPoint],color:UIColor,linewidth:UInt8)
     {
          var _curve = UIBezierPath()
-        _curves.append(_curve)
         _curve.moveToPoint(pointArray.first!)
         _curve.addBezierThrough( pointArray)
          var _shapeLayer = CAShapeLayer()
@@ -1481,56 +1993,3 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
 
 }
 
-class MyCanvas: UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        //把背景色设为透明
-        self.backgroundColor = UIColor.clearColor()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func drawRect(rect: CGRect) {
-        
-        let white_color = UIColor.whiteColor()
-        white_color.set()
-        
-        let one_paint = UIBezierPath()
-        one_paint.lineWidth = 5.0
-       // one_paint.
-        
-        //创建一个矩形，它的所有边都内缩5%
-        let drawingRect = CGRectInset(self.bounds,
-                                      self.bounds.size.width * 0.05,
-                                      self.bounds.size.height * 0.05)
-        
-        //确定组成绘画的点
-        let topLeft = CGPointMake(CGRectGetMinX(drawingRect),CGRectGetMinY(drawingRect))
-        
-        //let topRight = CGPointMake(CGRectGetMaxX(drawingRect),CGRectGetMinY(drawingRect))
-        
-        let bottomRight = CGPointMake(CGRectGetMaxX(drawingRect),CGRectGetMaxY(drawingRect))
-        
-        let bottomLeft = CGPointMake(CGRectGetMinX(drawingRect),CGRectGetMaxY(drawingRect))
-        
-        let center = CGPointMake(CGRectGetMidX(drawingRect),CGRectGetMidY(drawingRect))
-        
-        ////开始绘制
-        //bezierPath.moveToPoint(topLeft)
-        //bezierPath.addLineToPoint(topRight)
-        //bezierPath.addLineToPoint(bottomLeft)
-        //bezierPath.addCurveToPoint(bottomRight, controlPoint1: center, controlPoint2: center)
-        
-        //使路径闭合，结束绘制
-        //bezierPath.closePath()
-        
-        //设定颜色，并绘制它们
-        UIColor.greenColor().setFill()
-        UIColor.blackColor().setStroke()
-        
-        //bezierPath.fill()
-        //bezierPath.stroke()
-    }
-}

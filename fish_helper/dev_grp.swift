@@ -158,7 +158,7 @@ struct dev_info_struct
      public List<dev_group.his_info_item_class[]> his_info_y7day_item;*/
     var  his_data_num:UInt16 = 0
     var his_info_item = [his_info_item_class]()
-    var his_info_item7 = NSMutableArray()
+    var his_info_item7 = [[his_info_item_class]]()
     var sys_adj_type:UInt8?
     var sys_adj_tmp:Float?
     var dev_id = [UInt8](count: Int(USER_LOG_RSP_ID_LEN), repeatedValue: 0)
