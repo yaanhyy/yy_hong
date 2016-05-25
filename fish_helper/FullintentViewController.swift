@@ -470,10 +470,20 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
      *
      ******************************************************************/
     @IBAction func did_btn_start_onclick(sender: AnyObject) {
+        mode_cfg_info.manu_stat_flag = 0x7
+        mode_cfg_info.manu_stat = 1
+        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+        var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:fullintent_focus_dev_index)
+        send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)
     }
     @IBAction func did_btn_stop_onclick(sender: AnyObject) {
-    }
+        mode_cfg_info.manu_stat_flag = 0x7
+        mode_cfg_info.manu_stat = 0
+        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+        var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:fullintent_focus_dev_index)
+        send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)    }
     @IBAction func did_btn_auto_onclick(sender: AnyObject) {
+        
     }
     @IBAction func did_btn_setting_onclick(sender: AnyObject) {
         self.performSegueWithIdentifier("seg_ToSetting", sender: nil)//跳转到CfgMenuViewController.swift 选择设置选项
