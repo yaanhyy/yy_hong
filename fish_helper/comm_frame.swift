@@ -628,7 +628,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                     addr += Int(USER_LOG_RSP_MODE_VER_LEN)
                     
                     var dev_num_stat:Int = 0
-                    /*
+                    
                     for j in 0..<dev_grp.dev_login_num
                     {
                        if(array_equal(dst:dev_info_rsp[Int(i)].dev_id, src:dev_grp.dev_info[Int(j)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
@@ -663,9 +663,9 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                             break;
                         }
                         dev_num_stat+=1
-                    }*/
+                    }
                 
-                    if(dev_num_stat == dev_grp.dev_login_num)//no this dev, init to 0xffff
+                    if(dev_num_stat > dev_grp.dev_login_num)//no this dev, init to 0xffff
                     {
                         if(dev_info_rsp[Int(i)].sys_ver != 0xffff)
                         {
@@ -889,6 +889,42 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                     //接收参数
                 }
             }
+        case SYS_CFG_RSP_FRM:
+            var child_type = buf[Int(SYS_CFG_RSP_TYPE_ADDR)];
+            
+            
+            var dev_index_cur:Int = 0
+            copy_array(dst_in: &frame_head_info.dev_id, src_in:buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
+            var  num = 0;
+            for i in 0..<dev_grp.dev_login_num
+            {
+                num += 1
+                if(array_equal(dst:frame_head_info.dev_id, src:dev_grp.dev_info[Int(i)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
+                {
+                    
+                    dev_index_cur = i
+                    break
+                }
+            }
+            if(num>dev_grp.dev_login_num)
+            {
+                return 0
+            }
+            if(child_type == SYS_CFG_TYPE_VAR)
+            {
+                var res = buf[Int(SYS_CFG_RSP_RES_ADDR)];
+                if(res == 0)
+                {
+                    dev_grp.dev_info[dev_index_cur].sys_ver = copy_byte2short(buf_info:buf, buf_addr:Int(SYS_CFG_RSP_VER_ADDR))
+
+                }
+                return Int(res)
+            }
+            else if(child_type == SYS_CFG_TYPE_ADJ)
+            {
+               
+                return Int(buf[Int(SYS_CFG_RSP_RES_ADDR)])
+            }
         case MODE_CFG_RSP_FRM:
             var child_type = buf[Int(MODE_CFG_RSP_TYPE_ADDR)];
             
@@ -900,7 +936,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
             {
                 if(array_equal(dst:frame_head_info.dev_id, src:dev_grp.dev_info[Int(i)].dev_id, frame_len:  Int(DEV_ID_LEN)) == true)
                 {
-                    //comm_frame.dev.dev_info[i].mode_ver = time_cfg_rsp_data.mode_ver;
+                    dev_grp.dev_info[i].mode_ver = copy_byte2short(buf_info:buf, buf_addr:Int(MODE_CFG_RSP_VER_ADDR))
                     dev_index_cur = i
                     break
                 }
