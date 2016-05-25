@@ -289,16 +289,20 @@ class CfgSysViewController:UIViewController, GCDAsyncUdpSocketDelegate{
     
     
     @IBAction func did_oxy_calibration_onclick(sender: AnyObject) {
-        dev_grp.dev_info[sys_dev_index].sys_adj_type == SYS_CFG_ADJ_TYPE_OX
+        dev_grp.dev_info[sys_dev_index].sys_adj_type = SYS_CFG_ADJ_TYPE_OX
         var len = frame_make( 0, frame_type: SYS_CFG_FRM, child_type:SYS_CFG_TYPE_ADJ,  dev_index:sys_dev_index)
         send_frame(len:len, manu: dev_grp.dev_info[sys_dev_index].manu_id)
     }
   
     @IBAction func did_ph7_calibration_onclick(sender: AnyObject) {
-    }
+        dev_grp.dev_info[sys_dev_index].sys_adj_type = SYS_CFG_ADJ_TYPE_PH_7
+        var len = frame_make( 0, frame_type: SYS_CFG_FRM, child_type:SYS_CFG_TYPE_ADJ,  dev_index:sys_dev_index)
+        send_frame(len:len, manu: dev_grp.dev_info[sys_dev_index].manu_id)    }
     
     @IBAction func did_ph4_calibration_onclick(sender: AnyObject) {
-    }
+        dev_grp.dev_info[sys_dev_index].sys_adj_type = SYS_CFG_ADJ_TYPE_PH_SCALE
+        var len = frame_make( 0, frame_type: SYS_CFG_FRM, child_type:SYS_CFG_TYPE_ADJ,  dev_index:sys_dev_index)
+        send_frame(len:len, manu: dev_grp.dev_info[sys_dev_index].manu_id)    }
     
     @IBAction func did_reback_onclick(sender: AnyObject) {
         self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
