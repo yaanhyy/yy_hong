@@ -47,7 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fish_helper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FFBF9CE1CD64B3F000B22C1 /* 护渔宝.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "护渔宝.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		1FFBF9CF1CD64B3F000B22C1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */,
+				1FFBF9CE1CD64B3F000B22C1 /* 护渔宝.app */,
 				1FFBF9E21CD64B3F000B22C1 /* fish_helperTests.xctest */,
 				1FFBF9ED1CD64B3F000B22C1 /* fish_helperUITests.xctest */,
 			);
@@ -205,7 +205,7 @@
 			);
 			name = fish_helper;
 			productName = fish_helper;
-			productReference = 1FFBF9CE1CD64B3F000B22C1 /* fish_helper.app */;
+			productReference = 1FFBF9CE1CD64B3F000B22C1 /* 护渔宝.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1FFBF9E11CD64B3F000B22C1 /* fish_helperTests */ = {
@@ -537,7 +537,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "护渔宝";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -554,7 +554,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "护渔宝";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

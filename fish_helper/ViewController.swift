@@ -26,7 +26,7 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
 //        user_name.frame = CGRectMake(25, height, width, 40)
 //        self.view.addSubview(user_name)
         user_name.placeholder="请输入用户名"
-        user_name.becomeFirstResponder()
+        //user_name.becomeFirstResponder()
         user_name.keyboardType = UIKeyboardType.NumberPad
         user_name.delegate = self
         password.returnKeyType = UIReturnKeyType.Done
@@ -69,18 +69,22 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         }*/
     }
     
-    @IBAction func did_register_onclick(sender: UIButton) {
-       // copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-       // var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:0)
-       // copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-       // var len = frame_make( 0, frame_type: HIS_INFO_FRM, child_type:0,  dev_index:0)
-        
-        /*copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-        var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:0)
-        send_frame(len:len, manu: dev_grp.dev_info[0].manu_id)*/
-        
+    @IBAction func did_register_onclick(sender: AnyObject) {
         self.performSegueWithIdentifier("seg_ToRegister", sender: nil)
+        //self.performSegueWithIdentifier("seg_ToRegister", sender: nil)  btn_login
     }
+//    @IBAction func did_register_onclick(sender: AnyObject) {
+//       // copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+//       // var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:0)
+//       // copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+//       // var len = frame_make( 0, frame_type: HIS_INFO_FRM, child_type:0,  dev_index:0)
+//        
+//        /*copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[0].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+//        var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:0)
+//        send_frame(len:len, manu: dev_grp.dev_info[0].manu_id)*/
+//        
+//        self.performSegueWithIdentifier("seg_ToRegister", sender: nil)
+//    }
     
     
     override func didReceiveMemoryWarning() {

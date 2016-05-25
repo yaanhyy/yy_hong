@@ -16,10 +16,11 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
  
     @IBOutlet weak var view_top: UIView!
     @IBOutlet weak var view_bottom: UIView!
-    @IBOutlet weak var view_start: UIView!
-    @IBOutlet weak var view_stop: UIView!
-    @IBOutlet weak var view_auto: UIView!
-    @IBOutlet weak var view_setting: UIView!
+    @IBOutlet weak var btn_start: UIButton!
+    @IBOutlet weak var btn_stop: UIButton!
+    @IBOutlet weak var btn_auto: UIButton!
+    @IBOutlet weak var btn_setting: UIButton!
+   
     @IBOutlet weak var img_reback: UIImageView!
     @IBOutlet weak var lab_date: UILabel!
     @IBOutlet weak var btn_severn_day: UIButton!
@@ -197,10 +198,6 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     func init_views(){
         
         init_btn_imgview_onclick(img_reback)
-        init_btn_imgview_onclick(view_setting)
-        init_btn_imgview_onclick(view_auto)
-        init_btn_imgview_onclick(view_stop)
-        init_btn_imgview_onclick(view_start)
         
         his_stat = HIS_STAT_LOADING
         
@@ -469,9 +466,18 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     
     /******************************************************************
      *
-     *   给控件添加手势
+     *   给控件添加手势 及button响应事件
      *
      ******************************************************************/
+    @IBAction func did_btn_start_onclick(sender: AnyObject) {
+    }
+    @IBAction func did_btn_stop_onclick(sender: AnyObject) {
+    }
+    @IBAction func did_btn_auto_onclick(sender: AnyObject) {
+    }
+    @IBAction func did_btn_setting_onclick(sender: AnyObject) {
+        self.performSegueWithIdentifier("seg_ToSetting", sender: nil)//跳转到CfgMenuViewController.swift 选择设置选项
+    }
     @IBAction func did_btn_severn_day_onclick(sender: AnyObject) {
         
         
@@ -550,27 +556,27 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         if view == img_reback{
             tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_reback_onclick(_:)))
         }
-        else if view == view_start{
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_start_onclick(_:)))
-        }
-        else if view == view_stop {
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_stop_onclick(_:)))
-        }
-        else if view == view_auto {
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_auto_onclick(_:)))
-        }
-        else if view == view_setting {
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
-        }
+//        else if view == view_start{
+//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_start_onclick(_:)))
+//        }
+//        else if view == view_stop {
+//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_stop_onclick(_:)))
+//        }
+//        else if view == view_auto {
+//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_auto_onclick(_:)))
+//        }
+//        else if view == view_setting {
+//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
+//        }
 //        else if view == btn_severn_day {
 //            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_severn_days_onclick(_:)))
 //        }
 //        else if view == btn_one_day{
 //            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_one_day_onclick(_:)))
 //        }
-        else if view == view_setting {
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
-        }
+//        else if view == view_setting {
+//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
+//        }
         view.addGestureRecognizer(tapGR)
         
     }
@@ -601,7 +607,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     //设置手势处理函数
     func did_setting_onclick(sender:UITapGestureRecognizer) {
         
-        self.performSegueWithIdentifier("seg_ToSetting", sender: nil)//跳转到CfgMenuViewController.swift 选择设置选项
+        
         
     }
     //七天手势处理函数

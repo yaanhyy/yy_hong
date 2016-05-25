@@ -9,14 +9,14 @@
 import UIKit
 
 class RegisterViewController:UIViewController{
-    
+ 
     @IBOutlet weak var tex_user_name: UITextField!
-    
     @IBOutlet weak var tex_password: UITextField!
-    @IBOutlet weak var tex_password_again: UITextField!
+    @IBOutlet weak var tex_password_agin: UITextField!
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+
         
         //self.view.backgroundColor = UIColor(red: 0,green: 0,blue: 0,alpha: 0)
        
@@ -27,8 +27,7 @@ class RegisterViewController:UIViewController{
     }
     @IBAction func did_btn_cancel_onclick(sender: AnyObject) {
         
-         self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-        
     }
+
     
 }
