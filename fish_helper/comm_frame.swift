@@ -718,7 +718,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
             }
             if (buf[Int(USER_LOG_RSP_TYPE_ADDR)] == USER_LOG_RSP_TYPE_REG)
             {
-                
+                return Int(buf[Int(USER_LOG_RSP_RES_ADDR)])
             }
         case REAL_DATA_RSP_FRM:
             copy_array(dst_in: &frame_head_info.dev_id, src_in:buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
@@ -1219,7 +1219,26 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
             //buf[USER_LOG_DEV_NUM_ADDR] = (byte)dev.dev_login_num;
             len =  Int(USER_LOG_PWD_ADDR +  USER_LOG_PWD_LEN);
         }
+        else if(child_type == USER_LOG_TYPE_REG)
+        {
+            send_buf[Int(FRM_TYPE_ADDR)] = frame_type
+            send_buf[Int(USER_LOG_TYPE_ADDR)] = child_type;
             
+            var arr_str = user_info.user_name?.cStringUsingEncoding(NSUTF8StringEncoding)
+            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(USER_LOG_NAME_ADDR) , src_start:0, arr_len:arr_str!.count)
+           // System.arraycopy(frame_log_info.reg_user_name, 0, buf, USER_LOG_NAME_ADDR,USER_LOG_NAME_LEN);
+            
+            arr_str = user_info.user_pwd?.cStringUsingEncoding(NSUTF8StringEncoding)
+            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(USER_LOG_PWD_ADDR) , src_start:0, arr_len:arr_str!.count)
+            //  System.arraycopy(frame_log_info.reg_user_passwd, 0, buf, USER_LOG_PWD_ADDR, USER_LOG_PWD_LEN);
+            var city_code:UInt  = 0//Integer.parseInt(user_grp.city_code);
+            
+            copy_int2byte(buf_info: &send_buf, start:Int(USER_REG_DEV_CITY_ADDR), data_i: city_code);
+           // copy_int2byte(buf, USER_REG_DEV_CITY_ADDR, city_code);
+            
+        
+            len =  Int(USER_LOG_PWD_ADDR +  USER_LOG_PWD_LEN + USER_REG_CITY_LEN)
+        }
         
         frame_len = UInt16(len - Int(FRAME_HEAD_LEN))
         send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
