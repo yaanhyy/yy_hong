@@ -630,6 +630,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let dev=segue.destinationViewController as! FullintentViewController
            
             dev.fullintent_focus_dev_index=focus_dev_index
+            sys_dev_index = focus_dev_index
             print(dev.fullintent_focus_dev_index)
         }
     }
