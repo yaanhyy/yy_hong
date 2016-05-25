@@ -81,13 +81,19 @@ class RegisterViewController:UIViewController, GCDAsyncUdpSocketDelegate{
             var i = 1        // print("incoming message: \(data)");
         }
     }
-        
+    
+    
+ 
+    
     func show_info(title title:String,msg msg:String)
         
     {
         let alert = UIAlertController(title: title,
                                           message: msg, preferredStyle: .Alert)
-        let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+        let action = UIAlertAction(title: "确定", style: .Default, handler:{
+            (alerts: UIAlertAction!) -> Void in
+            self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+            })
         alert.addAction(action)
         presentViewController(alert, animated: true, completion: nil)
     }
@@ -96,17 +102,22 @@ class RegisterViewController:UIViewController, GCDAsyncUdpSocketDelegate{
         user_info.user_name = tex_user_name.text
         user_info.user_pwd = tex_password.text
         var pwd_again:String = tex_password_agin.text!
-        if(pwd_again == user_info.user_pwd)
+        if(user_info.user_name?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) != 11)
+        {
+            show_info(title: "用户注册", msg:"用户名需要11位手机号")
+        }
+        else if(pwd_again == user_info.user_pwd)
         {
             var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:USER_LOG_TYPE_REG,  dev_index:0)
-            send_frame(len:len, manu:2)        }
+            send_frame(len:len, manu:2)
+        }
         else
         {
             show_info(title: "用户注册", msg:"注册密码不一致，请重新输入")
         }
     }
     @IBAction func did_btn_cancel_onclick(sender: AnyObject) {
-        
+        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
     }
 
     
