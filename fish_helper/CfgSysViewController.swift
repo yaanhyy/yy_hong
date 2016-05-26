@@ -244,40 +244,28 @@ class CfgSysViewController:UIViewController, GCDAsyncUdpSocketDelegate{
             //			}
           if(dev_grp.dev_info[dev_index].sys_cfg_var.do_max < dev_grp.dev_info[dev_index].sys_cfg_var.do_min1)
           {
-                let alert = UIAlertController(title: "溶氧设置非法",
-                                              message: "溶氧上限不应低于溶氧下限1", preferredStyle: .Alert)
-                let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
-                alert.addAction(action)
-                presentViewController(alert, animated: true, completion: nil)
+                show_info(title: "溶氧设置非法", msg:"溶氧上限不应低于溶氧下限1")
+            
                 return;
             }
             if(dev_grp.dev_info[dev_index].sys_cfg_var.do_min1 < dev_grp.dev_info[dev_index].sys_cfg_var.do_min2)
             {
-                let alert = UIAlertController(title: "溶氧设置非法",
-                                              message: "溶氧下限1不应低于溶氧下限2", preferredStyle: .Alert)
-                let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
-                alert.addAction(action)
-                presentViewController(alert, animated: true, completion: nil)
+                 show_info(title: "溶氧设置非法", msg:"溶氧下限1不应低于溶氧下限2")
+               
                 return;
             }
             if(dev_grp.dev_info[dev_index].sys_cfg_var.do_min2 < dev_grp.dev_info[dev_index].sys_cfg_var.do_min3)
             {
-                let alert = UIAlertController(title: "溶氧设置非法",
-                                              message: "溶氧下限2不应低于溶氧下限3", preferredStyle: .Alert)
-                let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
-                alert.addAction(action)
-                presentViewController(alert, animated: true, completion: nil)
+                show_info(title: "溶氧设置非法", msg:"溶氧下限2不应低于溶氧下限3")
+               
                 return;
             }
             if(dev_grp.dev_info[ dev_index].dev_type != DEV_TYPE_FISH_FEED)
             {
                 if(dev_grp.dev_info[dev_index].sys_cfg_var.do_min3 < dev_grp.dev_info[dev_index].sys_cfg_var.do_min4)
                 {
-                    let alert = UIAlertController(title: "溶氧设置非法",
-                                                  message: "溶氧下限3不应低于溶氧下限4", preferredStyle: .Alert)
-                    let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
-                    alert.addAction(action)
-                    presentViewController(alert, animated: true, completion: nil)
+                    show_info(title: "溶氧设置非法", msg:"溶氧下限3不应低于溶氧下限4")
+
                     return;
                 }
             }
@@ -374,12 +362,7 @@ class CfgSysViewController:UIViewController, GCDAsyncUdpSocketDelegate{
                 {
                     show_info(title: "系统配置回应", msg:"系统配置版本已过期，正在同步，请稍等十秒再试")
                 }
-            case 3:
-            let alert = UIAlertController(title: "登陆错误",
-                                          message: "登陆密码错误，请重新输入", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion: nil)
+            
             default:
             var i = 1
         }

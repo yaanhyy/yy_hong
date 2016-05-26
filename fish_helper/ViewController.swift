@@ -58,7 +58,7 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         user_info.user_name = user_name.text
         user_info.user_pwd = password.text
         
-        var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:0,  dev_index:0)
+        var len = frame_make( 0, frame_type: USER_LOG_FRM, child_type:USER_LOG_TYPE_LOG,  dev_index:0)
         send_frame(len:len, manu:2)
     
         /*

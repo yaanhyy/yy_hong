@@ -354,10 +354,64 @@ var SYS_CFG_RSP_INFO_ADDR:UInt8 = SYS_CFG_RSP_NUM_ADDR+SYS_CFG_RSP_NUM_LEN;
 //adj
 var SYS_CFG_RSP_TYPE_ADJ_ADDR:UInt8 = SYS_CFG_RSP_TYPE_ADDR+SYS_CFG_RSP_TYPE_LEN;
 var SYS_CFG_RSP_TYPE_ADJ_LEN:UInt8 =	1;
+
+// 	DEV_REG_FRM
+var MAX_REG_DEV_NUM:UInt8 = 16;
+var DEV_REG_NAME_ADDR:UInt8 = FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var DEV_REG_NAME_LEN:UInt8 = USER_LOG_NAME_LEN;
+var DEV_REG_USER_PWD_ADDR:UInt8 = DEV_REG_NAME_ADDR+DEV_REG_NAME_LEN;
+var DEV_REG_USER_PWD_LEN:UInt8 = USER_LOG_PWD_LEN;
+var DEV_REG_ID_ADDR:UInt8 = DEV_REG_USER_PWD_ADDR+DEV_REG_USER_PWD_LEN;
+var DEV_REG_ID_LEN:UInt8 = 16;
+var DEV_REG_DEV_OP_ADD:UInt8 = 0;
+var DEV_REG_DEV_OP_DEL:UInt8 = 1;
+var DEV_REG_DEV_OP_FISH:UInt8 = 0x00;
+var DEV_REG_DEV_OP_BARN:UInt8 = 0x10;
+var DEV_REG_DEV_OP_ADDR:UInt8 = DEV_REG_ID_ADDR+DEV_REG_ID_LEN;
+var DEV_REG_DEV_OP_LEN:UInt8 = 1;
+//var DEV_REG_DEV_PWD_ADDR = DEV_REG_DEV_OP_ADDR+DEV_REG_DEV_OP_LEN;
+var DEV_REG_DEV_PWD_LEN:UInt8 = 16;
+var DEV_REG_DEV_NAME_ADDR:UInt8 = DEV_REG_DEV_OP_ADDR+DEV_REG_DEV_OP_LEN;
+var DEV_REG_DEV_NAME_LEN:UInt8 = 16;
+var DEV_REG_POOL_TYPE_ADDR:UInt8	= DEV_REG_DEV_NAME_ADDR+DEV_REG_DEV_NAME_LEN;
+var DEV_REG_POOL_TYPE_LEN:UInt8 = 1;
+var DEV_REG_POOL_DEPTH_ADDR:UInt8	= DEV_REG_POOL_TYPE_ADDR+DEV_REG_POOL_TYPE_LEN;
+var DEV_REG_POOL_DEPTH_LEN:UInt8 = 1;
+var DEV_REG_POOL_AREA_ADDR:UInt8	= DEV_REG_POOL_DEPTH_ADDR+DEV_REG_POOL_DEPTH_LEN;
+var DEV_REG_POOL_AREA_LEN:UInt8 = 2;
+var DEV_REG_POOL_FISH_NUM_ADDR:UInt8	= DEV_REG_POOL_AREA_ADDR+DEV_REG_POOL_AREA_LEN;
+var DEV_REG_POOL_FISH_NUM_LEN:UInt8 = 4;
+var DEV_REG_DEV_FISH_NUM_ADDR:UInt8 = DEV_REG_POOL_FISH_NUM_ADDR+DEV_REG_POOL_FISH_NUM_LEN;
+var DEV_REG_DEV_FISH_NUM_LEN:UInt8 = 1;
+var DEV_REG_DEV_FISH_TYPE_ADDR:UInt8 = DEV_REG_DEV_FISH_NUM_ADDR+DEV_REG_DEV_FISH_NUM_LEN;
+var DEV_REG_DEV_FISH_TYPE_LEN:UInt8 = 32;
+var DEV_REG_LEN:UInt8 = DEV_REG_DEV_OP_ADDR + DEV_REG_DEV_OP_LEN;
+//  DEV_REG_RSP_FRM
+var DEV_REG_RSP_RES_SUCCESS:UInt8 = 0;
+var DEV_REG_RSP_RES_OP_DEL:UInt8 = 8;
+var DEV_REG_RSP_RES_DEV_ID_ERR:UInt8 = 1;
+var DEV_REG_RSP_RES_PWD_ERR:UInt8 = 2;
+var DEV_REG_RSP_RES_ATHOR_ERR:UInt8 = 3;
+var DEV_REG_RSP_RES_DEV_PWD_ERR:UInt8 = 4;
+var DEV_REG_RSP_RES_OWN_BIND_ERR:UInt8 = 5;
+var DEV_REG_RSP_RES_OTHER_BIND_ERR:UInt8 = 6;
+var DEV_REG_RSP_RES_ADDR:UInt8 = FRAME_LEN_ADDR+FRAME_LEN_LEN;
+var DEV_REG_RSP_RES_LEN:UInt8 = 1;
+var DEV_REG_RSP_DEV_TYPE_ADDR:UInt8 = DEV_REG_RSP_RES_ADDR+DEV_REG_RSP_RES_LEN;
+var DEV_REG_RSP_DEV_TYPE_LEN:UInt8 = 1;
+var DEV_REG_RSP_ID_ADDR:UInt8 = DEV_REG_RSP_DEV_TYPE_ADDR+DEV_REG_RSP_DEV_TYPE_LEN;
+var DEV_REG_RSP_ID_LEN:UInt8 = DEV_REG_ID_LEN;
+var DEV_REG_RSP_SYS_VER_ADDR:UInt8 = (DEV_REG_RSP_ID_ADDR+DEV_REG_RSP_ID_LEN);
+var DEV_REG_RSP_SYS_VER_LEN:UInt8 =   2;
+var DEV_REG_RSP_MODE_VER_ADDR:UInt8 = (DEV_REG_RSP_SYS_VER_ADDR+DEV_REG_RSP_SYS_VER_LEN);
+var DEV_REG_RSP_MODE_VER_LEN:UInt8 =  2;
+
 //date
 var year1:UInt16 =  0
 var month1:UInt16 = 0
 var day1:UInt16 = 0
+
+
 
 
 public class user_info_c
@@ -718,7 +772,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
             }
             if (buf[Int(USER_LOG_RSP_TYPE_ADDR)] == USER_LOG_RSP_TYPE_REG)
             {
-                
+                return Int(buf[Int(USER_LOG_RSP_RES_ADDR)])
             }
         case REAL_DATA_RSP_FRM:
             copy_array(dst_in: &frame_head_info.dev_id, src_in:buf, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
@@ -1219,7 +1273,26 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
             //buf[USER_LOG_DEV_NUM_ADDR] = (byte)dev.dev_login_num;
             len =  Int(USER_LOG_PWD_ADDR +  USER_LOG_PWD_LEN);
         }
+        else if(child_type == USER_LOG_TYPE_REG)
+        {
+            send_buf[Int(FRM_TYPE_ADDR)] = frame_type
+            send_buf[Int(USER_LOG_TYPE_ADDR)] = child_type;
             
+            var arr_str = user_info.user_name?.cStringUsingEncoding(NSUTF8StringEncoding)
+            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(USER_LOG_NAME_ADDR) , src_start:0, arr_len:arr_str!.count)
+           // System.arraycopy(frame_log_info.reg_user_name, 0, buf, USER_LOG_NAME_ADDR,USER_LOG_NAME_LEN);
+            
+            arr_str = user_info.user_pwd?.cStringUsingEncoding(NSUTF8StringEncoding)
+            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(USER_LOG_PWD_ADDR) , src_start:0, arr_len:arr_str!.count)
+            //  System.arraycopy(frame_log_info.reg_user_passwd, 0, buf, USER_LOG_PWD_ADDR, USER_LOG_PWD_LEN);
+            var city_code:UInt  = 0//Integer.parseInt(user_grp.city_code);
+            
+            copy_int2byte(buf_info: &send_buf, start:Int(USER_REG_DEV_CITY_ADDR), data_i: city_code);
+           // copy_int2byte(buf, USER_REG_DEV_CITY_ADDR, city_code);
+            
+        
+            len =  Int(USER_LOG_PWD_ADDR +  USER_LOG_PWD_LEN + USER_REG_CITY_LEN)
+        }
         
         frame_len = UInt16(len - Int(FRAME_HEAD_LEN))
         send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
@@ -1296,10 +1369,10 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
         }
         else if(child_type == MODE_CFG_TYPE_CTRL)
         {
-            send_buf[Int(MODE_CFG_STAT_ADDR)] =  1//mode_cfg_info.manu_stat;
+            send_buf[Int(MODE_CFG_STAT_ADDR)] =  mode_cfg_info.manu_stat;
             var data_s = UInt16 (mode_cfg_info.delay_index * 15);
             copy_short2byte(buf_info:&send_buf, start: Int(MODE_CFG_DELAY_ADDR), data_s: data_s)
-            send_buf[Int(MODE_CFG_STAT_FLAG_ADDR)] =  0x5//mode_cfg_info.manu_stat_flag
+            send_buf[Int(MODE_CFG_STAT_FLAG_ADDR)] =  mode_cfg_info.manu_stat_flag
             frame_len = UInt16(MODE_CFG_STAT_FLAG_ADDR) + UInt16(MODE_CFG_STAT_FLAG_LEN)
         }
         else if(child_type == MODE_CFG_TYPE_EXIT)
@@ -1372,6 +1445,60 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
         send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
         send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
         len = Int(frame_len) + Int(FRAME_HEAD_LEN)
+    case DEV_REG_FRM:
+        frame_len = UInt16(DEV_REG_LEN-USER_LOG_TYPE_ADDR)
+        send_buf[Int(FRM_TYPE_ADDR)] = frame_type
+        
+        var arr_str = user_info.user_name?.cStringUsingEncoding(NSUTF8StringEncoding)
+        copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(DEV_REG_NAME_ADDR) , src_start:0, arr_len:arr_str!.count)
+       // System.arraycopy(frame_log_info.user_name, 0, buf, DEV_REG_NAME_ADDR,USER_LOG_NAME_LEN);
+        arr_str = user_info.user_pwd?.cStringUsingEncoding(NSUTF8StringEncoding)
+        copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(DEV_REG_USER_PWD_ADDR) , src_start:0, arr_len:arr_str!.count)
+        //System.arraycopy(frame_log_info.passwd, 0, buf, DEV_REG_USER_PWD_ADDR, USER_LOG_PWD_LEN);
+        copy_array(dst_in: &send_buf, src_in:frame_head_info.dev_id, dst_start:Int(DEV_REG_ID_ADDR), src_start:0, arr_len:Int(DEV_ID_LEN))
+        //System.arraycopy(dev_reg_info.dev_id, 0, buf, DEV_REG_ID_ADDR, DEV_REG_ID_LEN);
+        send_buf[Int(DEV_REG_DEV_OP_ADDR)] = child_type
+        if((child_type&0x1) == DEV_REG_DEV_OP_ADD)
+        {
+            arr_str = dev_grp.dev_info[Int(dev_index)].dev_name_s?.cStringUsingEncoding(NSUTF8StringEncoding)
+            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(DEV_REG_DEV_NAME_ADDR) , src_start:0, arr_len:arr_str!.count)
+            //System.arraycopy(comm_frame.dev.dev_info[dev.dev_login_num].dev_name, 0, buf, DEV_REG_DEV_NAME_ADDR, DEV_REG_DEV_NAME_LEN-1);//last byte use for manu id,cannot be used
+            frame_len += UInt16(DEV_REG_DEV_NAME_LEN)
+            
+            if((child_type&DEV_REG_DEV_OP_BARN) != DEV_REG_DEV_OP_BARN)
+            {
+                  /*  len = DEV_REG_LEN+DEV_REG_DEV_NAME_LEN;
+                    buf[DEV_REG_POOL_TYPE_ADDR] = comm_frame.dev.dev_info[dev.dev_login_num].pool_type;
+                    frame_head_info.frame_len += DEV_REG_POOL_TYPE_LEN;
+                    len+=DEV_REG_POOL_TYPE_LEN;
+                    buf[DEV_REG_POOL_DEPTH_ADDR] = comm_frame.dev.dev_info[dev.dev_login_num].pool_depth;
+                    frame_head_info.frame_len += DEV_REG_POOL_DEPTH_LEN;
+                    len += DEV_REG_POOL_DEPTH_LEN;
+                    copy_short2byte(buf,DEV_REG_POOL_AREA_ADDR,comm_frame.dev.dev_info[dev.dev_login_num].pool_area);
+                    frame_head_info.frame_len += DEV_REG_POOL_AREA_LEN;
+                    len += DEV_REG_POOL_AREA_LEN;
+                    copy_int2byte(buf,DEV_REG_POOL_FISH_NUM_ADDR,comm_frame.dev.dev_info[dev.dev_login_num].fish_num);
+                    frame_head_info.frame_len += DEV_REG_POOL_FISH_NUM_LEN;
+                    len += DEV_REG_POOL_FISH_NUM_LEN;
+                    buf[DEV_REG_DEV_FISH_NUM_ADDR] = 1;
+                    frame_head_info.frame_len += DEV_REG_DEV_FISH_NUM_LEN;
+                    len +=  DEV_REG_DEV_FISH_NUM_LEN;
+                    System.arraycopy(comm_frame.dev.dev_info[dev.dev_login_num].fish_type, 0, buf, DEV_REG_DEV_FISH_TYPE_ADDR, DEV_REG_DEV_FISH_TYPE_LEN);
+                    frame_head_info.frame_len += DEV_REG_DEV_FISH_TYPE_LEN;
+                    len += DEV_REG_DEV_FISH_TYPE_LEN;*/
+            }
+            else
+            {
+                len = Int(DEV_REG_LEN + DEV_REG_DEV_PWD_LEN + DEV_REG_DEV_NAME_LEN)
+            }
+        }
+                //System.arraycopy(dev_reg_info.dev_pwd, 0, buf, DEV_REG_DEV_PWD_ADDR, DEV_REG_DEV_PWD_LEN);
+        else
+        {
+            len = Int(DEV_REG_LEN)
+        }
+        send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
+        send_buf[Int(FRAME_LEN_ADDR+1)] =  UInt8(frame_len&0xff)
     default:
         send_buf.append(0x76)
         
