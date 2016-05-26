@@ -10,7 +10,6 @@
 		1C0F87AF45BC57526876B05B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 242DD9F132768B47E31ADEDB /* Pods.framework */; };
 		1FFBF9D21CD64B3F000B22C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */; };
 		1FFBF9D41CD64B3F000B22C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */; };
-		1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */; };
 		1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */; };
 		1FFBF9E71CD64B3F000B22C1 /* fish_helperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9E61CD64B3F000B22C1 /* fish_helperTests.swift */; };
 		1FFBF9F21CD64B3F000B22C1 /* fish_helperUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */; };
@@ -52,7 +51,6 @@
 		1FFBF9CE1CD64B3F000B22C1 /* 护渔宝.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "护渔宝.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1FFBF9DB1CD64B3F000B22C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1FFBF9DD1CD64B3F000B22C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FFBF9E21CD64B3F000B22C1 /* fish_helperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fish_helperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,7 +140,6 @@
 				78F73D4A1CE5842500F031EB /* DevCell.swift */,
 				1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */,
 				1FFBF9D31CD64B3F000B22C1 /* ViewController.swift */,
-				1FFBF9D81CD64B3F000B22C1 /* Assets.xcassets */,
 				1FFBF9DA1CD64B3F000B22C1 /* LaunchScreen.storyboard */,
 				1FFBF9DD1CD64B3F000B22C1 /* Info.plist */,
 				783BE06E1CE05E20009DBF38 /* DevListViewController.swift */,
@@ -300,7 +297,6 @@
 			files = (
 				1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */,
 				78F73D4E1CE58DA400F031EB /* SectionHeaderView.xib in Resources */,
-				1FFBF9D91CD64B3F000B22C1 /* Assets.xcassets in Resources */,
 				783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

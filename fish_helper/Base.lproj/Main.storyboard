@@ -1743,7 +1743,7 @@
         <image name="add" width="20" height="20"/>
         <image name="add1" width="16" height="16"/>
         <image name="aerator_offline" width="16" height="16"/>
-        <image name="aerator_online" width="16" height="16"/>
+        <image name="aerator_online" width="10" height="10"/>
         <image name="arrow" width="30" height="15"/>
         <image name="auto_img" width="20" height="20"/>
         <image name="backgd" width="210" height="358"/>
