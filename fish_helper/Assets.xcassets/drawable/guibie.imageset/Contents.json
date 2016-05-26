@@ -6,11 +6,11 @@
     },
     {
       "idiom" : "universal",
+      "filename" : "guibie.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "guibie.png",
       "scale" : "3x"
     }
   ],

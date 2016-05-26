@@ -215,6 +215,13 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
      *   主界面点击事件添加
      *
      ******************************************************************/
+    
+    @IBAction func did_btn_setting_onclick(sender: AnyObject) {
+         self.performSegueWithIdentifier("seg_ToSysSetting", sender: nil)
+    }
+    @IBAction func did_btn_quit_onclick(sender: AnyObject) {
+         self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+    }
     //初始化图片点击事件
     func init_btn_imgview_onclick(imageview:UIImageView){
         //设置允许交互属性

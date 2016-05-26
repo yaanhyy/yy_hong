@@ -12,7 +12,7 @@ import CocoaAsyncSocket
 class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     
     @IBOutlet weak var lab_dev_name: UILabel!
-    @IBOutlet weak var img_dev_online: UILabel!
+   
  
     @IBOutlet weak var view_top: UIView!
     @IBOutlet weak var view_bottom: UIView!
@@ -20,8 +20,8 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     @IBOutlet weak var btn_stop: UIButton!
     @IBOutlet weak var btn_auto: UIButton!
     @IBOutlet weak var btn_setting: UIButton!
+    @IBOutlet weak var img_dev_online: UIImageView!
    
-    @IBOutlet weak var img_reback: UIImageView!
     @IBOutlet weak var lab_date: UILabel!
     @IBOutlet weak var btn_severn_day: UIButton!
     @IBOutlet weak var btn_one_day: UIButton!
@@ -197,7 +197,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     //初始化
     func init_views(){
         
-        init_btn_imgview_onclick(img_reback)
+        //init_btn_imgview_onclick(img_reback)
         
         his_stat = HIS_STAT_LOADING
         
@@ -466,7 +466,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     
     /******************************************************************
      *
-     *   给控件添加手势 及button响应事件
+     *   button响应事件
      *
      ******************************************************************/
     @IBAction func did_btn_start_onclick(sender: AnyObject) {
@@ -548,68 +548,11 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
 
         
     }
-    func init_btn_imgview_onclick(view:UIView){
-        //设置允许交互属性
-        view.userInteractionEnabled = true
-        //添加tapGuestureRecognizer手势
-        var tapGR:UITapGestureRecognizer!
-        if view == img_reback{
-            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_reback_onclick(_:)))
-        }
-//        else if view == view_start{
-//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_start_onclick(_:)))
-//        }
-//        else if view == view_stop {
-//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_stop_onclick(_:)))
-//        }
-//        else if view == view_auto {
-//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_auto_onclick(_:)))
-//        }
-//        else if view == view_setting {
-//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
-//        }
-//        else if view == btn_severn_day {
-//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_severn_days_onclick(_:)))
-//        }
-//        else if view == btn_one_day{
-//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_one_day_onclick(_:)))
-//        }
-//        else if view == view_setting {
-//            tapGR = UITapGestureRecognizer(target: self,action:#selector(FullintentViewController.did_setting_onclick(_:)))
-//        }
-        view.addGestureRecognizer(tapGR)
-        
-    }
-    //返回手势处理函数
-    func did_reback_onclick(sender:UITapGestureRecognizer) {
-        
+//返回手势处理函数
+    @IBAction func did_btn_reback_onclick(sender: AnyObject) {
         self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-        
     }
-    //开始手势处理函数
-    func did_start_onclick(sender:UITapGestureRecognizer) {
-        
-        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-        
-    }
-    //停止手势处理函数
-    func did_stop_onclick(sender:UITapGestureRecognizer) {
-        
-        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-        
-    }
-    //自动手势处理函数
-    func did_auto_onclick(sender:UITapGestureRecognizer) {
-        
-        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-        
-    }
-    //设置手势处理函数
-    func did_setting_onclick(sender:UITapGestureRecognizer) {
-        
-        
-        
-    }
+  
     //七天手势处理函数
 //    func did_severn_days_onclick(sender:UITapGestureRecognizer){
 //        

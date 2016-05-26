@@ -43,7 +43,7 @@
         </view>
     </objects>
     <resources>
-        <image name="aerator_online" width="10" height="10"/>
-        <image name="dev_open" width="10" height="10"/>
+        <image name="aerator_online" width="16" height="16"/>
+        <image name="dev_open" width="16" height="16"/>
     </resources>
 </document>
