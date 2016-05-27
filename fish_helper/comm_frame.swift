@@ -8,7 +8,9 @@
 
 import Foundation
 
-
+let  fish_server1 = "115.29.194.177"
+let  fish_server2 = "114.215.180.76"
+let  fish_server3 = "192.168.2.101"
 
 let USER_LOG_FRM:UInt8 = 0;
 let USER_LOG_RSP_FRM:UInt8 = 1;
@@ -412,6 +414,14 @@ var month1:UInt16 = 0
 var day1:UInt16 = 0
 
 
+class dev_reg_c
+{
+    
+    var  dev_id = [UInt8](count: Int(DEV_REG_ID_LEN), repeatedValue: 0)
+    var  dev_name = [UInt8](count: Int(DEV_REG_DEV_NAME_LEN), repeatedValue: 0)
+
+}
+var dev_reg_info =  dev_reg_c()
 
 
 public class user_info_c
@@ -591,12 +601,39 @@ func CheckCode(buf_info buf:[UInt8], frame_len len:Int)->Bool
     return (wCrc==ori_crc);
 }
 
+func copy_array_c2c(inout dst_in dst:[Int8],src_in  src:[Int8], dst_start dst_start_addr:Int,  src_start src_start_addr:Int, arr_len len:Int)
+{
+    
+    for i in 0..<len
+    {
+        dst[dst_start_addr+i] = (src[src_start_addr+i])
+    }
+}
+
+
 func copy_array_cc(inout dst_in dst:[UInt8],src_in  src:[Int8], dst_start dst_start_addr:Int,  src_start src_start_addr:Int, arr_len len:Int)
 {
     
     for i in 0..<len
     {
         dst[dst_start_addr+i] = UInt8(src[src_start_addr+i])
+    }
+}
+
+func copy_array_cu(inout dst_in dst:[UInt8],src_in  src:[Int8], dst_start dst_start_addr:Int,  src_start src_start_addr:Int, arr_len len:Int)
+{
+    var data:Int8 = 0
+    for i in 0..<len
+    {
+        if(src[src_start_addr+i] < 0)
+        {
+            data = ((src[src_start_addr+i]*(-1)) ^ 0x7f) + 1;
+            dst[dst_start_addr+i] = UInt8(data) | 0x80;
+        }
+        else
+        {
+            dst[dst_start_addr+i] = UInt8(src[src_start_addr+i])
+        }
     }
 }
 
@@ -1083,6 +1120,25 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                 }
                 
             }
+        case DEV_REG_RSP_FRM:
+            var child_type = ((buf[Int(DEV_REG_RSP_RES_ADDR)]>>3)&0xf);
+          //  dev_reg_rsp_data.sys_ver = copy_byte2short(buf,  DEV_REG_RSP_SYS_VER_ADDR);
+          //  dev_reg_rsp_data.mode_ver = copy_byte2short(buf,  DEV_REG_RSP_MODE_VER_ADDR);
+            if((child_type & DEV_REG_DEV_OP_DEL) == DEV_REG_DEV_OP_DEL )
+            {
+               // rec_data =  DevListActivity.DevList_Handler.obtainMessage();
+               // rec_data.obj = dev_reg_rsp_data;
+               // rec_data.what = DEV_REG_RSP_FRM;
+            }
+            else
+            {
+                //rec_data = DevAddActivity.dev_add_handler.obtainMessage();
+                //rec_data.obj = dev_reg_rsp_data;
+                //rec_data.what = DEV_REG_RSP_FRM;
+            }
+            
+            return Int(buf[Int(DEV_REG_RSP_RES_ADDR)])
+         //   System.arraycopy(buf, DEV_REG_RSP_ID_ADDR,dev_reg_rsp_data.dev_id, 0, DEV_REG_RSP_ID_LEN);
         default:
             return -2
         }
@@ -1455,13 +1511,13 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
         arr_str = user_info.user_pwd?.cStringUsingEncoding(NSUTF8StringEncoding)
         copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(DEV_REG_USER_PWD_ADDR) , src_start:0, arr_len:arr_str!.count)
         //System.arraycopy(frame_log_info.passwd, 0, buf, DEV_REG_USER_PWD_ADDR, USER_LOG_PWD_LEN);
-        copy_array(dst_in: &send_buf, src_in:frame_head_info.dev_id, dst_start:Int(DEV_REG_ID_ADDR), src_start:0, arr_len:Int(DEV_ID_LEN))
+        copy_array(dst_in: &send_buf, src_in:dev_reg_info.dev_id, dst_start:Int(DEV_REG_ID_ADDR), src_start:0, arr_len:Int(DEV_REG_ID_LEN))
         //System.arraycopy(dev_reg_info.dev_id, 0, buf, DEV_REG_ID_ADDR, DEV_REG_ID_LEN);
         send_buf[Int(DEV_REG_DEV_OP_ADDR)] = child_type
         if((child_type&0x1) == DEV_REG_DEV_OP_ADD)
         {
-            arr_str = dev_grp.dev_info[Int(dev_index)].dev_name_s?.cStringUsingEncoding(NSUTF8StringEncoding)
-            copy_array_cc(dst_in: &send_buf, src_in:arr_str!, dst_start:Int(DEV_REG_DEV_NAME_ADDR) , src_start:0, arr_len:arr_str!.count)
+          //  arr_str = dev_reg_info.dev_name?.cStringUsingEncoding(NSUTF8StringEncoding)
+            copy_array(dst_in: &send_buf, src_in:dev_reg_info.dev_name, dst_start:Int(DEV_REG_DEV_NAME_ADDR) , src_start:0, arr_len:Int(DEV_REG_DEV_NAME_LEN))
             //System.arraycopy(comm_frame.dev.dev_info[dev.dev_login_num].dev_name, 0, buf, DEV_REG_DEV_NAME_ADDR, DEV_REG_DEV_NAME_LEN-1);//last byte use for manu id,cannot be used
             frame_len += UInt16(DEV_REG_DEV_NAME_LEN)
             
@@ -1493,7 +1549,7 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
             }
         }
                 //System.arraycopy(dev_reg_info.dev_pwd, 0, buf, DEV_REG_DEV_PWD_ADDR, DEV_REG_DEV_PWD_LEN);
-        else
+        else  //delete
         {
             len = Int(DEV_REG_LEN)
         }
