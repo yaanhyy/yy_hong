@@ -36,11 +36,11 @@ class RegisterViewController:UIViewController, GCDAsyncUdpSocketDelegate{
         switch manu_id
         {
         case 2:
-            address = "115.29.194.177"
+            address = fish_server1
         case 3:
-            address = "114.215.180.76"
+            address = fish_server2
         case 4:
-            address = "112.74.33.204"
+            address = fish_server3
         default:
             address = "192.168.2.101"
         }

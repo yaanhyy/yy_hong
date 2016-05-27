@@ -32,6 +32,7 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         password.returnKeyType = UIReturnKeyType.Done
         password.placeholder="请输入密码"
         password.delegate = self
+
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -95,7 +96,7 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
     
     func send_frame(len frame_len: Int, manu manu_id:UInt8)
     {
-
+        
         var address = "115.29.194.177"
         var port:UInt16 = 23458
         var socket:GCDAsyncUdpSocket! = nil
@@ -105,14 +106,14 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         
         switch manu_id
         {
-            case 2:
-                address = "115.29.194.177"
-            case 3:
-                address = "114.215.180.76"
-            case 4:
-                address = "112.74.33.204"
-            default:
-                address = "192.168.2.101"
+        case 2:
+            address = fish_server1//"115.29.194.177"
+        case 3:
+            address = fish_server2
+        case 4:
+            address = fish_server3
+        default:
+            address = "192.168.2.101"
         }
         //  var send_buf = UInt8[](count: 1024, repeatedValue: 0)
         // var send_buf = Array<UInt8>()
@@ -133,6 +134,7 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
             print(error)
         }
     }
+    
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,  withFilterContext filterContext: AnyObject!)
     {
         let count = data.length / sizeof(UInt8)

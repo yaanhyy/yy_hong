@@ -55,18 +55,27 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
      *   发送函数
      *
      ******************************************************************/
-    func send_frame(frame_len: Int)
+    func send_frame(len frame_len: Int, manu manu_id:UInt8)
     {
-        //send login reqsend_buf.append(0x86)
-        //var address = "192.168.2.101"
-        var address = "114.215.180.76"
+        
+        var address = "115.29.194.177"
         var port:UInt16 = 23458
         var socket:GCDAsyncUdpSocket! = nil
         //    var socketReceive:GCDAsyncUdpSocket! = nil
         var error : NSError?
         
         
-        
+        switch manu_id
+        {
+        case 2:
+            address = fish_server1//"115.29.194.177"
+        case 3:
+            address = fish_server2
+        case 4:
+            address = fish_server3
+        default:
+            address = "192.168.2.101"
+        }
         //  var send_buf = UInt8[](count: 1024, repeatedValue: 0)
         // var send_buf = Array<UInt8>()
         // send_buf.append(0x86)
@@ -96,7 +105,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 for i in 0..<dev_grp.dev_info.count{
                     copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
                     var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
-                    self.send_frame(len)
+                    self.send_frame(len:len , manu:dev_grp.dev_info[i].manu_id)
                 }
             })
         })
@@ -182,7 +191,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         for i in 0..<dev_grp.dev_info.count{
             copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
             var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
-            self.send_frame(len)
+            self.send_frame(len:len, manu: dev_grp.dev_info[i].manu_id)
         }
         
         //table代理
