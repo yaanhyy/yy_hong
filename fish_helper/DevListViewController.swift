@@ -143,6 +143,10 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     
     
+    func viewLoad_before(){
+        
+    }
+    
     /******************************************************************
      *
      *   界面初始化
@@ -184,9 +188,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         //table代理
         tab_dev_list.delegate = self
         tab_dev_list.dataSource = self
-        
-        
-        
+  
         
     }
 

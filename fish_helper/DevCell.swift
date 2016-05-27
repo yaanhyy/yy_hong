@@ -49,9 +49,14 @@ class DevCell: UITableViewCell{
         }
         
         lab_water_tmp.text = String(Float(newdev_class.sys_var.water_tmp)/10) + "℃"
-        pro_water_tmp.progress=Float(newdev_class.sys_var.water_tmp/10)
         lab_oxy.text = String(Float(newdev_class.sys_var.oxygen)/10)+"mg"
-        pro_oxy.progress = Float(newdev_class.sys_var.oxygen/10)
+        //pro_water_tmp.transform = CGAffineTransformMakeScale(1.0, 3.0)
+        pro_water_tmp.progress = 50
+        //pro_oxy.transform = CGAffineTransformMakeScale(1.0, 3.0)
+        pro_oxy.progress = 30
+        pro_water_tmp.setProgress(Float(newdev_class.sys_var.water_tmp)/500, animated: true)
+        pro_oxy.setProgress(Float(newdev_class.sys_var.oxygen)/300, animated: true)
+
         
 //        newdev_class.cur_time = 
 //        newdev_class.dev_cur_time
