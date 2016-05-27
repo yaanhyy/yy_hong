@@ -100,8 +100,10 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         var buf = [UInt8](count: count, repeatedValue: 0)
         data.getBytes(&buf, length:count * sizeof(UInt8))
         var result =  frame_analysis(buf_info: buf, frame_len: count)
-        switch result {
-        case 0:  //login in
+        if(buf[Int(FRM_TYPE_ADDR)] == REAL_DATA_RSP_FRM)
+        {
+            switch result {
+            case 0:  //login in
             var i:Int = 1
             
             if his_data_type
@@ -156,8 +158,13 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                
             }
            
-        default:
+            default:
             var i = 0
+            }
+        }
+        else if(buf[Int(FRM_TYPE_ADDR)] == MODE_CFG_RSP_FRM)
+        {
+            
         }
         // print("incoming message: \(data)");
     }
