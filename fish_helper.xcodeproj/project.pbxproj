@@ -25,10 +25,12 @@
 		785DA0AF1CF5A777001BD017 /* SysSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785DA0AE1CF5A777001BD017 /* SysSettingViewController.swift */; };
 		78F6320A1CF68ECC006482C5 /* DevAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F632091CF68ECC006482C5 /* DevAddViewController.swift */; };
 		78F6320C1CF694BD006482C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78F6320B1CF694BD006482C5 /* Assets.xcassets */; };
+		78F63E201CF6D7A4009CC4EE /* TimeCfgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F63E1F1CF6D7A4009CC4EE /* TimeCfgViewController.swift */; };
 		78F73D4B1CE5842500F031EB /* DevCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D4A1CE5842500F031EB /* DevCell.swift */; };
 		78F73D4E1CE58DA400F031EB /* SectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78F73D4C1CE58DA400F031EB /* SectionHeaderView.xib */; };
 		78F73D521CE5A2A700F031EB /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D511CE5A2A700F031EB /* SectionHeaderView.swift */; };
 		78F73D541CE5AA6300F031EB /* DevItemSectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D531CE5AA6300F031EB /* DevItemSectionInfo.swift */; };
+		78FA2D481CF6FEBF00216671 /* send_time_out.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78FA2D461CF6FEBF00216671 /* send_time_out.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,10 +76,12 @@
 		785DA0AE1CF5A777001BD017 /* SysSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SysSettingViewController.swift; sourceTree = "<group>"; };
 		78F632091CF68ECC006482C5 /* DevAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevAddViewController.swift; sourceTree = "<group>"; };
 		78F6320B1CF694BD006482C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		78F63E1F1CF6D7A4009CC4EE /* TimeCfgViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCfgViewController.swift; sourceTree = "<group>"; };
 		78F73D4A1CE5842500F031EB /* DevCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevCell.swift; sourceTree = "<group>"; };
 		78F73D4D1CE58DA400F031EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SectionHeaderView.xib; sourceTree = "<group>"; };
 		78F73D511CE5A2A700F031EB /* SectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		78F73D531CE5AA6300F031EB /* DevItemSectionInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevItemSectionInfo.swift; sourceTree = "<group>"; };
+		78FA2D471CF6FEBF00216671 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/send_time_out.xib; sourceTree = "<group>"; };
 		8AB7406D1A43D810B37409F0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,7 +155,9 @@
 				7846D00D1CF2DEA600EDAEE5 /* RegisterViewController.swift */,
 				7846D00F1CF2EF9A00EDAEE5 /* CfgMenuViewController.swift */,
 				785DA0AE1CF5A777001BD017 /* SysSettingViewController.swift */,
+				78F63E1F1CF6D7A4009CC4EE /* TimeCfgViewController.swift */,
 				78F632091CF68ECC006482C5 /* DevAddViewController.swift */,
+				78FA2D461CF6FEBF00216671 /* send_time_out.xib */,
 			);
 			path = fish_helper;
 			sourceTree = "<group>";
@@ -262,6 +268,7 @@
 				TargetAttributes = {
 					1FFBF9CD1CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 868MAGN5BR;
 					};
 					1FFBF9E11CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
@@ -302,6 +309,7 @@
 				78F73D4E1CE58DA400F031EB /* SectionHeaderView.xib in Resources */,
 				78F6320C1CF694BD006482C5 /* Assets.xcassets in Resources */,
 				783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */,
+				78FA2D481CF6FEBF00216671 /* send_time_out.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +386,7 @@
 				785DA0AF1CF5A777001BD017 /* SysSettingViewController.swift in Sources */,
 				7846D00E1CF2DEA700EDAEE5 /* RegisterViewController.swift in Sources */,
 				7846D0101CF2EF9A00EDAEE5 /* CfgMenuViewController.swift in Sources */,
+				78F63E201CF6D7A4009CC4EE /* TimeCfgViewController.swift in Sources */,
 				783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */,
 				78F73D541CE5AA6300F031EB /* DevItemSectionInfo.swift in Sources */,
 				783D07421CE6FFFF001E64AD /* dev_grp.swift in Sources */,
@@ -446,6 +455,14 @@
 				78F73D4D1CE58DA400F031EB /* Base */,
 			);
 			name = SectionHeaderView.xib;
+			sourceTree = "<group>";
+		};
+		78FA2D461CF6FEBF00216671 /* send_time_out.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78FA2D471CF6FEBF00216671 /* Base */,
+			);
+			name = send_time_out.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -544,7 +561,7 @@
 				INFOPLIST_FILE = fish_helper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.disai.fish-helper";
 				PRODUCT_NAME = "护渔宝";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -561,7 +578,7 @@
 				INFOPLIST_FILE = fish_helper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "xzwl.fish-helper";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.disai.fish-helper";
 				PRODUCT_NAME = "护渔宝";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

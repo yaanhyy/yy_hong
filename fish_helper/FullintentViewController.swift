@@ -38,6 +38,9 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     var his_data_type:Bool = true //one day ; false is severn days
     var his_severn_day_type:Bool = true //true no his_data;
     var bol_view_label:Bool = false //view_top and view_bottom didn't add label;
+    var timer:NSTimer!
+    var activity_stat:Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +51,11 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     
     func init_datas(){
         //dev = dev_grp.dev_info[fullintent_focus_dev_index]
+        activity_stat = 1;
+        if( dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_FISH_ONLY_CTRL)
+        {
+            get_sys_cfg(UInt8(fullintent_focus_dev_index))
+        }
     }
     
     func send_frame(len frame_len: Int, manu manu_id:UInt8)
@@ -91,6 +99,15 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         }
     }
     
+     struct time_cfg_rsp
+    {
+        var child_type:UInt8
+        var res:UInt8
+        var dev_id:[UInt8] = []
+        var mode_ver:UInt8
+        var dev_index:Int
+        
+    }
     var val_severn_days_sum:UInt8 = 0;
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,  withFilterContext filterContext: AnyObject!)
     {
@@ -104,60 +121,120 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         case 0:  //login in
             var i:Int = 1
             
-            if his_data_type
-            {
-                his_stat = HIS_INFO_TYPE_TIME
-                did_clear_drawing_onclick()//清除view中所有子视图
-                did_top_draw_onclick(view_top)
-                did_bottom_draw_onclick(view_bottom)
-            }
-            else
-            {
-                
-                //var s:arr = dev_grp.dev_info[fullintent_focus_dev_index].his_info_item
-//                s.copy;
-                var s:[his_info_item_class] = copy_struct()
-               dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.append(s)
-                //dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[Int(val_severn_days_sum)].unshare()
-                print("--------------------------------------------------------------")
-                
-//                for j in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item.count
-//                {
-//                    print("vaild = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[j].valid)")
-//                }
-                print("--------------------------------------------------------------")
-                if val_severn_days_sum < 6{
-                    val_severn_days_sum++
-                    let date = NSDate().dateByAddingTimeInterval(-(86400*Double(val_severn_days_sum)))
-                    let calendar = NSCalendar.currentCalendar()
-                    let components = calendar.components([.Day , .Month , .Year], fromDate: date)
-                    year1 =  UInt16(components.year)
-                    month1 = UInt16(components.month)-1
-                    day1 = UInt16(components.day)
-                    send_commond()
-                    
-                }
-                else{
-                    print("count = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.count)")
-                     print("--------------------------------------------------------------")
-                    for i in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.count
-                    {
-                        for j in 0..<dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i].count
-                        {
-                            print("vaild = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j].valid)")
-                        }
-                    }
-                    
+            switch buf[10] {
+            case HIS_INFO_RSP_FRM:
+                if his_data_type
+                {
                     his_stat = HIS_INFO_TYPE_TIME
-                    did_clear_drawing_onclick()
+                    did_clear_drawing_onclick()//清除view中所有子视图
                     did_top_draw_onclick(view_top)
                     did_bottom_draw_onclick(view_bottom)
                 }
+                else
+                {
+                    
+                    var s:[his_info_item_class] = copy_struct()
+                    dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.append(s)
+                   
+                    if val_severn_days_sum < 6{
+                        val_severn_days_sum += 1
+                        let date = NSDate().dateByAddingTimeInterval(-(86400*Double(val_severn_days_sum)))
+                        let calendar = NSCalendar.currentCalendar()
+                        let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+                        year1 =  UInt16(components.year)
+                        month1 = UInt16(components.month)-1
+                        day1 = UInt16(components.day)
+                        send_commond()
+                        
+                    }
+                    else{
+                        his_stat = HIS_INFO_TYPE_TIME
+                        did_clear_drawing_onclick()
+                        did_top_draw_onclick(view_top)
+                        did_bottom_draw_onclick(view_bottom)
+                    }
+                    
+                }
+            case MODE_CFG_RSP_FRM:
+                //var i = 1;
+                
+               
+//                if(buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == MODE_CFG_TYPE_CTRL)
+//                {
+//                    if((time_cfg_rsp_info.res == 0)&&(activity_stat == 1))
+//                    {
+//                         dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat = mode_cfg_info.manu_stat;
+//                        if(( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_SIG_CTRL)
+//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_MULTI_CTRL)
+//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_DETECT_CTRL)
+//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_PH)
+//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)
+//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP)
+//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2))
+//                        {
+//                            if( dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat == MOTOR_STAT_MANU_OFF)
+//                            {
+//                                 dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat_flag &= ~mode_cfg_info.manu_stat_flag;
+//                            }
+//                            else
+//                            {
+//                                 dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat_flag |= mode_cfg_info.manu_stat_flag;
+//                            }
+//                            
+//                        }
+//                        //	comm_frame.close_timeout_dialog();
+//                        new AlertDialog.Builder(context).setTitle("完成")
+//                        .setMessage("电机启停设置成功")
+//                        .setPositiveButton("确定", null)
+//                        .show();
+//                        display_motor_stat();
+//                    }
+//                    else
+//                    {
+//                        if ((activity_stat == 1))
+//                        {
+////                            new AlertDialog.Builder(context).setTitle("完成")
+////                                .setMessage("电机启停设置失败，请重新设置")
+////                                .setPositiveButton("确定", null)
+////                                .show();
+//                        }
+//                    }
+//                }
+//                if(buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == MODE_CFG_TYPE_EXIT)
+//                {
+//                    if ((time_cfg_rsp_info.res == 0)&&(activity_stat == 1))
+//                    {
+//                         dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat = MOTOR_STAT_AUTO_OFF ;
+//                        display_motor_stat();
+//                        //	comm_frame.close_timeout_dialog();
+////                        new AlertDialog.Builder(context).setTitle("完成")
+////                        .setMessage("退出手动控制成功")
+////                        .setPositiveButton("确定", null).show(); 
+//                        
+//                        //imageView.setImageResource(R.drawable.auto_mode);
+//                    }
+//                    else if((activity_stat == 1))
+//                    {
+////                        new AlertDialog.Builder(context).setTitle("完成")
+////                            .setMessage("退出手动控制失败")
+////                            .setPositiveButton("确定", null).show(); 	    					
+//                    }
+//                }
+//                
+                
+                
+                timer.invalidate()
+                alertVC.dismissWithClickedButtonIndex(0, animated: false)
+                show_alertcontroller("提示",msg2: "电机启停设置成功")
+                //alertVC.didMoveToSuperview()
+            default:
+                print("buf[10] = "+"\(buf[10])")
                
             }
-           
+            
+            
         default:
-            var i = 0
+            var summ:UInt8 = 0
         }
         // print("incoming message: \(data)");
     }
@@ -315,17 +392,17 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     }
     
     func get_sys_cfg(index:UInt8){
-//        var id:String = nil;
+//        var id:String
 //        var i:UInt8 = 0;
 //        var iaddr:UInt8 = 0;
-//        var dev_buf:[UInt8] = new byte[32];//max num once read
-//        byte[] mid_buf = new byte[4];
+//        var dev_buf:[UInt8] = [UInt8](count:32, repeatedValue: 0)
+//        var mid_buf:UInt8 = [UInt8](count:4, repeatedValue: 0)
 //        
-//        try {
+//       
 //            //FileInputStream fos = context.openFileInput(dev_info.TIME_CFG_INFO_FILE);
-//            id = DevId2Hexst(dev_grp.dev_info[index].dev_id);
-//            FileInputStream fos = context.openFileInput(dev_info.SYS_CFG_INFO_FILE+id);
-//            if(fos==null)
+//            id = StringToInt(dev_grp.dev_info[index].dev_id);
+//            FileInputStream fos = context.openFileInput(dev_info.SYS_CFG_INFO_FILE+id)
+//            if (fos==null)
 //            {
 //                return -1;
 //            }
@@ -457,9 +534,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
 //                
 //            }
 //            fos.close();
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }	
+//      
 //        
 //        return 0;
     }
@@ -475,15 +550,19 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
         var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:fullintent_focus_dev_index)
         send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)
+        did_alertController_view()
     }
     @IBAction func did_btn_stop_onclick(sender: AnyObject) {
         mode_cfg_info.manu_stat_flag = 0x7
         mode_cfg_info.manu_stat = 0
         copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
         var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:fullintent_focus_dev_index)
-        send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)    }
+        send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)
+        did_alertController_view()
+    }
     @IBAction func did_btn_auto_onclick(sender: AnyObject) {
         
+        did_alertController_view()
     }
     @IBAction func did_btn_setting_onclick(sender: AnyObject) {
         self.performSegueWithIdentifier("seg_ToSetting", sender: nil)//跳转到CfgMenuViewController.swift 选择设置选项
@@ -587,6 +666,56 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         }
        
     }
+    
+    var alertVC:UIAlertView!
+    var alertView:UIView!
+    var alertLabel:UILabel!
+    func did_alertController_view(){
+    
+        //创建控制器
+        alertVC = UIAlertView(title:nil, message: nil , delegate: nil, cancelButtonTitle: "确定")
+     
+        //创建按钮
+        alertView = UIView(frame: CGRectMake(83,0,100,100))
+       
+                var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(50, 10, 40, 40))
+                loadingIndicator.center = alertView.center
+                loadingIndicator.hidesWhenStopped = true
+                loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                loadingIndicator.startAnimating();
+                alertView.addSubview(loadingIndicator)
+                alertLabel = UILabel(frame: CGRectMake(83,65,100,30))
+                alertLabel.text = "数据同步中，请稍后..."
+                alertView.addSubview(alertLabel)
+                alertView.center = self.view.center
+ 
+        alertVC.setValue(alertView, forKeyPath: "accessoryView")
+      
+        loadingIndicator.startAnimating()
+//
+        
+        alertVC.show();
+        //注册定时器
+        if(timer != nil){
+            timer.invalidate()
+        }
+        timer = NSTimer.scheduledTimerWithTimeInterval(120,target:self,selector:Selector("did_time_out"),userInfo:nil,repeats:true)
+            
+    }
+    
+    func did_time_out(){
+        timer.invalidate()
+        alertLabel.text = "发送已超时，请重发！"
+    }
+    
+    func show_alertcontroller(msg1:String , msg2:String){
+        let alert = UIAlertController(title: msg1,
+                                      message: msg2, preferredStyle: .Alert)
+        let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+   
     
     /******************************************************************
      *
@@ -749,7 +878,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     {
                         if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].valid == 1)
                         {
-                            dev_grp.dev_info[fullintent_focus_dev_index].his_data_num++;
+                            
                             var tmp:Float = 0;
                             
                             if(var_sel_index == 0)
@@ -1079,20 +1208,21 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 {
                     //p1.setTextSize(width/42);//设置字体大小12(480*800)
                     //for(int j = 0 ; j < comm_frame.dev.dev_info[focus_dev_index].his_info_y7day_item.size() ; j++){
-                    for(var j:Int = 0 ; j < Int(days) ; j++){
-//                        if(!comm_frame.dev.dev_info[focus_dev_index].his_data_y7day_draw[j])
+                    for j in 0..<Int(days)
+                    {
+//                  {     if(!comm_frame.dev.dev_info[focus_dev_index].his_data_y7day_draw[j])
 //                            continue;
                         var k:Int=0
-                        for(var i:Int = 0; i<(HIS_INFO_HOUR_NUM-1); i++)
+                        for i in 0..<Int(HIS_INFO_HOUR_NUM-1)
                         {
                             if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[j][i].valid == 1)&&(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[j][i+1].valid == 1))
                             {
-                                 did_two_point_line(CGFloat(tmp_px_arr[j][i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][i]), x1: CGFloat(tmp_px_arr[j][i+1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py_arr[j][i+1]),color: 2,v: view)
+                                 did_two_point_line(CGFloat(tmp_px_arr[j][i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][i]), x1: CGFloat(tmp_px_arr[j][i+1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py_arr[j][i+1]),color: (UInt8(j)+1),v: view)
                                 //canvas.drawLine((float)tmp_px_arr[j][i]+width/equal+line_tem_px0/3, (float)(tmp_py_arr[j][i]), (float)tmp_px_arr[j][i+1]+width/equal+line_tem_px0/3, (float)tmp_py_arr[j][i+1], pp[j]);//p4
                                 
                                 if((i%2) == 0){
                                     did_drawlable_onlick(CGFloat(tmp_px_arr[j][i])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][i]), text: String(tmp_val_arr[j][k]), color: 2,view: view)
-                                    k++;
+                                    k += 1
                                 }
                                 //canvas.drawText(""+(float)tmp_val_arr[j][i], (float)line_tem_var_x[i], (float)(tmp_py_arr[j][i]), p1);
                                 
@@ -1102,7 +1232,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                         }
                         if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[j][HIS_INFO_HOUR_NUM-1].valid == 1)
                         {
-                            did_two_point_line(CGFloat(tmp_px_arr[j][HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py_arr[j][HIS_INFO_HOUR_NUM-1]),color: 2,v: view)
+                            did_two_point_line(CGFloat(tmp_px_arr[j][HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_tem_px0)/3, y0: CGFloat(tmp_py_arr[j][HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_tem_px12)+CGFloat(line_tem_px0)/3, y1: CGFloat(tmp_py_arr[j][HIS_INFO_HOUR_NUM-1]),color: UInt8(j)+1,v: view)
                         //canvas.drawLine((float)tmp_px_arr[j][i]+width/equal+line_tem_px0/3, (float)(tmp_py_arr[j][i]), (float)(line_tem_px12+line_tem_px0/3), (float)tmp_py_arr[j][i], pp[j]);//p4
                         }
                     }
@@ -1185,10 +1315,12 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             var up_up:Float = 0
             if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
             {
+                print("do_max = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].sys_cfg_var.do_max)")
                 up_up=Float(dev_grp.dev_info[fullintent_focus_dev_index].sys_cfg_var.do_max)/10;
             }
             else
             {
+                print("do_max = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].sys_cfg_var.do_max)")
                 up_up=Float(dev_grp.dev_info[fullintent_focus_dev_index].sys_cfg_var.wet_air_max)/10;
             }
             var down_down:Float = 0
@@ -1733,49 +1865,53 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     else
                     {
                         //p1.setTextSize(width / 42);//
-                        for(var i:Int = 0 ; i < days ; i++){
+                        var i:Int = 0
+                        while( i < days ){
                             
 //                            if(!comm_frame.dev.dev_info[focus_dev_index].his_data_y7day_draw[i])
 //                                continue;
                              var k:Int = 0;
                              var j:Int = 0;
-                            for(; j<(HIS_INFO_HOUR_NUM-1); j++)
+                            while(j<(HIS_INFO_HOUR_NUM-1))
                             {
                                 
                                 if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j].valid == 1)&&(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j+1].valid == 1))
                                 {
                                     if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][j+1].stat==1)
                                     {
-                                         did_two_point_line(CGFloat(ox_px_arr[i][j])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][j]), x1: CGFloat(ox_px_arr[i][j+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][j+1]),color: 2,v: view)
+                                         did_two_point_line(CGFloat(ox_px_arr[i][j])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][j]), x1: CGFloat(ox_px_arr[i][j+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][j+1]),color: UInt8(i)+1,v: view)
                                         //canvas.drawLine((float)ox_px_arr[i][j]+width/equal+line_do_px0/3, (float)(ox_py_arr[i][j]), (float)ox_px_arr[i][j+1]+width/equal+line_do_px0/3, (float)ox_py_arr[i][j+1], pp[i]);
                                         
                                     }else{
-                                         did_two_point_line(CGFloat(ox_px_arr[i][j])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][j]), x1: CGFloat(ox_px_arr[i][j+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][j+1]),color: 3,v: view)
+                                         did_two_point_line(CGFloat(ox_px_arr[i][j])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][j]), x1: CGFloat(ox_px_arr[i][j+1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][j+1]),color: UInt8(i)+1,v: view)
                                         //canvas.drawLine((float)ox_px_arr[i][j]+width/equal+line_do_px0/3, (float)(ox_py_arr[i][j]), (float)ox_px_arr[i][j+1]+width/equal+line_do_px0/3, (float)ox_py_arr[i][j+1], pp4[i]);
                                     }
                                     if(j%2 == 0){
-                                        did_drawlable_onlick(CGFloat(ox_px[i])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[i]), text: String(ox_val[k]), color: 2,view: view)
+                                        did_drawlable_onlick(CGFloat(ox_px_arr[i][j])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][j]), text: String(ox_val_arr[i][k]), color: 2,view: view)
                                             //canvas.drawText(""+(float)ox_val_arr[i][k], (float)ox_px_arr[i][j]+width/equal+line_do_px0/3, (float)(ox_py_arr[i][j])-5, p1);
-                                        
-                                        k++;
+                                       
+                                        k += 1
                                     }
                                     
                                 }
+                                
+                                 j += 1
                                 
                             }
                             if((dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].valid == 1) )
                             {
                             if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].stat==1)
                             {
-                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 2,v: view)
+                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: UInt8(i)+1,v: view)
                                 //canvas.drawLine((float)ox_px[j]+width/equal+line_do_px0/3, (float)(ox_py[j]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[j], p);
                                 
                             }else{
-                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: 3,v: view)
+                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: UInt8(i)+1,v: view)
                                // canvas.drawLine((float)ox_px[j]+width/equal+line_do_px0/3, (float)(ox_py[j]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[j], p4);
                                 
                             }
                             }
+                            i += 1
                         }
                         
                     }
@@ -1794,6 +1930,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     {
                         if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
                         {
+                            print("sum = "+"\(ox_sum)"+"    "+"his_data_num = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_data_num)")
                             label.text="平均溶氧("+String(Float(Int(ox_sum*10)/Int(dev_grp.dev_info[fullintent_focus_dev_index].his_data_num))/10)+")°C"
                             //canvas.drawText("平均溶氧"+ "("+Float( ((int)(ox_sum*10)/dev_grp.dev_info[fullintent_focus_dev_index].his_data_num)/10  +"mg)"+"  "+"开机时间"+"("+ Float((int)(power_sum)+"小时)" , Float((width*0.03), Float((height*0.1), p1);
                         }
@@ -1907,19 +2044,19 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         }
         else if color == 6
         {
-            
+            did_drawline_onclick(v, pointArray: pointArray, color: UIColor.magentaColor(),linewidth: 2)
         }
         else if color == 7
         {
-            
+            did_drawline_onclick(v, pointArray: pointArray, color: UIColor.purpleColor(),linewidth: 2)
         }
         else if color == 8
         {
-            
+            did_drawline_onclick(v, pointArray: pointArray, color: UIColor.orangeColor(),linewidth: 2)
         }
         else
         {
-            
+            did_drawline_onclick(v, pointArray: pointArray, color: UIColor.redColor(),linewidth: 2)
         }
         
     }
@@ -1949,6 +2086,20 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         _shapeLayer.lineCap = kCALineCapRound
         view.layer.addSublayer(_shapeLayer)
     }
+    
+    //界面销毁是销毁必须销毁的东西
+    override func viewDidDisappear(animated: Bool) {
+        
+        if timer != nil{
+            timer.invalidate()
+            print("定时器取消。。。")
+        }
+        if alertVC != nil
+        {
+            alertVC.dismissWithClickedButtonIndex(0, animated: false)
+        }
+    }
+
 
 }
 

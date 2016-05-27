@@ -48,9 +48,9 @@ class DevCell: UITableViewCell{
             
         }
         
-        lab_water_tmp.text = String(newdev_class.sys_var.water_tmp/10) + "℃"
+        lab_water_tmp.text = String(Float(newdev_class.sys_var.water_tmp)/10) + "℃"
         pro_water_tmp.progress=Float(newdev_class.sys_var.water_tmp/10)
-        lab_oxy.text = String(newdev_class.sys_var.oxygen/10)
+        lab_oxy.text = String(Float(newdev_class.sys_var.oxygen)/10)+"mg"
         pro_oxy.progress = Float(newdev_class.sys_var.oxygen/10)
         
 //        newdev_class.cur_time = 

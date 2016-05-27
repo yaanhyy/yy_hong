@@ -17,6 +17,8 @@ class DevAddViewController:UIViewController{
         
         super.viewDidLoad()
         
+        tex_dev_id.placeholder="请输设备串号(15位)"
+        tex_dev_name.placeholder="请输入设备名(不超过8个字)"
         
         
     }
