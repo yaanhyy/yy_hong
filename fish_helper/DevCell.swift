@@ -25,22 +25,21 @@ class DevCell: UITableViewCell{
     @IBOutlet weak var img_contactor4: UIImageView!
     @IBOutlet weak var img_cell_backgd: UIImageView!
     
-    var dev_info_cell:dev_info_struct!
     
-    func setDevCell(newdev_class: dev_info_struct){
+    func setDevCell(index:Int){
         
-        dev_info_cell = newdev_class
-        
-        lab_dev_name.text = StringToInt(newdev_class.dev_name) as String
-        if newdev_class.flag & 0x8 == 0x8{
-            img_dev_online.image = UIImage(named: "online1.png")
+        lab_dev_name.text = StringToInt(dev_grp.dev_info[index].dev_name) as String
+        print("dev_grp.dev_info[index].last_time = " + "\(dev_grp.dev_info[index].last_time)")
+        if (dev_grp.dev_info[index].last_time > 180) && (dev_grp.dev_info[index].last_time != -1) {
+           
+             img_dev_online.image = UIImage(named: "offline1.png")
         }
         else{
-            img_dev_online.image = UIImage(named: "offline1.png")
+            img_dev_online.image = UIImage(named: "online1.png")
             
         }
         
-        if newdev_class.sys_var.op_flag == 1{
+        if dev_grp.dev_info[index].sys_var.op_flag == 1{
             img_notice_switch.image = UIImage(named: "on")
         }
         else{
@@ -48,54 +47,55 @@ class DevCell: UITableViewCell{
             
         }
         
-        lab_water_tmp.text = String(Float(newdev_class.sys_var.water_tmp)/10) + "℃"
-        lab_oxy.text = String(Float(newdev_class.sys_var.oxygen)/10)+"mg"
+        lab_water_tmp.text = String(Float(dev_grp.dev_info[index].sys_var.water_tmp)/10) + "℃"
+        lab_oxy.text = String(Float(dev_grp.dev_info[index].sys_var.oxygen)/10)+"mg"
         //pro_water_tmp.transform = CGAffineTransformMakeScale(1.0, 3.0)
         pro_water_tmp.progress = 50
         //pro_oxy.transform = CGAffineTransformMakeScale(1.0, 3.0)
         pro_oxy.progress = 30
-        pro_water_tmp.setProgress(Float(newdev_class.sys_var.water_tmp)/500, animated: true)
-        pro_oxy.setProgress(Float(newdev_class.sys_var.oxygen)/300, animated: true)
+        pro_water_tmp.setProgress(Float(dev_grp.dev_info[index].sys_var.water_tmp)/500, animated: true)
+        pro_oxy.setProgress(Float(dev_grp.dev_info[index].sys_var.oxygen)/300, animated: true)
 
-        
-//        newdev_class.cur_time = 
-//        newdev_class.dev_cur_time
-//        if ((newdev_class.cur_time - newdev_class.last_time)/1000 > 720)&&(newdev_class.last_time != -1) {
-//            newdev_class.last_time = newdev_class.last_time
+       
+        //        dev_grp.dev_info[index].cur_time =
+//        dev_grp.dev_info[index].dev_cur_time
+//        if ((dev_grp.dev_info[index].cur_time - dev_grp.dev_info[index].last_time)/1000 > 720)&&(dev_grp.dev_info[index].last_time != -1) {
+//            dev_grp.dev_info[index].last_time = dev_grp.dev_info[index].last_time
 //        }
         
+//
+        lab_update_time.text = "更新时间："+String(dev_grp.dev_info[index].sys_date.year)+"-"+String(dev_grp.dev_info[index].sys_date.mon)+"-"+String(dev_grp.dev_info[index].sys_date.day)+" "+String(dev_grp.dev_info[index].sys_date.hour)+":"+String(dev_grp.dev_info[index].sys_date.min)+":"+String(dev_grp.dev_info[index].sys_date.sec)
       
-        lab_update_time.text = "更新时间："+String(newdev_class.sys_date.year)+"-"+String(newdev_class.sys_date.mon)+"-"+String(newdev_class.sys_date.day)+" "+String(newdev_class.sys_date.hour)+":"+String(newdev_class.sys_date.min)+":"+String(newdev_class.sys_date.sec)
         
-        if(newdev_class.sys_var.motor_stat_flag & 0x1 ) == 0x1 {
+        if(dev_grp.dev_info[index].sys_var.motor_stat_flag & 0x1 ) == 0x1 {
             img_contactor1.image = UIImage(named: "aerator_online.png")
         }
         else{
             img_contactor1.image = UIImage(named: "aerator_offline.png")
         }
         
-        if(newdev_class.sys_var.motor_stat_flag & 0x2) == 0x2{
+        if(dev_grp.dev_info[index].sys_var.motor_stat_flag & 0x2) == 0x2{
             img_contactor2.image = UIImage(named: "aerator_online.png")
         }
         else{
             img_contactor2.image = UIImage(named: "aerator_offline.png")
         }
         
-        if(newdev_class.sys_var.motor_stat_flag & 0x4) == 0x4{
+        if(dev_grp.dev_info[index].sys_var.motor_stat_flag & 0x4) == 0x4{
             img_contactor3.image = UIImage(named: "aerator_online.png")
         }
         else{
             img_contactor3.image = UIImage(named: "aerator_offline.png")
         }
         
-        if(newdev_class.sys_var.motor_stat_flag & 0x8) == 0x8{
+        if(dev_grp.dev_info[index].sys_var.motor_stat_flag & 0x8) == 0x8{
             img_contactor4.image = UIImage(named: "aerator_online.png")
         }
         else{
             img_contactor4.image = UIImage(named: "aerator_offline.png")
         }
-        if newdev_class.dev_type == 8 {
-            if (newdev_class.sys_var.motor_stat_flag & 0x10) == 0x10{
+        if dev_grp.dev_info[index].dev_type == 8 {
+            if (dev_grp.dev_info[index].sys_var.motor_stat_flag & 0x10) == 0x10{
                 img_contactor4.image = UIImage(named: "aerator_online.png")
             }
             else
@@ -103,7 +103,7 @@ class DevCell: UITableViewCell{
                  img_contactor4.image = UIImage(named: "aerator_offline.png")
             }
             
-            if (newdev_class.sys_var.motor_stat_flag & 0x20) == 0x20{
+            if (dev_grp.dev_info[index].sys_var.motor_stat_flag & 0x20) == 0x20{
                 img_contactor4.image = UIImage(named: "aerator_online.png")
             }
             else

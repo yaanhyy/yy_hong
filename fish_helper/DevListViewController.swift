@@ -128,8 +128,51 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         print(result)
         switch result {
         case 0:  //login in
-            var i = 1
+            print(dev_grp.dev_info[0])
+           
             print("获取实时帧成功")
+            
+            dev_grp.dev_online_num = 0
+            for j in 0..<dev_grp.dev_login_num
+            {
+                var i:Int = 0
+                while(i<8)
+                {
+                    
+                    if buf[i] != dev_grp.dev_info[j].dev_id[i]
+                    {
+                        break
+                    }
+                    if ((buf[i] == dev_grp.dev_info[j].dev_id[i])) && (i == 7){
+                        i = 8
+                        break
+                    }
+                    i += 1
+                    
+                }
+                if i == 8
+                {
+                    var dateString = String(dev_grp.dev_info[j].sys_date.year)+"-"+String(dev_grp.dev_info[j].sys_date.mon)+"-"+String(dev_grp.dev_info[j].sys_date.day)+" "+String(dev_grp.dev_info[j].sys_date.hour)+":"+String(dev_grp.dev_info[j].sys_date.min)+":"+String(dev_grp.dev_info[j].sys_date.sec)
+                    //print("dev_grp.dev_info[j].dateString = "+dateString)
+                    print("j = "+"\(j)")
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    dev_grp.dev_info[j].last_time = NSDate().timeIntervalSinceDate(dateFormatter.dateFromString(dateString)!)
+                    print("last_time = "+"\(dev_grp.dev_info[j].last_time )")
+                    if (dev_grp.dev_info[j].last_time > 180) && (dev_grp.dev_info[j].last_time != -1)
+                    {
+                        dev_grp.dev_info[j].flag &= ~0x8
+                    }
+                    else
+                    {
+                        dev_grp.dev_info[j].flag |= 0x8
+                        
+                    }
+                }
+            }
+            tab_dev_list.reloadData()
+       
+            //tab_dev_list.reloadData()
             //self.performSegueWithIdentifier("btn_login", sender: nil)
 //        case 1:
 //            let alert = UIAlertController(title: "登陆错误",
@@ -152,9 +195,6 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     
     
-    func viewLoad_before(){
-        
-    }
     
     /******************************************************************
      *
@@ -164,7 +204,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //setData()
+        setData()
         //注册定时器
         if(timer == nil){
             timer = NSTimer.scheduledTimerWithTimeInterval(60,target:self,selector:Selector("did_request_real_data"),userInfo:nil,repeats:true)
@@ -189,6 +229,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         //实时帧请求接口
         for i in 0..<dev_grp.dev_info.count{
+            //dev_index = UInt8(i)
             copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
             var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
             self.send_frame(len:len, manu: dev_grp.dev_info[i].manu_id)
@@ -199,6 +240,28 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         tab_dev_list.dataSource = self
   
         
+    }
+    
+    func setData(){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            dispatch_sync(dispatch_get_main_queue(),{
+                print("异步线程")
+                dev_grp.dev_online_num = 0
+                for i in 0..<dev_grp.dev_login_num{
+                    print("dev_grp.dev_Info "+"\(i)"+"last_time = "+"\(dev_grp.dev_info[i].last_time)")
+                    if (dev_grp.dev_info[i].last_time > 180) && (dev_grp.dev_info[i].last_time != -1){
+                        //dev_grp.dev_online_num -= 1
+                    }
+                    else
+                    {
+                        dev_grp.dev_online_num += 1
+                    }
+                    print("dev_grp.dev_info[i].last_time = "+"\(dev_grp.dev_info[i].last_time)")
+                    
+                }
+            })
+        })
+
     }
 
     //界面view初始化
@@ -351,8 +414,8 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         var play:dev_info_struct = (self.arr_dev_list[indexPath.section] as! DevItemSectionInfo).play
         focus_dev_index = indexPath.section
-        cell.dev_info_cell = play
-        cell.setDevCell(cell.dev_info_cell)
+        //cell.dev_info_cell = play
+        cell.setDevCell( indexPath.section)
         cell.setTheLongPressRecognizer(cell.longPressRecognizer)
         return cell
     }

@@ -146,6 +146,8 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         switch result {
         case 0:  //login in
             //var i = 1
+            
+            print(dev_grp.dev_info[0].dev_id)
            self.performSegueWithIdentifier("btn_login", sender: nil)
         case 1:
             let alert = UIAlertController(title: "登陆错误",

@@ -177,9 +177,9 @@ struct dev_info_struct
     var event_num:UInt8?
     var  event_info:[event_st] = [event_st]()
     var smp_time:UInt?
-    var dev_cur_time:Int = -1;
-    var last_time:UInt?
-    var cur_time:UInt?
+    var dev_cur_time:NSTimeInterval = -1;
+    var last_time:NSTimeInterval = -1
+    var cur_time:NSTimeInterval?
     var cal_num:UInt?
     var send_num:UInt?
     var send_cnt:UInt?
