@@ -233,10 +233,14 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 print("buf[10] = "+"\(buf[10])")
                
             }
+           
+            default:
+            var i = 0
+            }
+        }
+        else if(buf[Int(FRM_TYPE_ADDR)] == MODE_CFG_RSP_FRM)
+        {
             
-            
-        default:
-            var summ:UInt8 = 0
         }
         // print("incoming message: \(data)");
     }
