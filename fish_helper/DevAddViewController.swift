@@ -8,6 +8,7 @@
 
 import UIKit
 import CocoaAsyncSocket
+
 class DevAddViewController:UIViewController, GCDAsyncUdpSocketDelegate{
     
     @IBOutlet weak var tex_dev_id: UITextField!
@@ -35,7 +36,7 @@ class DevAddViewController:UIViewController, GCDAsyncUdpSocketDelegate{
         copy_array_cc(dst_in: &dev_reg_info.dev_id, src_in:arr_str!, dst_start:0, src_start:0, arr_len:Int(DEV_REG_ID_LEN))
         
         
-         var gbkEncoding: NSStringEncoding = CFStringConvertEncodingToNSStringEncoding(UInt32(CFStringEncodings.GB_18030_2000.rawValue))
+        var gbkEncoding: NSStringEncoding = CFStringConvertEncodingToNSStringEncoding(UInt32(CFStringEncodings.GB_18030_2000.rawValue))
         arr_str =  tex_dev_name.text!.cStringUsingEncoding(gbkEncoding)
         if(arr_str?.count > 17)
         {

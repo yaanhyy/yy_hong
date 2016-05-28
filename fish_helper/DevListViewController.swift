@@ -49,7 +49,14 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     var focus_dev_index:Int = 0
 
-    
+    func show_info(title title:String,msg msg:String)
+    {
+        let alert = UIAlertController(title: title,
+                                      message: msg, preferredStyle: .Alert)
+        let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
     /******************************************************************
      *
      *   发送函数
@@ -125,6 +132,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         var buf = [UInt8](count: count, repeatedValue: 0)
         data.getBytes(&buf, length:count * sizeof(UInt8))
         var result =  frame_analysis(buf_info: buf, frame_len: count)
+        
         print(result)
         switch result {
         case 0:  //login in
@@ -186,10 +194,22 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
 //            let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
 //            alert.addAction(action)
 //            presentViewController(alert, animated: true, completion: nil)
-            break
-        default:
-            print("获取实时针失败！")
-            break
+                break
+            default:
+                print("获取实时针失败！")
+                break
+            }
+        }
+        else if(buf[Int(FRM_TYPE_ADDR)] == DEV_REG_RSP_FRM)
+        {
+            let alert = UIAlertController(title: "删除设备",
+                                          message: "设备删除成功", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "确定", style: .Default, handler:{
+                (alerts: UIAlertAction!) -> Void in
+                self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+            })
+            alert.addAction(action)
+            presentViewController(alert, animated: true, completion: nil)
         }
         // print("incoming message: \(data)");
     }
@@ -609,7 +629,15 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             if pressedIndexPath != nil && pressedIndexPath?.row != NSNotFound && pressedIndexPath?.section != NSNotFound {
                 
                 self.becomeFirstResponder()
-                print("长按手势")
+               // print("长按手势")
+                for i in 0..<DEV_ID_LEN
+                {
+                    dev_reg_info.dev_id[Int(2*i)] =  (((dev_grp.dev_info[focus_dev_index].dev_id[Int(i)]>>4) & 0xf) + 0x30);
+                    dev_reg_info.dev_id[Int(2*i+1)] =  ((dev_grp.dev_info[focus_dev_index].dev_id[Int(i)] & 0xf) + 0x30);
+                }
+                dev_reg_info.dev_id[15] = 0x30;
+                var len = frame_make( 0, frame_type: DEV_REG_FRM, child_type:DEV_REG_DEV_OP_DEL,  dev_index:focus_dev_index)
+                send_frame(len:len, manu: dev_grp.dev_info[focus_dev_index].manu_id)
 //                let title = NSBundle.mainBundle().localizedStringForKey("邮件", value: "", table: nil)
 //                let menuItem: EmailMenuItem = EmailMenuItem(title: title, action: "emailMenuButtonPressed:")
 //                menuItem.indexPath = pressedIndexPath
