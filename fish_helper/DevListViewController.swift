@@ -39,7 +39,7 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var sectionHeaderView:SectionHeaderView!
     
     var timer:NSTimer!
-    
+    var online_num:Int = 0
     
     //当缩放手势同时改变了所有单元格高度时使用uniformRowHeight
     var uniformRowHeight: Int!
@@ -105,10 +105,11 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
     //定时器触发函数
     func did_request_real_data()
     {
-        print("tick...")
+        //print("tick...")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             dispatch_sync(dispatch_get_main_queue(),{
-                print("异步线程")
+                //print("异步线程")
+                self.online_num = 0
                 for i in 0..<dev_grp.dev_info.count{
                     copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[i].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
                     var len = frame_make( 0, frame_type: REAL_DATA_FRM, child_type:0,  dev_index:i)
@@ -140,7 +141,6 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
            
             print("获取实时帧成功")
             
-            dev_grp.dev_online_num = 0
             for j in 0..<dev_grp.dev_login_num
             {
                 var i:Int = 0
@@ -165,10 +165,13 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     print("j = "+"\(j)")
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    
                     dev_grp.dev_info[j].last_time = NSDate().timeIntervalSinceDate(dateFormatter.dateFromString(dateString)!)
                     print("last_time = "+"\(dev_grp.dev_info[j].last_time )")
+                    
                     if (dev_grp.dev_info[j].last_time > 180) && (dev_grp.dev_info[j].last_time != -1)
                     {
+                        
                         dev_grp.dev_info[j].flag &= ~0x8
                     }
                     else
@@ -180,6 +183,22 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
             tab_dev_list.reloadData()
        
+            
+            online_num += 1
+           
+            if online_num == dev_grp.dev_login_num
+            {
+                for i in 0..<dev_grp.dev_login_num
+                {
+                    if (dev_grp.dev_info[i].last_time > 180) && (dev_grp.dev_info[i].last_time != -1)
+                    {
+                        online_num -= 1
+                    }
+                   
+                }
+                dev_grp.dev_online_num = online_num
+                lab_dev_online.text = "在线设备:"+"\(dev_grp.dev_online_num)"
+            }
             //tab_dev_list.reloadData()
             //self.performSegueWithIdentifier("btn_login", sender: nil)
 //        case 1:
@@ -200,20 +219,20 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 break
             }
         }
-        else if(buf[Int(FRM_TYPE_ADDR)] == DEV_REG_RSP_FRM)
-        {
-            let alert = UIAlertController(title: "删除设备",
-                                          message: "设备删除成功", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "确定", style: .Default, handler:{
-                (alerts: UIAlertAction!) -> Void in
-                self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-            })
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion: nil)
-        }
-        // print("incoming message: \(data)");
-    }
-    
+//        else if(buf[Int(FRM_TYPE_ADDR)] == DEV_REG_RSP_FRM)
+//        {
+//            let alert = UIAlertController(title: "删除设备",
+//                                          message: "设备删除成功", preferredStyle: .Alert)
+//            let action = UIAlertAction(title: "确定", style: .Default, handler:{
+//                (alerts: UIAlertAction!) -> Void in
+//                self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+//            })
+//            alert.addAction(action)
+//            presentViewController(alert, animated: true, completion: nil)
+//        }
+//        // print("incoming message: \(data)");
+//    }
+//    
     
     
     /******************************************************************
@@ -744,5 +763,5 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }
     }
   
-
 }
+

@@ -316,7 +316,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         
         if dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_FISH_ONLY_CTRL
         {
-            //get_sys_cfg(focus_dev_index);
+            get_sys_cfg(UInt8(fullintent_focus_dev_index));
         }
         //String id = DevId2st(dev_grp.dev_info[fullintent_focus_dev_index].dev_id);
         var id:String = StringToInt(dev_grp.dev_info[fullintent_focus_dev_index].dev_name) as String
@@ -397,14 +397,30 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
 //        dev_name.setCompoundDrawablesWithIntrinsicBounds(null, null, dev_stat_draw,null);
     }
     
-    func get_sys_cfg(index:UInt8){
-//        var id:String
-//        var i:UInt8 = 0;
-//        var iaddr:UInt8 = 0;
-//        var dev_buf:[UInt8] = [UInt8](count:32, repeatedValue: 0)
-//        var mid_buf:UInt8 = [UInt8](count:4, repeatedValue: 0)
+//    func readMyFile(filename: NSString) -> [UInt8]? {
 //        
-//       
+//        let fp = fopen(filename.UTF8String, "r")
+//        if fp == nil {
+//            println("File cannot be opened!")
+//            return nil
+//        }
+//        fseek(fp, 0, SEEK_END)
+//        let length = ftell(fp)
+//        fseek(fp, 0, SEEK_SET)
+//        var buffer: [UInt8] = Array<UInt8>(count: length, repeatedValue: 0)
+//        fread(&buffer, 1, UInt(length), fp)
+//        fclose(fp)
+//        
+//        return buffer
+//    }
+    func get_sys_cfg(index:UInt8){
+        var id:String
+        var i:UInt8 = 0;
+        var iaddr:UInt8 = 0;
+        var dev_buf:[UInt8] = [UInt8](count:32, repeatedValue: 0)
+        var mid_buf = [UInt8](count:4, repeatedValue: 0)
+
+
 //            //FileInputStream fos = context.openFileInput(dev_info.TIME_CFG_INFO_FILE);
 //            id = StringToInt(dev_grp.dev_info[index].dev_id);
 //            FileInputStream fos = context.openFileInput(dev_info.SYS_CFG_INFO_FILE+id)
@@ -542,7 +558,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
 //            fos.close();
 //      
 //        
-//        return 0;
+        //return 0;
     }
     
     /******************************************************************
