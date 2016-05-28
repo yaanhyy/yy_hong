@@ -133,8 +133,9 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
         var buf = [UInt8](count: count, repeatedValue: 0)
         data.getBytes(&buf, length:count * sizeof(UInt8))
         var result =  frame_analysis(buf_info: buf, frame_len: count)
+        if(buf[Int(FRM_TYPE_ADDR)] == REAL_DATA_RSP_FRM)
+        {
         
-        print(result)
         switch result {
         case 0:  //login in
             print(dev_grp.dev_info[0])
@@ -176,6 +177,11 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     }
                     else
                     {
+                        if (dev_grp.dev_info[j].flag & 0x8) != 0x8
+                        {
+                            dev_grp.dev_online_num += 1
+                            lab_dev_online.text = "在线设备:"+"\(dev_grp.dev_online_num)"
+                        }
                         dev_grp.dev_info[j].flag |= 0x8
                         
                     }
@@ -648,16 +654,25 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
             if pressedIndexPath != nil && pressedIndexPath?.row != NSNotFound && pressedIndexPath?.section != NSNotFound {
                 
                 self.becomeFirstResponder()
-               // print("长按手势")
-                for i in 0..<DEV_ID_LEN
-                {
-                    dev_reg_info.dev_id[Int(2*i)] =  (((dev_grp.dev_info[focus_dev_index].dev_id[Int(i)]>>4) & 0xf) + 0x30);
-                    dev_reg_info.dev_id[Int(2*i+1)] =  ((dev_grp.dev_info[focus_dev_index].dev_id[Int(i)] & 0xf) + 0x30);
-                }
-                dev_reg_info.dev_id[15] = 0x30;
-                var len = frame_make( 0, frame_type: DEV_REG_FRM, child_type:DEV_REG_DEV_OP_DEL,  dev_index:focus_dev_index)
-                send_frame(len:len, manu: dev_grp.dev_info[focus_dev_index].manu_id)
-//                let title = NSBundle.mainBundle().localizedStringForKey("邮件", value: "", table: nil)
+                
+                let alert = UIAlertController(title: "删除设备",
+                                              message: "确定要删除设备吗？", preferredStyle: .Alert)
+                let action = UIAlertAction(title: "确定", style: .Default, handler:{
+                    (alerts: UIAlertAction!) -> Void in
+                    for i in 0..<DEV_ID_LEN
+                    {
+                        dev_reg_info.dev_id[Int(2*i)] =  (((dev_grp.dev_info[self.focus_dev_index].dev_id[Int(i)]>>4) & 0xf) + 0x30);
+                        dev_reg_info.dev_id[Int(2*i+1)] =  ((dev_grp.dev_info[self.focus_dev_index].dev_id[Int(i)] & 0xf) + 0x30);
+                    }
+                    dev_reg_info.dev_id[15] = 0x30;
+                    var len = frame_make( 0, frame_type: DEV_REG_FRM, child_type:DEV_REG_DEV_OP_DEL,  dev_index:self.focus_dev_index)
+                    self.send_frame(len:len, manu: dev_grp.dev_info[self.focus_dev_index].manu_id)
+
+                })
+                alert.addAction(action)
+                presentViewController(alert, animated: true, completion: nil)
+                
+                //                let title = NSBundle.mainBundle().localizedStringForKey("邮件", value: "", table: nil)
 //                let menuItem: EmailMenuItem = EmailMenuItem(title: title, action: "emailMenuButtonPressed:")
 //                menuItem.indexPath = pressedIndexPath
 //                

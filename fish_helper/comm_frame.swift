@@ -511,7 +511,7 @@ var user_grp = user_grp_c()
 var dev_info_rsp:[dev_info_struct] = [dev_info_struct]()
 
 
-var send_buf = [UInt8](count: 1024, repeatedValue: 0)
+var send_buf = [UInt8]()
 
 func copy_byte2int(buf_info buf:[UInt8],  buf_addr:Int)->UInt
 {
@@ -1307,8 +1307,9 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
     var frame_len:UInt16 = 0
     var len:Int = 0
     
+    send_buf = [UInt8](count: 1024, repeatedValue: 0)
     copy_array(dst_in: &send_buf, src_in:frame_head_info.dev_id, dst_start:0, src_start:0, arr_len:Int(DEV_ID_LEN))
-    send_buf[Int(MANU_ID_ADDR)] = frame_head_info.manu_id ?? 1
+    send_buf[Int(MANU_ID_ADDR)] = frame_head_info.manu_id ?? 2
     send_buf[Int(DEV_TYPE_ADDR)] = frame_head_info.dev_type ?? 0
     switch frame_type
     {
