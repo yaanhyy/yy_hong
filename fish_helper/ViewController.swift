@@ -8,15 +8,24 @@
 
 import UIKit
 import CocoaAsyncSocket
+import Foundation
 
 class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDelegate{
 
     //@IBOutlet weak var login_backgd: UIImageView!
+    @IBOutlet weak var grp_views: UIView!
     @IBOutlet weak var user_name: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var result_message_lable: UILabel!
+    @IBOutlet weak var pwd_checkbox: XVView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var screenBounds:CGRect = UIScreen.mainScreen().bounds
+       
+        
+        grp_views.frame = CGRect(x: 45, y: screenBounds.height*0.6, width: screenBounds.width-90, height: screenBounds.height*0.4)
+        self.view.addSubview(grp_views)
         
         //login_backgd.backgroundColor
         //btnLgoin.layer.cornerRadius=4.0
@@ -25,6 +34,10 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
 //        let width  = user_name.bounds.width;
 //        user_name.frame = CGRectMake(25, height, width, 40)
 //        self.view.addSubview(user_name)
+        user_name.frame = CGRect(x: 0, y: 0, width: screenBounds.width-90, height: screenBounds.height*0.1)
+        password.frame = CGRect(x: 0, y: screenBounds.height*0.1+10, width: screenBounds.width-90, height: screenBounds.height*0.1)
+        grp_views.addSubview(user_name)
+        grp_views.addSubview(password)
         user_name.placeholder="请输入用户名"
         //user_name.becomeFirstResponder()
         user_name.keyboardType = UIKeyboardType.NumberPad
@@ -32,7 +45,25 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         password.returnKeyType = UIReturnKeyType.Done
         password.placeholder="请输入密码"
         password.delegate = self
-
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        LoginisSelected = defaults.boolForKey("user_login_flag")
+        if LoginisSelected == false
+        {
+            pwd_checkbox.image = UIImage(named: "check_un.png")
+            
+        }
+        else
+        {
+            user_name.text = defaults.objectForKey("userName") as? String
+                
+            password.text = defaults.objectForKey("userPwd") as? String
+            
+            pwd_checkbox.image = UIImage(named: "check_on.png")
+            
+        }
+        //        let v = self.loadFromNibNamed("CustomView")
+//        self.view.addSubview(v)
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -146,8 +177,14 @@ class ViewController: UIViewController ,UITextFieldDelegate, GCDAsyncUdpSocketDe
         switch result {
         case 0:  //login in
             //var i = 1
-            
-            print(dev_grp.dev_info[0].dev_id)
+            if LoginisSelected == true
+            {
+                let defaults = NSUserDefaults.standardUserDefaults()
+                defaults.setObject(user_info.user_name, forKey: "userName")
+                defaults.setObject(user_info.user_pwd, forKey: "userPwd")
+                defaults.setBool(LoginisSelected, forKey: "user_login_flag")
+            }
+            //print(dev_grp.dev_info[0].dev_id)
            self.performSegueWithIdentifier("btn_login", sender: nil)
         case 1:
             let alert = UIAlertController(title: "登陆错误",

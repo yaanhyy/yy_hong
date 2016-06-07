@@ -167,6 +167,11 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                     
+                    if dev_grp.dev_info[j].last_time == -1
+                    {
+                        dev_grp.dev_info[j].flag &= ~0x8
+                    }
+                  
                     dev_grp.dev_info[j].last_time = NSDate().timeIntervalSinceDate(dateFormatter.dateFromString(dateString)!)
                     print("last_time = "+"\(dev_grp.dev_info[j].last_time )")
                     
@@ -177,11 +182,6 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     }
                     else
                     {
-                        if (dev_grp.dev_info[j].flag & 0x8) != 0x8
-                        {
-                            dev_grp.dev_online_num += 1
-                            lab_dev_online.text = "在线设备:"+"\(dev_grp.dev_online_num)"
-                        }
                         dev_grp.dev_info[j].flag |= 0x8
                         
                     }
@@ -225,20 +225,20 @@ class DevListViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 break
             }
         }
-//        else if(buf[Int(FRM_TYPE_ADDR)] == DEV_REG_RSP_FRM)
-//        {
-//            let alert = UIAlertController(title: "删除设备",
-//                                          message: "设备删除成功", preferredStyle: .Alert)
-//            let action = UIAlertAction(title: "确定", style: .Default, handler:{
-//                (alerts: UIAlertAction!) -> Void in
-//                self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-//            })
-//            alert.addAction(action)
-//            presentViewController(alert, animated: true, completion: nil)
-//        }
-//        // print("incoming message: \(data)");
-//    }
-//    
+        else if(buf[Int(FRM_TYPE_ADDR)] == DEV_REG_RSP_FRM)
+        {
+            let alert = UIAlertController(title: "删除设备",
+                                          message: "设备删除成功", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "确定", style: .Default, handler:{
+                (alerts: UIAlertAction!) -> Void in
+                self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+           })
+            alert.addAction(action)
+           presentViewController(alert, animated: true, completion: nil)
+        }
+        // print("incoming message: \(data)");
+    }
+
     
     
     /******************************************************************

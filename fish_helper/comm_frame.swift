@@ -413,6 +413,9 @@ var year1:UInt16 =  0
 var month1:UInt16 = 0
 var day1:UInt16 = 0
 
+var send_manu_flag_open:UInt8 = 0
+var send_frame_flag:UInt8 = 0;
+var send_manu_flag_close:UInt8 = 0;
 
 class dev_reg_c
 {
@@ -1071,6 +1074,7 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
             {
                 
                 len = Int(HIS_INFO_RSP_INFO_FISH_ADDR)
+                dev_grp.dev_info[dev_index_cur].his_data_num = 0
                 for i in 0..<HIS_INFO_HOUR_NUM
                 {
                     dev_grp.dev_info[dev_index_cur].his_info_item.append(his_info_item_class())

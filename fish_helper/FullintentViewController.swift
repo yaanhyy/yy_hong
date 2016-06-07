@@ -40,6 +40,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     var bol_view_label:Bool = false //view_top and view_bottom didn't add label;
     var timer:NSTimer!
     var activity_stat:Int = 0
+    var his_data_num:UInt16 = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,16 +118,19 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         var buf = [UInt8](count: count, repeatedValue: 0)
         data.getBytes(&buf, length:count * sizeof(UInt8))
         var result =  frame_analysis(buf_info: buf, frame_len: count)
-        if(buf[Int(FRM_TYPE_ADDR)] == REAL_DATA_RSP_FRM)
-        {
+//        if(buf[Int(FRM_TYPE_ADDR)] == REAL_DATA_RSP_FRM)
+//        {
+            print("buf10111 = "+"\(buf[10])")
             switch result {
             case 0:  //login in
             var i:Int = 1
+            print("buf10 = "+"\(buf[10])")
             
             switch buf[10] {
             case HIS_INFO_RSP_FRM:
                 if his_data_type
                 {
+                    his_data_num = dev_grp.dev_info[fullintent_focus_dev_index].his_data_num
                     his_stat = HIS_INFO_TYPE_TIME
                     did_clear_drawing_onclick()//清除view中所有子视图
                     did_top_draw_onclick(view_top)
@@ -137,7 +141,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     
                     var s:[his_info_item_class] = copy_struct()
                     dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7.append(s)
-                   
+                    his_data_num += dev_grp.dev_info[fullintent_focus_dev_index].his_data_num
                     if val_severn_days_sum < 6{
                         val_severn_days_sum += 1
                         let date = NSDate().dateByAddingTimeInterval(-(86400*Double(val_severn_days_sum)))
@@ -159,75 +163,68 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 }
             case MODE_CFG_RSP_FRM:
                 //var i = 1;
-                
-               
-//                if(buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == MODE_CFG_TYPE_CTRL)
+//                for i in 0..<buf.count
 //                {
-//                    if((time_cfg_rsp_info.res == 0)&&(activity_stat == 1))
-//                    {
-//                         dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat = mode_cfg_info.manu_stat;
-//                        if(( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_SIG_CTRL)
-//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_MULTI_CTRL)
-//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_DETECT_CTRL)
-//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_PH)
-//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)
-//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP)
-//                            ||( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2))
-//                        {
-//                            if( dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat == MOTOR_STAT_MANU_OFF)
-//                            {
-//                                 dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat_flag &= ~mode_cfg_info.manu_stat_flag;
-//                            }
-//                            else
-//                            {
-//                                 dev_grp.dev_info[fullintent_focus_dev_index].var.motor_stat_flag |= mode_cfg_info.manu_stat_flag;
-//                            }
-//                            
-//                        }
-//                        //	comm_frame.close_timeout_dialog();
-//                        new AlertDialog.Builder(context).setTitle("完成")
-//                        .setMessage("电机启停设置成功")
-//                        .setPositiveButton("确定", null)
-//                        .show();
-//                        display_motor_stat();
-//                    }
-//                    else
-//                    {
-//                        if ((activity_stat == 1))
-//                        {
-////                            new AlertDialog.Builder(context).setTitle("完成")
-////                                .setMessage("电机启停设置失败，请重新设置")
-////                                .setPositiveButton("确定", null)
-////                                .show();
-//                        }
-//                    }
+//                    print("buf[i] "+"\(i)"+" = "+"\(buf[i])")
 //                }
-//                if(buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == MODE_CFG_TYPE_EXIT)
-//                {
-//                    if ((time_cfg_rsp_info.res == 0)&&(activity_stat == 1))
-//                    {
-//                         dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat = MOTOR_STAT_AUTO_OFF ;
-//                        display_motor_stat();
-//                        //	comm_frame.close_timeout_dialog();
-////                        new AlertDialog.Builder(context).setTitle("完成")
-////                        .setMessage("退出手动控制成功")
-////                        .setPositiveButton("确定", null).show(); 
-//                        
-//                        //imageView.setImageResource(R.drawable.auto_mode);
-//                    }
-//                    else if((activity_stat == 1))
-//                    {
-////                        new AlertDialog.Builder(context).setTitle("完成")
-////                            .setMessage("退出手动控制失败")
-////                            .setPositiveButton("确定", null).show(); 	    					
-//                    }
-//                }
-//                
-                
-                
                 timer.invalidate()
                 alertVC.dismissWithClickedButtonIndex(0, animated: false)
-                show_alertcontroller("提示",msg2: "电机启停设置成功")
+                if(buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == MODE_CFG_TYPE_CTRL)
+                {
+                    
+                    if((buf[8] == 0)&&(activity_stat == 1))
+                    {
+                         dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat = mode_cfg_info.manu_stat
+                        if(( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_SIG_CTRL)
+                            || ( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_MULTI_CTRL)
+                            || ( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_DETECT_CTRL)
+                            || ( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_PH)
+                            || ( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)
+                            || ( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP)
+                            || ( dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2))
+                        {
+                            if( dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_MANU_OFF)
+                            {
+                                 dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat_flag &= ~mode_cfg_info.manu_stat_flag;
+                            }
+                            else
+                            {
+                                 dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat_flag |= mode_cfg_info.manu_stat_flag;
+                            }
+                            
+                        }
+                        //	comm_frame.close_timeout_dialog();
+                        show_info(title: "完成", msg:"电机启停设置成功")
+                        did_btn_backgd_set()
+                        //display_motor_stat();
+                    }
+                    else
+                    {
+                        if ((activity_stat == 1))
+                        {
+                            show_info(title: "完成", msg:"电机启停设置失败，请重新设置")
+                        }
+                    }
+                }
+                if(buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == MODE_CFG_TYPE_EXIT)
+                {
+                    if ((buf[8] == 0)&&(activity_stat == 1))
+                    {
+                         dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat = MOTOR_STAT_AUTO_OFF ;
+                        //display_motor_stat();
+                       show_info(title: "完成", msg:"退出手动控制成功")
+                        did_btn_backgd_set()
+                    }
+                    else if((activity_stat == 1))
+                    {
+                        show_info(title: "完成", msg:"退出手动控制失败")
+//                        new AlertDialog.Builder(context).setTitle("完成")
+//                            .setMessage("退出手动控制失败")
+//                            .setPositiveButton("确定", null).show(); 	    					
+                    }
+                }
+                
+                //show_alertcontroller("提示",msg2: "电机启停设置成功")
                 //alertVC.didMoveToSuperview()
             default:
                 print("buf[10] = "+"\(buf[10])")
@@ -237,14 +234,22 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             default:
             var i = 0
             }
-        }
-        else if(buf[Int(FRM_TYPE_ADDR)] == MODE_CFG_RSP_FRM)
-        {
-            
-        }
+//        }
+//        else if(buf[Int(FRM_TYPE_ADDR)] == MODE_CFG_RSP_FRM)
+//        {
+//            
+//        }
         // print("incoming message: \(data)");
     }
 
+    func show_info(title title:String, msg:String)
+    {
+        let alert = UIAlertController(title: title,
+                                      message: msg, preferredStyle: .Alert)
+        let action = UIAlertAction(title: "确定", style: .Default, handler: nil)
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)    }
+    
     func copy_struct()-> [his_info_item_class]{
         
         var s = [his_info_item_class]()
@@ -561,30 +566,118 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         //return 0;
     }
     
+    
+    func did_btn_backgd_set(){
+        if(dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_MANU_ON)
+        {
+
+            btn_start.setImage(UIImage(named: "start_img_press"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_unpress"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "auto_img"), forState: UIControlState.Normal)
+        }
+        else if (dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_MANU_OFF) && (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH)
+        {
+            btn_start.setImage(UIImage(named: "start_img_unpress"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_press"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "auto_img"), forState: UIControlState.Normal)
+    
+        }
+        else if((dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_MANU_OFF)
+             && ((dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_SIG_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_MULTI_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_ONLY_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_DETECT_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_PH)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP))
+            && (dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat_flag==0))
+        {
+            btn_start.setImage(UIImage(named: "start_img_unpress"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_press"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "auto_img"), forState: UIControlState.Normal)
+
+        }
+        else if((dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_FEED)
+            && ((dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat_flag&0x7)==0)
+            && (dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_MANU_OFF))
+        {
+            btn_start.setImage(UIImage(named: "start_img_unpress"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_press"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "auto_img"), forState: UIControlState.Normal)
+           
+        }
+        else if((dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_MANU_OFF)
+            && ((dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_SIG_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_MULTI_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_ONLY_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_DETECT_CTRL)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_PH)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)
+                || (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP))
+            && (dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat_flag != 0))
+        {
+            btn_start.setImage(UIImage(named: "start_img_press"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_unpress"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "auto_img"), forState: UIControlState.Normal)
+           
+        }
+        else if((dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_MANU_OFF)
+            && (dev_grp.dev_info[fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_FEED)
+            && ((dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat_flag&0x7) != 0))
+        {
+            btn_start.setImage(UIImage(named: "start_img_press"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_unpress"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "auto_img"), forState: UIControlState.Normal)
+
+        }
+        else if((dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_TIME_OFF)
+            || (dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat == MOTOR_STAT_AUTO_OFF))
+        {
+            btn_start.setImage(UIImage(named: "start_img_unpress"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_unpress"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "stop_img_press"), forState: UIControlState.Normal)
+         }
+        else
+        {
+            btn_start.setImage(UIImage(named: "start_img_unpress"), forState: UIControlState.Normal)
+            btn_stop.setImage(UIImage(named: "stop_img_unpress"), forState: UIControlState.Normal)
+            btn_auto.setImage(UIImage(named: "start_img_press"), forState: UIControlState.Normal)
+          		
+        }
+        
+   
+    }
     /******************************************************************
      *
      *   button响应事件
      *
      ******************************************************************/
     @IBAction func did_btn_start_onclick(sender: AnyObject) {
-        mode_cfg_info.manu_stat_flag = 0x7
-        mode_cfg_info.manu_stat = 1
-        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-        var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:fullintent_focus_dev_index)
-        send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)
-        did_alertController_view()
+//        mode_cfg_info.manu_stat_flag = 0x7
+//        mode_cfg_info.manu_stat = 1
+//        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+//        var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:fullintent_focus_dev_index)
+//        send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)
+//        did_alertController_view()
+        did_selected_view(btn_start)
     }
     @IBAction func did_btn_stop_onclick(sender: AnyObject) {
-        mode_cfg_info.manu_stat_flag = 0x7
-        mode_cfg_info.manu_stat = 0
-        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
-        var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:fullintent_focus_dev_index)
-        send_frame(len:len, manu: dev_grp.dev_info[fullintent_focus_dev_index].manu_id)
-        did_alertController_view()
+        did_selected_view(btn_stop)
+        //did_power_start_ent(btn_stop)
     }
     @IBAction func did_btn_auto_onclick(sender: AnyObject) {
         
-        did_alertController_view()
+        if((dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat != MOTOR_STAT_MANU_ON)
+        && (dev_grp.dev_info[fullintent_focus_dev_index].sys_var.motor_stat != MOTOR_STAT_MANU_OFF))
+        {
+            show_info(title: "操作非法", msg: "已经处于自动工作模式")
+            return;
+        }
+        did_send_startOrstrop(btn_auto)
+        //did_selected_view()
+        //did_alertController_view()
     }
     @IBAction func did_btn_setting_onclick(sender: AnyObject) {
         self.performSegueWithIdentifier("seg_ToSetting", sender: nil)//跳转到CfgMenuViewController.swift 选择设置选项
@@ -596,9 +689,10 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         
         //did_clear_drawing_onclick(view_top)
         //did_clear_drawing_onclick(view_bottom)
-       
+        
         if his_severn_day_type
         {
+            his_data_num = 0
             his_stat = HIS_STAT_LOADING
             send_commond()
             his_severn_day_type = false
@@ -692,14 +786,118 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
     var alertVC:UIAlertView!
     var alertView:UIView!
     var alertLabel:UILabel!
+    
+
+    var alertController:UIAlertController!
+    func did_selected_view(view1:UIView){
+
+        alertController = UIAlertController(title: "  多路增氧机启动操作", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let margin:CGFloat = 10.0
+        let rect = CGRectMake(0, 50, 260, 160)
+        var customView:Manu_sig_op = Manu_sig_op(frame: rect)
+
+       // customView.backgroundColor = UIColor.greenColor()
+       // alertView.center = self.view.center
+        alertController.view.addSubview(customView)
+        
+        let somethingAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in
+            self.did_power_start_ent(view1)
+        })
+        
+        let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: {(alert: UIAlertAction!) in
+        
+        })
+        
+        alertController.addAction(somethingAction)
+        alertController.addAction(cancelAction)
+        var height:NSLayoutConstraint = NSLayoutConstraint(item: alertController.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: self.view.frame.height * 0.7)
+        alertController.view.addConstraint(height);
+       
+        
+        self.presentViewController(alertController, animated: true, completion:{})
+        
+        
+    }
+    
+    //启动、挺住按钮按下，弹出弹出对话框中的确定按钮操作
+    func did_power_start_ent(view:UIView){
+        if(dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH)
+        {
+            did_send_startOrstrop(view)
+        }
+        else if((dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_SIG_CTRL)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_MULTI_CTRL)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_ONLY_CTRL)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_DETECT_CTRL)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_FEED)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_FISH_PH)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_CO2)
+            || (dev_grp.dev_info[self.fullintent_focus_dev_index].dev_type == DEV_TYPE_BARN_TMP))
+        {
+            did_send_startOrstrop(view)
+        }
+
+        
+    }
+    
+    //启动、挺住按钮发送
+    func did_send_startOrstrop(view:UIView)
+    {
+         self.did_alertController_view()
+        if view == btn_start
+        {
+            if(dev_grp.dev_info[self.fullintent_focus_dev_index].sys_var.motor_stat != MOTOR_STAT_MANU_ON)
+            {
+                send_manu_flag_open = 1;
+                mode_cfg_info.manu_stat = MOTOR_STAT_MANU_ON;
+                //    			Log.e("fullintent","power_on_ent111111111" );
+                
+                //self.alertVC.dismissWithClickedButtonIndex(0, animated: false)
+            
+                mode_cfg_info.manu_stat_flag = 0x7
+                mode_cfg_info.manu_stat = 1
+                copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[self.fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+                var len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:self.fullintent_focus_dev_index)
+                self.send_frame(len:len, manu: dev_grp.dev_info[self.fullintent_focus_dev_index].manu_id)
+                //did_alertController_view()
+                
+            }
+        }
+        else if (view == btn_stop)
+        {
+            if(dev_grp.dev_info[self.fullintent_focus_dev_index].sys_var.motor_stat != MOTOR_STAT_MANU_OFF)
+            {
+                send_manu_flag_close = 1;
+                mode_cfg_info.manu_stat = MOTOR_STAT_MANU_OFF;
+               
+                mode_cfg_info.manu_stat_flag = 0x7
+                mode_cfg_info.manu_stat = 0
+                copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[self.fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+                let len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:self.fullintent_focus_dev_index)
+                self.send_frame(len:len, manu: dev_grp.dev_info[self.fullintent_focus_dev_index].manu_id)
+            }
+        }
+        else
+        {
+            mode_cfg_info.manu_stat = MOTOR_STAT_AUTO_ON;
+            mode_cfg_info.manu_mode = 1
+            mode_cfg_info.manu_stat_flag = 0x7
+            copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[self.fullintent_focus_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+            let len = frame_make( 0, frame_type: MODE_CFG_FRM, child_type:MODE_CFG_TYPE_CTRL,  dev_index:self.fullintent_focus_dev_index)
+            self.send_frame(len:len, manu: dev_grp.dev_info[self.fullintent_focus_dev_index].manu_id)
+        }
+
+    }
+    //弹出延时加载对话框
     func did_alertController_view(){
     
         //创建控制器
         alertVC = UIAlertView(title:nil, message: nil , delegate: nil, cancelButtonTitle: "确定")
-     
-        //创建按钮
-        alertView = UIView(frame: CGRectMake(83,0,100,100))
-       
+         //创建按钮
+         alertView = UIView(frame: CGRectMake(83,0,100,100))
+ 
                 var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(50, 10, 40, 40))
                 loadingIndicator.center = alertView.center
                 loadingIndicator.hidesWhenStopped = true
@@ -715,7 +913,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
       
         loadingIndicator.startAnimating()
 //
-        
+        print("check = " + "\(checkSelected)")
         alertVC.show();
         //注册定时器
         if(timer != nil){
@@ -778,7 +976,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
             lab_message.textColor = UIColor.whiteColor()
             view.addSubview(lab_message)
         }
-        else if (dev_grp.dev_info[fullintent_focus_dev_index].his_data_num != 0 )||(his_stat == HIS_STAT_LOADING)
+        else if (his_stat == HIS_STAT_LOADING) || (his_data_num != 0)
         {
             
             var equal:UInt8=14;//13
@@ -1229,10 +1427,10 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 else
                 {
                     //p1.setTextSize(width/42);//设置字体大小12(480*800)
-                    //for(int j = 0 ; j < comm_frame.dev.dev_info[focus_dev_index].his_info_y7day_item.size() ; j++){
+                    //for(int j = 0 ; j < dev_grp.dev_info[fullintent_focus_dev_index].his_info_y7day_item.size() ; j++){
                     for j in 0..<Int(days)
                     {
-//                  {     if(!comm_frame.dev.dev_info[focus_dev_index].his_data_y7day_draw[j])
+//                  {     if(!dev_grp.dev_info[fullintent_focus_dev_index].his_data_y7day_draw[j])
 //                            continue;
                         var k:Int=0
                         for i in 0..<Int(HIS_INFO_HOUR_NUM-1)
@@ -1278,7 +1476,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     if (dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
                     {
                         
-                        label.text="平均水温("+String(Float(Int(tmp_sum*10)/Int(dev_grp.dev_info[fullintent_focus_dev_index].his_data_num))/10)+")°C"
+                        label.text="平均水温("+String(Float(Int(tmp_sum*10)/Int(his_data_num))/10)+")°C"
                     }
                     else
                     {
@@ -1368,7 +1566,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                 lab_message.textColor = UIColor.whiteColor()
 
             }
-            else if (dev_grp.dev_info[fullintent_focus_dev_index].his_data_num != 0 )||(his_stat == HIS_STAT_LOADING)
+            else if (his_data_num != 0 )||(his_stat == HIS_STAT_LOADING)
             {
                 var equal:(UInt8)=14
                 
@@ -1474,25 +1672,26 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     }
                     else
                     {
-                        for(var i:Int = 0 ; i < days ; i++){
-                            for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
+                        for i in 0..<Int(days)
+                        {
+                            for iq in 0..<HIS_INFO_HOUR_NUM
                             {
-                                if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].valid == 1)
+                                if(dev_grp.dev_info[self.fullintent_focus_dev_index].his_info_item7[i][iq].valid == 1)
                                 {
-                                    if(var_sel_index == 0)
+                                    if(self.var_sel_index == 0)
                                     {
-                                        if(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                        if(dev_grp.dev_info[ self.fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ self.fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ self.fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
                                         {
-                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].ox)/10;
+                                            var1 = Float(dev_grp.dev_info[self.fullintent_focus_dev_index].his_info_item7[i][iq].ox)/10;
                                         }
                                         else
                                         {
-                                            var1 = Float(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item7[i][iq].wet_air)/10;
+                                            var1 = Float(dev_grp.dev_info[self.fullintent_focus_dev_index].his_info_item7[i][iq].wet_air)/10;
                                         }
                                     }
-                                    else if(var_sel_index == 1)
+                                    else if(self.var_sel_index == 1)
                                     {
-                                        if(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
+                                        if(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ self.fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP)
                                         {
                                             
                                         }
@@ -1605,7 +1804,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     if his_data_type
                     {
                         var k:UInt8 = 0;
-                        for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
+                        for iq in 0..<HIS_INFO_HOUR_NUM
                         {
                             ox_px[iq] = Float((Float(iq)*(Float(width)/Float(equal)*12)/Float(HIS_INFO_HOUR_NUM)));
                             if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[iq].valid == 1)
@@ -1639,7 +1838,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                                 
                                 if(iq % 2 == 0){
                                     ox_val[Int(k)] = var1;
-                                    k++;
+                                    k += 1
                                 }
                                 if((var1<=100) && (var1 >= -1))
                                 {
@@ -1656,7 +1855,8 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     }
                     else
                     {
-                        for(var i:Int = 0 ; i < days; i++){
+                        for i in 0..<Int(days)
+                        {
                             var k:UInt8 = 0;
                             for(iq=0; iq<HIS_INFO_HOUR_NUM; iq++)
                             {
@@ -1866,7 +2066,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                                     //                                        canvas.drawText(""+Float(ox_val[k], Float(ox_px[i]+width/equal+line_do_px0/3, Float((ox_py[i])-10, p1);
                                     //                                    }
                                     //
-                                    k++;
+                                    k += 1;
                                 }
                             }
                             
@@ -1890,7 +2090,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                         var i:Int = 0
                         while( i < days ){
                             
-//                            if(!comm_frame.dev.dev_info[focus_dev_index].his_data_y7day_draw[i])
+//                            if(!dev_grp.dev_info[fullintent_focus_dev_index].his_data_y7day_draw[i])
 //                                continue;
                              var k:Int = 0;
                              var j:Int = 0;
@@ -1924,11 +2124,11 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                             {
                             if(dev_grp.dev_info[fullintent_focus_dev_index].his_info_item[HIS_INFO_HOUR_NUM-1].stat==1)
                             {
-                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: UInt8(i)+1,v: view)
+                                did_two_point_line(CGFloat(ox_px_arr[i][HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][HIS_INFO_HOUR_NUM-1]),color: UInt8(i)+1,v: view)
                                 //canvas.drawLine((float)ox_px[j]+width/equal+line_do_px0/3, (float)(ox_py[j]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[j], p);
                                 
                             }else{
-                                did_two_point_line(CGFloat(ox_px[HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py[HIS_INFO_HOUR_NUM-1]),color: UInt8(i)+1,v: view)
+                                did_two_point_line(CGFloat(ox_px_arr[i][HIS_INFO_HOUR_NUM-1])+width/CGFloat(equal)+CGFloat(line_do_px0)/3, y0: CGFloat(ox_py_arr[i][HIS_INFO_HOUR_NUM-1]), x1: CGFloat(line_do_px12)+CGFloat(line_do_px0)/3, y1: CGFloat(ox_py_arr[i][HIS_INFO_HOUR_NUM-1]),color: UInt8(i)+1,v: view)
                                // canvas.drawLine((float)ox_px[j]+width/equal+line_do_px0/3, (float)(ox_py[j]), (float)(line_do_px12+line_do_px0/3), (float)ox_py[j], p4);
                                 
                             }
@@ -1952,8 +2152,8 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
                     {
                         if((dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_CO2)&&(dev_grp.dev_info[ fullintent_focus_dev_index].dev_type != DEV_TYPE_BARN_TMP))
                         {
-                            print("sum = "+"\(ox_sum)"+"    "+"his_data_num = "+"\(dev_grp.dev_info[fullintent_focus_dev_index].his_data_num)")
-                            label.text="平均溶氧("+String(Float(Int(ox_sum*10)/Int(dev_grp.dev_info[fullintent_focus_dev_index].his_data_num))/10)+")°C"
+                            print("sum = "+"\(ox_sum)"+"    "+"his_data_num = "+"\(his_data_num)")
+                            label.text="平均溶氧("+String(Float(Int(ox_sum*10)/Int(his_data_num))/10)+")°C"
                             //canvas.drawText("平均溶氧"+ "("+Float( ((int)(ox_sum*10)/dev_grp.dev_info[fullintent_focus_dev_index].his_data_num)/10  +"mg)"+"  "+"开机时间"+"("+ Float((int)(power_sum)+"小时)" , Float((width*0.03), Float((height*0.1), p1);
                         }
                         else
@@ -2041,7 +2241,7 @@ class FullintentViewController:UIViewController,GCDAsyncUdpSocketDelegate{
         //}
     }
     //画两点直线
-    func did_two_point_line(var x0:CGFloat,var y0:CGFloat,var x1:CGFloat,var y1:CGFloat,color:UInt8,v:UIView)
+    func did_two_point_line(x0:CGFloat,y0:CGFloat,x1:CGFloat, y1:CGFloat,color:UInt8,v:UIView)
     {
         var pointArray = [CGPoint]()
         var pointView = CGPoint(x: x0 , y: y0)

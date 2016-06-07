@@ -14,15 +14,23 @@
 		1FFBF9E71CD64B3F000B22C1 /* fish_helperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9E61CD64B3F000B22C1 /* fish_helperTests.swift */; };
 		1FFBF9F21CD64B3F000B22C1 /* fish_helperUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFBF9F11CD64B3F000B22C1 /* fish_helperUITests.swift */; };
 		783108651CE19EE7008EE608 /* comm_frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783108641CE19EE7008EE608 /* comm_frame.swift */; };
+		783A24D61CFEE82000A7B0D1 /* Manu_sig_op.xib in Resources */ = {isa = PBXBuildFile; fileRef = 783A24D41CFEE82000A7B0D1 /* Manu_sig_op.xib */; };
+		783A24D81CFEE8CE00A7B0D1 /* Manu_sig_op.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783A24D71CFEE8CE00A7B0D1 /* Manu_sig_op.swift */; };
 		783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783BE06B1CE04790009DBF38 /* Main.storyboard */; };
 		783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783BE06E1CE05E20009DBF38 /* DevListViewController.swift */; };
 		783D07421CE6FFFF001E64AD /* dev_grp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783D07411CE6FFFF001E64AD /* dev_grp.swift */; };
+		783DD07A1D02657700B2D47C /* area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 783DD0791D02657700B2D47C /* area.plist */; };
 		7846D00E1CF2DEA700EDAEE5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846D00D1CF2DEA600EDAEE5 /* RegisterViewController.swift */; };
 		7846D0101CF2EF9A00EDAEE5 /* CfgMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846D00F1CF2EF9A00EDAEE5 /* CfgMenuViewController.swift */; };
 		7846D0121CF301C200EDAEE5 /* CfgSysViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846D0111CF301C200EDAEE5 /* CfgSysViewController.swift */; };
 		78593C461CEB0BBA00D75975 /* FullintentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78593C451CEB0BBA00D75975 /* FullintentViewController.swift */; };
 		785DA0A91CF54A04001BD017 /* UIBezierPath+LxThroughPointsBezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785DA0A81CF54A04001BD017 /* UIBezierPath+LxThroughPointsBezier.swift */; };
 		785DA0AF1CF5A777001BD017 /* SysSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785DA0AE1CF5A777001BD017 /* SysSettingViewController.swift */; };
+		786911571CFFE5A9003E2FCA /* Sig_op.xib in Resources */ = {isa = PBXBuildFile; fileRef = 786911551CFFE5A9003E2FCA /* Sig_op.xib */; };
+		786911591CFFE5B6003E2FCA /* Sig_op.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786911581CFFE5B6003E2FCA /* Sig_op.swift */; };
+		78B2E8F61CFD85D900B1E4FA /* CheckButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B2E8F51CFD85D900B1E4FA /* CheckButton.swift */; };
+		78B2E8F81CFD9DFF00B1E4FA /* XVView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B2E8F71CFD9DFF00B1E4FA /* XVView.swift */; };
+		78B2E8FB1CFD9E1100B1E4FA /* XVView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78B2E8F91CFD9E1100B1E4FA /* XVView.xib */; };
 		78F6320A1CF68ECC006482C5 /* DevAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F632091CF68ECC006482C5 /* DevAddViewController.swift */; };
 		78F6320C1CF694BD006482C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78F6320B1CF694BD006482C5 /* Assets.xcassets */; };
 		78F63E201CF6D7A4009CC4EE /* TimeCfgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F63E1F1CF6D7A4009CC4EE /* TimeCfgViewController.swift */; };
@@ -31,6 +39,7 @@
 		78F73D521CE5A2A700F031EB /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D511CE5A2A700F031EB /* SectionHeaderView.swift */; };
 		78F73D541CE5AA6300F031EB /* DevItemSectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F73D531CE5AA6300F031EB /* DevItemSectionInfo.swift */; };
 		78FA2D481CF6FEBF00216671 /* send_time_out.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78FA2D461CF6FEBF00216671 /* send_time_out.xib */; };
+		78FA46F71CFC4A0500E01CE5 /* CheckBotton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78FA46F51CFC4A0500E01CE5 /* CheckBotton.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,15 +74,23 @@
 		242DD9F132768B47E31ADEDB /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C3D6D669F300F590D261BB9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		783108641CE19EE7008EE608 /* comm_frame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = comm_frame.swift; sourceTree = "<group>"; };
+		783A24D51CFEE82000A7B0D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Manu_sig_op.xib; sourceTree = "<group>"; };
+		783A24D71CFEE8CE00A7B0D1 /* Manu_sig_op.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manu_sig_op.swift; path = custom_control/Manu_sig_op.swift; sourceTree = "<group>"; };
 		783BE06C1CE04790009DBF38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		783BE06E1CE05E20009DBF38 /* DevListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevListViewController.swift; sourceTree = "<group>"; };
 		783D07411CE6FFFF001E64AD /* dev_grp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dev_grp.swift; sourceTree = "<group>"; };
+		783DD0791D02657700B2D47C /* area.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = area.plist; sourceTree = "<group>"; };
 		7846D00D1CF2DEA600EDAEE5 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		7846D00F1CF2EF9A00EDAEE5 /* CfgMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CfgMenuViewController.swift; sourceTree = "<group>"; };
 		7846D0111CF301C200EDAEE5 /* CfgSysViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CfgSysViewController.swift; sourceTree = "<group>"; };
 		78593C451CEB0BBA00D75975 /* FullintentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullintentViewController.swift; sourceTree = "<group>"; };
 		785DA0A81CF54A04001BD017 /* UIBezierPath+LxThroughPointsBezier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIBezierPath+LxThroughPointsBezier.swift"; path = "fish_helper/UIBezierPath+LxThroughPointsBezier.swift"; sourceTree = "<group>"; };
 		785DA0AE1CF5A777001BD017 /* SysSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SysSettingViewController.swift; sourceTree = "<group>"; };
+		786911561CFFE5A9003E2FCA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Sig_op.xib; sourceTree = "<group>"; };
+		786911581CFFE5B6003E2FCA /* Sig_op.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sig_op.swift; path = custom_control/Sig_op.swift; sourceTree = "<group>"; };
+		78B2E8F51CFD85D900B1E4FA /* CheckButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckButton.swift; path = custom_control/CheckButton.swift; sourceTree = "<group>"; };
+		78B2E8F71CFD9DFF00B1E4FA /* XVView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XVView.swift; path = custom_control/XVView.swift; sourceTree = "<group>"; };
+		78B2E8FA1CFD9E1100B1E4FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XVView.xib; sourceTree = "<group>"; };
 		78F632091CF68ECC006482C5 /* DevAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevAddViewController.swift; sourceTree = "<group>"; };
 		78F6320B1CF694BD006482C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		78F63E1F1CF6D7A4009CC4EE /* TimeCfgViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCfgViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +99,7 @@
 		78F73D511CE5A2A700F031EB /* SectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		78F73D531CE5AA6300F031EB /* DevItemSectionInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevItemSectionInfo.swift; sourceTree = "<group>"; };
 		78FA2D471CF6FEBF00216671 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/send_time_out.xib; sourceTree = "<group>"; };
+		78FA46F61CFC4A0500E01CE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CheckBotton.xib; sourceTree = "<group>"; };
 		8AB7406D1A43D810B37409F0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,12 +155,20 @@
 		1FFBF9D01CD64B3F000B22C1 /* fish_helper */ = {
 			isa = PBXGroup;
 			children = (
+				783DD0791D02657700B2D47C /* area.plist */,
+				786911581CFFE5B6003E2FCA /* Sig_op.swift */,
+				786911551CFFE5A9003E2FCA /* Sig_op.xib */,
+				783A24D71CFEE8CE00A7B0D1 /* Manu_sig_op.swift */,
+				783A24D41CFEE82000A7B0D1 /* Manu_sig_op.xib */,
+				78B2E8F91CFD9E1100B1E4FA /* XVView.xib */,
+				78B2E8F71CFD9DFF00B1E4FA /* XVView.swift */,
 				78F6320B1CF694BD006482C5 /* Assets.xcassets */,
 				783D07411CE6FFFF001E64AD /* dev_grp.swift */,
 				783108641CE19EE7008EE608 /* comm_frame.swift */,
 				783BE06B1CE04790009DBF38 /* Main.storyboard */,
 				7846D0111CF301C200EDAEE5 /* CfgSysViewController.swift */,
 				78593C451CEB0BBA00D75975 /* FullintentViewController.swift */,
+				78FA46F51CFC4A0500E01CE5 /* CheckBotton.xib */,
 				78F73D4C1CE58DA400F031EB /* SectionHeaderView.xib */,
 				78F73D4A1CE5842500F031EB /* DevCell.swift */,
 				1FFBF9D11CD64B3F000B22C1 /* AppDelegate.swift */,
@@ -158,6 +184,7 @@
 				78F63E1F1CF6D7A4009CC4EE /* TimeCfgViewController.swift */,
 				78F632091CF68ECC006482C5 /* DevAddViewController.swift */,
 				78FA2D461CF6FEBF00216671 /* send_time_out.xib */,
+				78B2E8F51CFD85D900B1E4FA /* CheckButton.swift */,
 			);
 			path = fish_helper;
 			sourceTree = "<group>";
@@ -268,7 +295,7 @@
 				TargetAttributes = {
 					1FFBF9CD1CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 868MAGN5BR;
+						DevelopmentTeam = N2GJLN9BPS;
 					};
 					1FFBF9E11CD64B3F000B22C1 = {
 						CreatedOnToolsVersion = 7.3;
@@ -306,8 +333,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FFBF9DC1CD64B3F000B22C1 /* LaunchScreen.storyboard in Resources */,
+				783DD07A1D02657700B2D47C /* area.plist in Resources */,
+				783A24D61CFEE82000A7B0D1 /* Manu_sig_op.xib in Resources */,
+				78B2E8FB1CFD9E1100B1E4FA /* XVView.xib in Resources */,
+				78FA46F71CFC4A0500E01CE5 /* CheckBotton.xib in Resources */,
 				78F73D4E1CE58DA400F031EB /* SectionHeaderView.xib in Resources */,
 				78F6320C1CF694BD006482C5 /* Assets.xcassets in Resources */,
+				786911571CFFE5A9003E2FCA /* Sig_op.xib in Resources */,
 				783BE06D1CE04790009DBF38 /* Main.storyboard in Resources */,
 				78FA2D481CF6FEBF00216671 /* send_time_out.xib in Resources */,
 			);
@@ -386,10 +418,14 @@
 				785DA0AF1CF5A777001BD017 /* SysSettingViewController.swift in Sources */,
 				7846D00E1CF2DEA700EDAEE5 /* RegisterViewController.swift in Sources */,
 				7846D0101CF2EF9A00EDAEE5 /* CfgMenuViewController.swift in Sources */,
+				78B2E8F81CFD9DFF00B1E4FA /* XVView.swift in Sources */,
 				78F63E201CF6D7A4009CC4EE /* TimeCfgViewController.swift in Sources */,
 				783BE06F1CE05E20009DBF38 /* DevListViewController.swift in Sources */,
 				78F73D541CE5AA6300F031EB /* DevItemSectionInfo.swift in Sources */,
+				786911591CFFE5B6003E2FCA /* Sig_op.swift in Sources */,
+				783A24D81CFEE8CE00A7B0D1 /* Manu_sig_op.swift in Sources */,
 				783D07421CE6FFFF001E64AD /* dev_grp.swift in Sources */,
+				78B2E8F61CFD85D900B1E4FA /* CheckButton.swift in Sources */,
 				783108651CE19EE7008EE608 /* comm_frame.swift in Sources */,
 				78F6320A1CF68ECC006482C5 /* DevAddViewController.swift in Sources */,
 				78F73D521CE5A2A700F031EB /* SectionHeaderView.swift in Sources */,
@@ -441,12 +477,36 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		783A24D41CFEE82000A7B0D1 /* Manu_sig_op.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				783A24D51CFEE82000A7B0D1 /* Base */,
+			);
+			name = Manu_sig_op.xib;
+			sourceTree = "<group>";
+		};
 		783BE06B1CE04790009DBF38 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				783BE06C1CE04790009DBF38 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		786911551CFFE5A9003E2FCA /* Sig_op.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				786911561CFFE5A9003E2FCA /* Base */,
+			);
+			name = Sig_op.xib;
+			sourceTree = "<group>";
+		};
+		78B2E8F91CFD9E1100B1E4FA /* XVView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78B2E8FA1CFD9E1100B1E4FA /* Base */,
+			);
+			name = XVView.xib;
 			sourceTree = "<group>";
 		};
 		78F73D4C1CE58DA400F031EB /* SectionHeaderView.xib */ = {
@@ -463,6 +523,14 @@
 				78FA2D471CF6FEBF00216671 /* Base */,
 			);
 			name = send_time_out.xib;
+			sourceTree = "<group>";
+		};
+		78FA46F51CFC4A0500E01CE5 /* CheckBotton.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78FA46F61CFC4A0500E01CE5 /* Base */,
+			);
+			name = CheckBotton.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -559,7 +627,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.disai.fish-helper";
 				PRODUCT_NAME = "护渔宝";
@@ -576,7 +644,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = fish_helper/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.disai.fish-helper";
 				PRODUCT_NAME = "护渔宝";
