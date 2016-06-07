@@ -24,6 +24,10 @@ class CfgSysViewController:UIViewController, GCDAsyncUdpSocketDelegate{
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        copy_array(dst_in: &frame_head_info.dev_id, src_in: dev_grp.dev_info[sys_dev_index].dev_id, dst_start: 0, src_start: 0, arr_len: Int(DEV_ID_LEN))
+        var len = frame_make( 0, frame_type: SYS_CFG_FRM, child_type:SYS_CFG_TYPE_SYNC,  dev_index:sys_dev_index)
+        self.send_frame(len:len, manu: dev_grp.dev_info[sys_dev_index].manu_id)
+
         
     }
     
@@ -357,6 +361,103 @@ class CfgSysViewController:UIViewController, GCDAsyncUdpSocketDelegate{
                 {
                     show_info(title: "系统配置回应", msg:"校准已启动，十分钟后校准完成")
                 }
+                else if (buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == SYS_CFG_RSP_TYPE_SYNC)
+                {
+                    var dev_index = sys_dev_index
+                    for i in 0..<dev_grp.dev_info[dev_index].sys_cfg_var.sys_var_num
+                    {
+                        switch (dev_grp.dev_info[dev_index].sys_cfg_var.sys_var_type[Int(i)])
+                        {
+                        case SYS_CFG_INFO_TYPE_DO_MAX:
+                            tex_do_max_cfg.text = String(stringInterpolationSegment: Float(dev_grp.dev_info[dev_index].sys_cfg_var.do_max)/10)
+                            break;
+                        case SYS_CFG_INFO_TYPE_DO_MIN:
+                          // tex_do_min_cfg.text = (Float(dev_grp.dev_info[dev_index].sys_cfg_var.do_min)/10) as? String
+                            break;
+                        case SYS_CFG_INFO_TYPE_DO_MIN1:
+                            tex_do_min1_cfg.text = String(stringInterpolationSegment: Float(dev_grp.dev_info[dev_index].sys_cfg_var.do_min1)/10)
+                            break;
+                        case SYS_CFG_INFO_TYPE_DO_MIN2:
+                            tex_do_min2_cfg.text = String(stringInterpolationSegment: Float(dev_grp.dev_info[dev_index].sys_cfg_var.do_min2)/10)
+                            break;
+                        case SYS_CFG_INFO_TYPE_DO_MIN3:
+                            tex_do_min3_cfg.text = String(stringInterpolationSegment: Float(dev_grp.dev_info[dev_index].sys_cfg_var.do_min3)/10)
+                            break;
+                      /*  case SYS_CFG_INFO_TYPE_DO_MIN4:
+                            View_ed = (EditText)findViewById(R.id.do_min4_cfg_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.do_min4/10));
+                            break;*/
+                        case SYS_CFG_INFO_TYPE_DO_UP:
+                            tex_do_top_cfg.text = String(stringInterpolationSegment: Float(dev_grp.dev_info[dev_index].sys_cfg_var.do_up)/10)
+                            break;
+                        case SYS_CFG_INFO_TYPE_SALT:
+                            tex_salinity_cfg.text = String(stringInterpolationSegment: Float(dev_grp.dev_info[dev_index].sys_cfg_var.salt_cfg)/10) 
+                            break;
+                     /*   case SYS_CFG_INFO_TYPE_WT_TMP_MAX:
+                            View_ed = (EditText)findViewById(R.id.tmp_max_cfg_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_wt_max/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_WT_TMP_MIN:
+                            View_ed = (EditText)findViewById(R.id.tmp_min_cfg_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_wt_min/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX:
+                            View_ed = (EditText)findViewById(R.id.tmp_air_max_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_AIR_MIN:
+                            View_ed = (EditText)findViewById(R.id.tmp_air_min_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_min/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_WET_AIR_MAX:
+                            View_ed = (EditText)findViewById(R.id.wet_air_max_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.wet_air_max/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_WET_AIR_MIN:
+                            View_ed = (EditText)findViewById(R.id.wet_air_min_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.wet_air_min/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX1:
+                            View_ed = (EditText)findViewById(R.id.tmp_air_max1_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max1/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX2:
+                            View_ed = (EditText)findViewById(R.id.tmp_air_max2_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max2/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX3:
+                            View_ed = (EditText)findViewById(R.id.tmp_air_max3_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max3/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_AIR_MAX4:
+                            View_ed = (EditText)findViewById(R.id.tmp_air_max4_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_max4/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_AIR_NORM:
+                            View_ed = (EditText)findViewById(R.id.tmp_air_normal_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_air_normal/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_SOIL_MAX:
+                            View_ed = (EditText)findViewById(R.id.tmp_soil_max_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_soil_max/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_TMP_SOIL_MIN:
+                            View_ed = (EditText)findViewById(R.id.tmp_soil_min_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.tmp_soil_min/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_WET_SOIL_MAX:
+                            View_ed = (EditText)findViewById(R.id.wet_soil_max_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.wet_soil_max/10));
+                            break;
+                        case SYS_CFG_INFO_TYPE_WET_SOIL_MIN:
+                            View_ed = (EditText)findViewById(R.id.wet_soil_min_ed);
+                            View_ed.setText(Float.toString((float)dev_grp.dev_info[dev_index].sys_cfg_var.wet_soil_min/10));
+                            break;*/
+                        default:
+                            var j = 1
+                        }
+                    }
+                }
             case 2:
                 if(buf[Int(SYS_CFG_RSP_TYPE_ADDR)] == SYS_CFG_RSP_TYPE_VAR)
                 {
@@ -365,8 +466,9 @@ class CfgSysViewController:UIViewController, GCDAsyncUdpSocketDelegate{
             
             default:
             var i = 1
+            }
         }
-        }
+        
         // print("incoming message: \(data)");
     }
     

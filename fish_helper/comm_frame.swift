@@ -1019,6 +1019,108 @@ func frame_analysis(buf_info buf:[UInt8], frame_len rsp_len:Int)->Int
                
                 return Int(buf[Int(SYS_CFG_RSP_RES_ADDR)])
             }
+            else if(child_type == SYS_CFG_TYPE_SYNC)
+            {
+                //	FullIntent.his_res_flag = 0
+                dev_grp.dev_info[dev_index_cur].sys_ver = copy_byte2short(buf_info:buf, buf_addr:Int(SYS_CFG_RSP_VER_ADDR))
+                dev_grp.dev_info[dev_index_cur].sys_cfg_var.sys_var_num = buf[Int(SYS_CFG_RSP_NUM_ADDR)]
+                addr = Int(SYS_CFG_RSP_INFO_ADDR)
+                for i in 0..<dev_grp.dev_info[dev_index_cur].sys_cfg_var.sys_var_num
+                {
+                    dev_grp.dev_info[dev_index_cur].sys_cfg_var.sys_var_type[Int(i)] = buf[addr]
+                    addr += Int(SYS_CFG_INFO_TYPE_LEN)
+                    switch (buf[addr - Int(SYS_CFG_INFO_TYPE_LEN)])
+                    {
+                    case SYS_CFG_INFO_TYPE_DO_MAX:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.do_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_DO_LEN)
+                        break;
+                        
+                    case SYS_CFG_INFO_TYPE_DO_MIN:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.do_min = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_DO_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_DO_UP:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.do_up = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_DO_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_SALT:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.salt_cfg = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_SALT_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_AIR_MAX:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_air_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_AIR_MIN:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_air_min = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_WET_AIR_MAX:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.wet_air_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_WET_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_WET_AIR_MIN:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.wet_air_min = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_WET_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_DO_MIN1:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.do_min1 = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_DO_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_DO_MIN2:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.do_min2 = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_DO_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_DO_MIN3:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.do_min3 = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_DO_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_DO_MIN4:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.do_min4 = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_DO_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_AIR_MAX1:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_air_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_AIR_MAX2:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_air_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_AIR_MAX3:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_air_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_AIR_MAX4:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_air_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_AIR_NORM:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_air_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_SOIL_MAX:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_soil_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_TMP_SOIL_MIN:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_soil_min = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_TMP_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_WET_SOIL_MAX:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_soil_max = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_WET_LEN)
+                        break;
+                    case SYS_CFG_INFO_TYPE_WET_SOIL_MIN:
+                        dev_grp.dev_info[dev_index_cur].sys_cfg_var.tmp_soil_min = copy_byte2short(buf_info:buf, buf_addr:addr)
+                        addr += Int(SYS_CFG_INFO_WET_LEN)
+                        break;
+                    default:
+                        break
+                    }
+                }
+            }
         case MODE_CFG_RSP_FRM:
             var child_type = buf[Int(MODE_CFG_RSP_TYPE_ADDR)];
             
@@ -1382,8 +1484,8 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
             send_buf[Int(SYS_CFG_TYPE_ADDR)] = SYS_CFG_TYPE_ADJ
             if(dev_grp.dev_info[Int(dev_index)].sys_adj_type == SYS_CFG_ADJ_TYPE_TMP)
             {
-                send_buf[Int(SYS_CFG_ADJ_TYPE_ADDR)] = SYS_CFG_ADJ_TYPE_TMP;
-                send_buf[Int(SYS_CFG_ADJ_INFO_ADDR)] = 0x1;
+                send_buf[Int(SYS_CFG_ADJ_TYPE_ADDR)] = SYS_CFG_ADJ_TYPE_TMP
+                send_buf[Int(SYS_CFG_ADJ_INFO_ADDR)] = 0x1
                 frame_len += UInt16(SYS_CFG_ADJ_INFO_TYPE_LEN)
                 
                 //putFloat(buf, comm_frame.dev.dev_info[dev_index].sys_adj_tmp ,frame_head_info.frame_len);
@@ -1409,7 +1511,12 @@ func  frame_make(dev_type:UInt8, frame_type:UInt8, child_type:UInt8, dev_index:I
                 
             }
         }
-  
+        else if(child_type == SYS_CFG_TYPE_SYNC)
+        {
+            send_buf[Int(SYS_CFG_TYPE_ADDR)] = SYS_CFG_TYPE_SYNC
+            frame_len = UInt16(SYS_CFG_SYNC_LEN)
+            copy_short2byte(buf_info:&send_buf, start: Int(SYS_CFG_VER_ADDR), data_s: dev_grp.dev_info[Int(dev_index)].sys_ver)
+        }
         send_buf[Int(FRM_TYPE_ADDR)] = frame_type;
         frame_len -= UInt16(FRAME_HEAD_LEN);
         send_buf[Int(FRAME_LEN_ADDR)] =  UInt8(frame_len>>8)
